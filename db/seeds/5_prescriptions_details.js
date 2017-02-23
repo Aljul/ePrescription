@@ -30,7 +30,7 @@ exports.seed = function(knex, Promise) {
           note: "Any time of the day"
         },
         {
-          prescription_id: 1,
+          prescription_id: 2,
           drug_id: 4,
           quantity: 0.5,
           measurement: "tablet",
@@ -38,7 +38,7 @@ exports.seed = function(knex, Promise) {
           note: ""
         },
         {
-          prescription_id: 1,
+          prescription_id: 2,
           drug_id: 5,
           quantity: 1,
           measurement: "tablespoon",
