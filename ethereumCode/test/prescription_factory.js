@@ -1,4 +1,7 @@
+const eth_helper = require('../lib/ethereum_helpers');
 var PrescriptionFactory = artifacts.require("./PrescriptionFactory.sol");
+
+
 
 contract('PrescriptionFactory', function(accounts) {
   it("should add a trusted doctor to the mapping", function() {
@@ -23,27 +26,22 @@ contract('PrescriptionFactory', function(accounts) {
       });
   });
 
-  it("should create a new prescription", function(){
+  it("should create a new prescription and return a valid address", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription()
-      }).then(function(info){
-        console.log(info.tx);
-      prescription =  meta.getInfo(0).then((r) => {console.log(hex2a(r))})
-
+      return meta.createPrescription("new prescription")
+      }).then(function(){
+      return meta.getPrescription(0)
+      }).then((address) => {
+        console.log(address);
+        let isValidAddress = eth_helper.isAddress(address);
+        assert(isValidAddress, true, 'It is not a valid address');
     })
   })
 
  });
 
 
-  function hex2a(theHex) {
-    var hex = theHex.toString();//force conversion
-    var str = '';
-    for (var i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-}
 
 // PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
 

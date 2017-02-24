@@ -1,3 +1,7 @@
+
+
+
+module.exports = {
 /**
  * Checks if the given string is an address
  *
@@ -5,7 +9,7 @@
  * @param {String} address the given HEX adress
  * @return {Boolean}
 */
-var isAddress = function (address) {
+isAddress: function (address) {
     if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
         // check if it has the basic requirements of an address
         return false;
@@ -16,7 +20,7 @@ var isAddress = function (address) {
         // Otherwise check each case
         return isChecksumAddress(address);
     }
-};
+},
 
 /**
  * Checks if the given string is a checksummed address
@@ -25,7 +29,7 @@ var isAddress = function (address) {
  * @param {String} address the given HEX adress
  * @return {Boolean}
 */
-var isChecksumAddress = function (address) {
+isChecksumAddress: function (address) {
     // Check each case
     address = address.replace('0x','');
     var addressHash = sha3(address.toLowerCase());
@@ -35,3 +39,17 @@ var isChecksumAddress = function (address) {
             return false;
         }
     }
+    return true;
+},
+
+
+hex2a: function (theHex) {
+    var hex = theHex.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
+
+}
