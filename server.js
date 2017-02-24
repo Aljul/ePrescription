@@ -14,12 +14,14 @@ app.set("view engine", "ejs");
 const mainRoutes  = require("./routes/main");
 const loginRoutes = require("./routes/login");
 const registerRoutes = require("./routes/register");
+const patientsRoutes = require("./routes/patients");
 const doctorsRoutes = require("./routes/doctors");
 
 // connect routes
 app.use("/", mainRoutes(knex));
 app.use("/login", loginRoutes(knex));
 app.use("/register", registerRoutes(knex));
+app.use("/patients", patientsRoutes(knex));
 app.use("/doctors", doctorsRoutes(knex));
 
 // listening on port

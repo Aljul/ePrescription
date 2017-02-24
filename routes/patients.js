@@ -6,12 +6,12 @@ const router  = express.Router();
 module.exports = (knex) => {
 
   router.get("/:id", (req, res) => {
-    let doctorId = req.params.id;
-    res.render("doctors", { doctorId: doctorId });
+    let patientId = req.params.id;
+    res.render("patients", { patientId: patientId });
   });
 
   router.get("/login", (req, res) => {
-    res.render("login", { doctor: true });
+    res.render("login", { patient: true });
   });
 
   router.get("/register", (req, res) => {
