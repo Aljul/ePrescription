@@ -39,11 +39,11 @@ contract PrescriptionFactory {
     if (msg.sender != owner){
      return false;
     }
-    selfdestruct(this);
+    selfdestruct(owner); // change this, self destruct should go back to owner
   }
 
   function createPrescription(bytes32 name) returns(address){
-    address newPrescription = new Prescription(name); // returns the address to the new contract
+    address newPrescription = new Prescription(name, msg.sender); // returns the address to the new contract
     prescriptionAddresses.push(newPrescription); // save the address in an array
     return newPrescription;
   }
@@ -53,9 +53,9 @@ contract PrescriptionFactory {
 // so a new accessor function will get what you need.
 // make sure to write constant in front of it or it becomes a transaction
 // creating a txn
-  function getInfo(uint i) constant returns(bytes32){
+  function getInfo(uint i) constant returns(address){
     Prescription p = Prescription(prescriptionAddresses[i]);
-    return p.Astring();
+    return p.owner();
   }
 
   function getPrescription(uint i) constant returns(Prescription){

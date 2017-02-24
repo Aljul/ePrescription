@@ -3,7 +3,19 @@ var PrescriptionFactory = artifacts.require("./PrescriptionFactory.sol");
 
 
 
+
+
+
 contract('PrescriptionFactory', function(accounts) {
+  let account;
+
+    beforeEach(function(done) {
+      account = PrescriptionFactory.deployed().then((r) => {return r}).then((r) => {return r.constructor.class_defaults.from}).then(() => {done()})
+    });
+
+
+
+
   it("should add a trusted doctor to the mapping", function() {
      return  PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
@@ -29,17 +41,30 @@ contract('PrescriptionFactory', function(accounts) {
   it("should create a new prescription and return a valid address", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription")
+      return meta.createPrescription("new prescription", account  )
       }).then(function(){
       return meta.getPrescription(0)
       }).then((address) => {
-        console.log(address);
+        // console.log(address);
         let isValidAddress = eth_helper.isAddress(address);
         assert(isValidAddress, true, 'It is not a valid address');
     })
   })
 
+
+   it("should create a new prescription and return its owner", function(){
+    return PrescriptionFactory.deployed().then(function(instance){
+      meta = instance;
+      return meta.createPrescription("new prescription", account)
+      }).then(function(){
+      return meta.getInfo(0)
+      }).then((ownersAddress) => {
+        console.log(account)
+    })
+  })
  });
+
+
 
 
 
@@ -56,3 +81,6 @@ contract('PrescriptionFactory', function(accounts) {
  // PrescriptionFactory.deployed().then(r => {console.log(r.owner.call().then(console.log))})
 
 //  PrescriptionFactory.deployed().then(function(r) {return r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636)})
+
+// adddress of current contract
+//PrescriptionFactory.deployed().then((r) => {return r}).then((r) => {return r.constructor.class_defaults.from})

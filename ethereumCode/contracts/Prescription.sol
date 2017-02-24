@@ -4,10 +4,13 @@ contract Prescription {
 
   bytes32 public Astring;
   bytes32 public name;
+  address public owner;
 
-  function Prescription(bytes32 prescriptionName) {
+  function Prescription(bytes32 prescriptionName, address from) {
     Astring = "hi";
     prescriptionName = name;
+    owner = from;
+
     // constructor
   }
 
