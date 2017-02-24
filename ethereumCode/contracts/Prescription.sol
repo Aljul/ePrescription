@@ -8,7 +8,7 @@ contract Prescription {
     // constructor
 
   }
-  // console.log(Astring);
+
 }
 
 

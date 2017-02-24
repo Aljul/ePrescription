@@ -13,36 +13,36 @@ contract PrescriptionFactory {
     owner = msg.sender;
   }
 
-  function addToDoctors(address newAddress) returns (bool done){
+  function addToDoctors(address newAddress) returns (bool){
     if(msg.sender != owner){
       return false;
     }
     doctors[newAddress] = true;
   }
 
-  function addToPharmacies(address newAddress) returns (bool done){
+  function addToPharmacies(address newAddress) returns (bool){
     if(msg.sender != owner){
       return false;
     }
     pharmacies[newAddress] = true;
   }
 
-  function isDoctorTrusted(address docAddress) constant returns(bool trust){
+  function isDoctorTrusted(address docAddress) constant returns(bool){
     return doctors[docAddress];
   }
 
-  function isPharmacyTrusted(address pharmAddress) constant returns(bool trust){
+  function isPharmacyTrusted(address pharmAddress) constant returns(bool){
     return pharmacies[pharmAddress];
   }
 
-  function destroy() returns(bool isDestroyed){
+  function destroy() returns(bool){
     if (msg.sender != owner){
      return false;
     }
     selfdestruct(this);
   }
 
-  function createPrescription() returns(Prescription inside){
+  function createPrescription() returns(Prescription){
     address newPrescription = new Prescription();
     prescriptionAddresses.push(newPrescription);
     // Prescription pres = Prescription(newPrescription);
