@@ -42,20 +42,25 @@ contract PrescriptionFactory {
     selfdestruct(this);
   }
 
-  function createPrescription() returns(Prescription){
-    address newPrescription = new Prescription();
-    prescriptionAddresses.push(newPrescription);
-    // Prescription pres = Prescription(newPrescription);
-    // // bytes32 toReturn  = newPrescription.Astring;
-    // return pres;
-
+  function createPrescription(bytes32 name) returns(address){
+    address newPrescription = new Prescription(name); // returns the address to the new contract
+    prescriptionAddresses.push(newPrescription); // save the address in an array
+    return newPrescription;
   }
+
+
 // need to do it in 2 steps, when you make a transaction, it returns the txn receipt and stuff
 // so a new accessor function will get what you need.
 // make sure to write constant in front of it or it becomes a transaction
-  function getInfo(uint i) constant returns(bytes32 ok){
+// creating a txn
+  function getInfo(uint i) constant returns(bytes32){
     Prescription p = Prescription(prescriptionAddresses[i]);
     return p.Astring();
+  }
+
+  function getPrescription(uint i) constant returns(Prescription){
+    Prescription p = Prescription(prescriptionAddresses[i]);
+    return p;
   }
 
 

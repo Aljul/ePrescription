@@ -3,10 +3,12 @@ pragma solidity ^0.4.4;
 contract Prescription {
 
   bytes32 public Astring;
-  function Prescription() {
-    Astring = "hi";
-    // constructor
+  bytes32 public name;
 
+  function Prescription(bytes32 prescriptionName) {
+    Astring = "hi";
+    prescriptionName = name;
+    // constructor
   }
 
 }
