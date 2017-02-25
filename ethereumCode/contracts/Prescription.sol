@@ -1,19 +1,26 @@
 pragma solidity ^0.4.4;
 
+
 contract Prescription {
 
-  bytes32 public Astring;
   bytes32 public name;
-  address public owner;
+  string  private data;
+  address public issuingDoctor;
+  mapping (address => bool) pharmacies;
 
-  function Prescription(bytes32 prescriptionName, address from) {
-    Astring = "hi";
-    prescriptionName = name;
-    owner = from;
 
-    // constructor
+
+  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
+    name = prescriptionName;
+    issuingDoctor = doctorAddress;
+    data = thePrescription;
+    log0('hi');
   }
 
+  function getPrescriptionData() returns(string){
+    // if(creator.)
+    // how to access pharmacies?? from a level up
+  }
 }
 
 

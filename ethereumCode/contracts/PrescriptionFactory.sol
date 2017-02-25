@@ -1,10 +1,32 @@
 pragma solidity ^0.4.4;
 
-import "./Prescription.sol";
+// import "./Prescription.sol";
+
+contract Prescription {
+  PrescriptionFactory creator;
+  bytes32 public name;
+  string  private data;
+  address public issuingDoctor;
+
+
+  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
+    name = prescriptionName;
+    issuingDoctor = doctorAddress;
+    data = thePrescription;
+    creator = PrescriptionFactory(msg.sender);
+    log0('hi');
+  }
+
+  function getPrescriptionData() returns(string){
+    // if(creator.)
+    // how to access pharmacies?? from a level up
+  }
+}
+
 
 contract PrescriptionFactory {
 
-  address public owner;
+  address public owner = 0xb3d285b2a44e00bb4aeb378baf446f092e38b084;
   mapping (address => bool) doctors; // stores public keys of doctors and pharmacies that are trusted
   mapping (address => bool) pharmacies; // can only be added by the owner
   address[] prescriptionAddresses;
@@ -13,10 +35,10 @@ contract PrescriptionFactory {
     address  _from,
     bytes32  _status);
 
-  function PrescriptionFactory() {
-    // constructor
-    owner = msg.sender;
-  }
+  // function PrescriptionFactory() {
+  //   // constructor
+  //   owner = msg.sender;
+  // }
 
   function addToDoctors(address newAddress) returns (bool){
     if(msg.sender != owner){
@@ -48,8 +70,8 @@ contract PrescriptionFactory {
     selfdestruct(owner); // change this, self destruct should go back to owner
   }
 
-  function createPrescription(bytes32 name) returns(address){
-    address newPrescription = new Prescription(name, msg.sender); // returns the address to the new contract
+  function createPrescription(bytes32 name) returns(Prescription prescriptionAddress){
+    Prescription newPrescription = new Prescription(name, msg.sender, "DATA"); // returns the address to the new contract
     prescriptionAddresses.push(newPrescription); // save the address in an array
     return newPrescription;
   }
@@ -61,7 +83,7 @@ contract PrescriptionFactory {
 // creating a txn
   function getInfo(uint i) constant returns(address){
     Prescription p = Prescription(prescriptionAddresses[i]);
-    return p.owner();
+    return p.issuingDoctor();
   }
 
   function getPrescription(uint i) constant returns(Prescription){
