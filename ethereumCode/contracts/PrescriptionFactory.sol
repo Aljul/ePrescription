@@ -35,10 +35,10 @@ contract PrescriptionFactory {
     address  _from,
     bytes32  _status);
 
-  // function PrescriptionFactory() {
-  //   // constructor
-  //   owner = msg.sender;
-  // }
+  function PrescriptionFactory() {
+    // constructor
+    owner = msg.sender;
+  }
 
   function addToDoctors(address newAddress) returns (bool){
     if(msg.sender != owner){
