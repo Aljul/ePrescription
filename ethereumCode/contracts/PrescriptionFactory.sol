@@ -8,6 +8,11 @@ contract PrescriptionFactory {
   mapping (address => bool) doctors; // stores public keys of doctors and pharmacies that are trusted
   mapping (address => bool) pharmacies; // can only be added by the owner
   address[] prescriptionAddresses;
+
+  event addingToDoctors(
+    address  _from,
+    bytes32  _status);
+
   function PrescriptionFactory() {
     // constructor
     owner = msg.sender;
@@ -18,6 +23,7 @@ contract PrescriptionFactory {
       return false;
     }
     doctors[newAddress] = true;
+    addingToDoctors(msg.sender, "it happened!");
   }
 
   function addToPharmacies(address newAddress) returns (bool){
