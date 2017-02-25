@@ -1,10 +1,13 @@
 <nav>
   <div>
     <div>
-      <a href="/">ePrescription</a>
-      <a href="/doctors/login">Doctors</a>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+      <% if user.isDoctor === true { %>
+        <a href="/">ePrescription</a>
+        <p> Doctor is true! This is a doctor </p>
+      <% } else { %>
+        <a href="/">ePrescription</a>
+        <p> Doctor is false! This is a regular user</p>
+      <% } %>
     </div>
   </div>
 </nav>

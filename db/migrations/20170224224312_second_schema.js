@@ -59,7 +59,7 @@ exports.down = function(knex, Promise) {
     knex.schema.dropTable('prescriptions_details'),
     knex.schema.dropTable('prescriptions'),
     knex.schema.dropTable('drugs'),
-    knex.schema.dropTable('users'),
-    knex.schema.dropTable('doctors')
+    knex.schema.dropTable('doctors'),
+    knex.schema.dropTable('users')
   ]);
 };
