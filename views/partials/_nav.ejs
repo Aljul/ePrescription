@@ -1,13 +1,21 @@
 <nav>
   <div>
     <div>
-      <% if user.isDoctor === true { %>
-        <a href="/">ePrescription</a>
+      <a href="/"> ePrescription </a>
+      <p> Start of If statement </p>
+      <% //if user.isDoctor === true { %>
         <p> Doctor is true! This is a doctor </p>
-      <% } else { %>
-        <a href="/">ePrescription</a>
+        <a href="/prescriptions/new"> New Prescription </a>
+        <a href="/users/patients"> Patients </a>
+        <a href="/prescriptions"> Prescriptions </a>
+      <% //} else { %>
         <p> Doctor is false! This is a regular user</p>
-      <% } %>
+        <a href="/prescriptions"> Most Recent </a>
+        <a href="/doctors"> Doctors </a>
+        <a href="/prescriptions"> Prescriptions </a>
+      <% //} %>
+      <p> end of If statement </p>
+      <a href="/logout"> Logout </a>
     </div>
   </div>
 </nav>

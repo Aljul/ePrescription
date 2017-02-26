@@ -7,7 +7,7 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
     // if session id correspond a doctor
-    res.render("main");
+    res.render("prescriptions");
     // else redirect login
   });
 
