@@ -6,7 +6,9 @@ contract PrescriptionFactory {
   address public owner;
   mapping (address => bool) doctors; // stores public keys of doctors and pharmacies that are trusted
   mapping (address => bool) pharmacies; // can only be added by the owner
+  mapping (address => Prescription[]) patientsPrescriptions;
   Prescription[] prescriptions;
+
 
   event addingToDoctors(
     address  _from,
@@ -51,9 +53,10 @@ contract PrescriptionFactory {
     selfdestruct(owner); // change this, self destruct should go back to owner
   }
 
-  function createPrescription(bytes32 name, bytes32 payload) returns(Prescription prescriptionAddress){
+  function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
     Prescription newPrescription = new Prescription(name, msg.sender, payload); // returns the address to the new contract
-    prescriptions.push(newPrescription); // save the address in an array
+    prescriptions.push(newPrescription); // save the address of the newly created prescription in an array
+    patientsPrescriptions[forWho].push(newPrescription);// for a specific patient, save its prescription in an artray of prescriptions
     newPrescriptionCreated(msg.sender, 'It happened');
     return newPrescription;
   }
@@ -69,6 +72,10 @@ contract PrescriptionFactory {
   function getPrescription(uint i) constant returns(Prescription){
     Prescription p = Prescription(prescriptions[i]);
     return p;
+  }
+
+  function getPrescriptionForSpecificPatient(address patient, uint index) constant returns (Prescription){
+    return patientsPrescriptions[patient][index];
   }
 
 

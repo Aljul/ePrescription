@@ -29,7 +29,7 @@ contract('PrescriptionFactory', function(accounts) {
   it("should create a new prescription and return a valid address", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", "accounts[0]"  )
+      return meta.createPrescription("new prescription", "accounts[0]", accounts[1]  )
       }).then(function(){
       return meta.getPrescription(0)
       }).then((address) => {
@@ -40,10 +40,11 @@ contract('PrescriptionFactory', function(accounts) {
   })
 
 
+
   it("should create a new prescription and return its owner", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", "accounts[0]")
+      return meta.createPrescription("new prescription", "accounts[0]", accounts[1])
       }).then(function(){
       return meta.getInfo(1)
       }).then((ownersAddress) => {
@@ -53,7 +54,7 @@ contract('PrescriptionFactory', function(accounts) {
   it("should create a new prescription and return its data", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", "DATA")
+      return meta.createPrescription("new prescription", "DATA", accounts[1])
       }).then(function(){
         return meta.getPrescription(2)
       }).then((prescriptionAddress) => {
@@ -67,6 +68,17 @@ contract('PrescriptionFactory', function(accounts) {
         assert.equal(prescriptionData, "DATA", "The prescription data is not the same")
       })
   });
+  it("should create a new prescription and add it to the patientsPrescription Mapping", function(){
+    return PrescriptionFactory.deployed().then(function(instance){
+      meta = instance;
+      return meta.createPrescription("new prescription", "HELL YEA", accounts[2]  )
+      }).then(function(){
+      return meta.getPrescriptionForSpecificPatient(accounts[2], 0)
+      }).then((prescription) => {
+        console.log(prescription);
+        // assert.equal(isValidAddress, true, 'It is not a valid address');
+    })
+  })
 });
 
 contract('Prescription', function(accounts) {
@@ -77,7 +89,7 @@ contract('Prescription', function(accounts) {
   it('should create a new prescription', function() {
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", "MY PRESCRIPTION")
+      return meta.createPrescription("new prescription", "MY PRESCRIPTION", accounts[1])
       }).then((receipt) => {
         // console.log(receipt)
         return meta.getPrescription(0);
