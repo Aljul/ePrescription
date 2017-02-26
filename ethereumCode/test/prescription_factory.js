@@ -1,6 +1,6 @@
 const eth_helper = require('../lib/ethereum_helpers');
 var PrescriptionFactory = artifacts.require("./PrescriptionFactory.sol");
-var Prescription = artifacts.require('../deprecated/Prescription.sol');
+
 contract('PrescriptionFactory', function(accounts) {
 
   it("should add a trusted doctor to the mapping", function() {
@@ -56,24 +56,30 @@ contract('PrescriptionFactory', function(accounts) {
       }).then(function(){
         return meta.getPrescription(0)
       }).then((prescription) => {
-        console.log(prescription.getPrescriptionData())
+        // console.log(prescription)
         // prescription.data.call().then(console.log())
     })
   });
 });
 
 contract('Prescription', function(accounts) {
-
-  beforeEach(function(done) {
-    PrescriptionFactory.deployed().then(function(instance){
-      meta = instance;
-      meta.createPrescription("new prescription", accounts[0])
-      done()
+  beforeEach(function (done) {
+    console.log("hi");
+    done();
+  });
+  it('should create a new prescription', function(done) {
+    return PrescriptionFactory.deployed().then(function(instance){
+      let prescription = instance;
+      return prescription.createPrescription("new prescription", accounts[0])
+      }).then((receipt) => {
+        // console.log(receipt)
+        Prescription.deployed().then(console.log)
+         done();
       })
   });
 
   it("should read the deployed prescription", function(){
-    console.log(Prescription.deployed())
+    Prescription.deployed().then(console.log)
   Prescription.deployed().then((r) => {console.log(r)})
   });
 })

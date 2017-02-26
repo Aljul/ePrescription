@@ -18,7 +18,12 @@ contract Prescription {
 
   function getPrescriptionData() returns(string){
     // if(creator.)
+    return data;
     // how to access pharmacies?? from a level up
+  }
+
+ function isTrusted() returns(bool){
+    return creator.isPharmacyTrusted(msg.sender);
   }
 }
 

@@ -15,9 +15,12 @@ contract Prescription {
     log0('hi');
   }
 
-  function getPrescriptionData() returns(string){
-    // if(creator.)
-    // how to access pharmacies?? from a level up
+ function getPrescriptionData() returns(string){
+    return data;
+  }
+
+ function isTrusted() returns(bool){
+    return creator.isPharmacyTrusted(msg.sender);
   }
 }
 
