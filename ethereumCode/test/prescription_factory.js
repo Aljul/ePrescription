@@ -1,5 +1,6 @@
 const eth_helper = require('../lib/ethereum_helpers');
-var PrescriptionFactory = artifacts.require("./PrescriptionFactory.sol");
+const PrescriptionFactory = artifacts.require("./PrescriptionFactory.sol");
+const Prescription = artifacts.require("./Prescription.sol")
 
 contract('PrescriptionFactory', function(accounts) {
 
@@ -28,13 +29,13 @@ contract('PrescriptionFactory', function(accounts) {
   it("should create a new prescription and return a valid address", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", accounts[0]  )
+      return meta.createPrescription("new prescription", "accounts[0]"  )
       }).then(function(){
       return meta.getPrescription(0)
       }).then((address) => {
         // console.log(address);
         let isValidAddress = eth_helper.isAddress(address);
-        assert(isValidAddress, true, 'It is not a valid address');
+        assert.equal(isValidAddress, true, 'It is not a valid address');
     })
   })
 
@@ -42,23 +43,29 @@ contract('PrescriptionFactory', function(accounts) {
   it("should create a new prescription and return its owner", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", accounts[0])
+      return meta.createPrescription("new prescription", "accounts[0]")
       }).then(function(){
-      return meta.getInfo(0)
+      return meta.getInfo(1)
       }).then((ownersAddress) => {
-        assert(ownersAddress, accounts[0], 'Owner is not the right one');
+        assert.equal(ownersAddress, accounts[0], 'Owner is not the right one');
     })
   })
   it("should create a new prescription and return its data", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", accounts[0], "DATA")
+      return meta.createPrescription("new prescription", "DATA")
       }).then(function(){
-        return meta.getPrescription(0)
+        return meta.getPrescription(2)
+      }).then((prescriptionAddress) => {
+        // console.log(prescriptionAddress)
+        return Prescription.at(prescriptionAddress)
       }).then((prescription) => {
-        // console.log(prescription)
-        // prescription.data.call().then(console.log())
-    })
+        return prescription.getPrescriptionData()
+      }).then((data) => {
+        // console.log(web3.toAscii(data), "what web3 gives me")
+        var prescriptionData = eth_helper.removeNull(web3.toAscii(data));
+        assert.equal(prescriptionData, "DATA", "The prescription data is not the same")
+      })
   });
 });
 
@@ -69,14 +76,16 @@ contract('Prescription', function(accounts) {
   // });
   it('should create a new prescription', function() {
     return PrescriptionFactory.deployed().then(function(instance){
-      let meta = instance;
-      return meta.createPrescription("new prescription", accounts[0])
+      meta = instance;
+      return meta.createPrescription("new prescription", "MY PRESCRIPTION")
       }).then((receipt) => {
         // console.log(receipt)
         return meta.getPrescription(0);
       }).then((address) => {
-        console.log(PrescriptionFactory.at(address))
-        return
+        return Prescription.at(address)
+      }).then((prescription) => {
+        let isValidAddress = eth_helper.isAddress(prescription.address)
+        assert(isValidAddress, true, "The prescription had a problem, a valid addess was not returned")
       })
   });
 

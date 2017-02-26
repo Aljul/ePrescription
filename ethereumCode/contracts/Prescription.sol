@@ -6,19 +6,19 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  string  private data;
+  bytes32  public data;
   address public issuingDoctor;
 
 
-  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
+  function Prescription(bytes32 prescriptionName, address doctorAddress, bytes32 thePrescription) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
-    creator = AbstractPrescriptionFactory(msg.sender);
+    creator = AbstractPrescriptionFactory(msg.sender); // keep the reference to the creator contract
     log0('hi');
   }
 
- function getPrescriptionData() returns(string){
+ function getPrescriptionData() constant returns(bytes32){
     return data;
   }
 

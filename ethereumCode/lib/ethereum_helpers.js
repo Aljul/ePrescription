@@ -49,6 +49,10 @@ hex2a: function (theHex) {
     for (var i = 0; i < hex.length; i += 2)
         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     return str;
+},
+
+removeNull: function(string){
+    return string.replace(/\0/g, '')
 }
 
 

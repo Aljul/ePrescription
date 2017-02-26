@@ -8,7 +8,7 @@ contract AbstractPrescriptionFactory{
   function isDoctorTrusted(address docAddress) constant returns(bool);
   function isPharmacyTrusted(address pharmAddress) constant returns(bool);
   function destroy() returns(bool);
-  function createPrescription(bytes32 name) returns(address);
+  // function createPrescription(bytes32 name) returns(Prescription prescriptionAddress);
   function getInfo(uint i) constant returns(address);
   // function getPrescription(uint i) constant returns(Prescription);
 }

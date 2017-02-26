@@ -1,7 +1,6 @@
 pragma solidity ^0.4.4;
 
 import "./Prescription.sol";
-
 contract PrescriptionFactory {
 
   address public owner;
@@ -52,8 +51,8 @@ contract PrescriptionFactory {
     selfdestruct(owner); // change this, self destruct should go back to owner
   }
 
-  function createPrescription(bytes32 name) returns(address prescriptionAddress){
-    Prescription newPrescription = new Prescription(name, msg.sender, "DATA"); // returns the address to the new contract
+  function createPrescription(bytes32 name, bytes32 payload) returns(Prescription prescriptionAddress){
+    Prescription newPrescription = new Prescription(name, msg.sender, payload); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address in an array
     newPrescriptionCreated(msg.sender, 'It happened');
     return newPrescription;
@@ -67,10 +66,10 @@ contract PrescriptionFactory {
     return p.issuingDoctor();
   }
 
-  // function getPrescription(uint i) constant returns(Prescription){
-  //   Prescription p = Prescription(prescriptions[i]);
-  //   return p;
-  // }
+  function getPrescription(uint i) constant returns(Prescription){
+    Prescription p = Prescription(prescriptions[i]);
+    return p;
+  }
 
 
 }
