@@ -63,9 +63,20 @@ contract('PrescriptionFactory', function(accounts) {
 });
 
 contract('Prescription', function(accounts) {
-  Prescription.deployed().then(console.log)
+
+  beforeEach(function(done) {
+    PrescriptionFactory.deployed().then(function(instance){
+      meta = instance;
+      meta.createPrescription("new prescription", accounts[0])
+      done()
+      })
   });
 
+  it("should read the deployed prescription", function(){
+    console.log(Prescription.deployed())
+  Prescription.deployed().then((r) => {console.log(r)})
+  });
+})
 
 
 

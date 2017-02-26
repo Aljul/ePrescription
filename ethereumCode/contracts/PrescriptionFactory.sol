@@ -1,13 +1,34 @@
 pragma solidity ^0.4.4;
 
-import './Prescription.sol';
+contract Prescription {
+  PrescriptionFactory creator;
+  bytes32 public name;
+  string  private data;
+  address public issuingDoctor;
+
+
+  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
+    name = prescriptionName;
+    issuingDoctor = doctorAddress;
+    data = thePrescription;
+    creator = PrescriptionFactory(msg.sender);
+    log0('hi');
+  }
+
+  function getPrescriptionData() returns(string){
+    // if(creator.)
+    // how to access pharmacies?? from a level up
+  }
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 
 contract PrescriptionFactory {
 
-  address public owner = 0xb3d285b2a44e00bb4aeb378baf446f092e38b084;
+  address public owner;
   mapping (address => bool) doctors; // stores public keys of doctors and pharmacies that are trusted
   mapping (address => bool) pharmacies; // can only be added by the owner
   Prescription[] prescriptions;
@@ -61,8 +82,6 @@ contract PrescriptionFactory {
     newPrescriptionCreated(msg.sender, 'It happened');
     return newPrescription;
   }
-
-
 // need to do it in 2 steps, when you make a transaction, it returns the txn receipt and stuff
 // so a new accessor function will get what you need.
 // make sure to write constant in front of it or it becomes a transaction

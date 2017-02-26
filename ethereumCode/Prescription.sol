@@ -6,7 +6,6 @@ contract Prescription {
   bytes32 public name;
   string  private data;
   address public issuingDoctor;
-  mapping (address => bool) pharmacies;
 
 
 
@@ -17,7 +16,7 @@ contract Prescription {
     log0('his');
   }
 
-  function getPrescriptionData() returns(string){
+  function getPrescriptionData() returns(address){
     // if(creator.)
     // how to access pharmacies?? from a level up
   }
