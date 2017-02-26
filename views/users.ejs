@@ -7,9 +7,14 @@
   <body class="index">
     <% include ./partials/_nav %>
     <div class="container">
+      start if statement => if user corresponding to session[id] isDoctor === true {
+        this if statement will be one the server side
       <div>
-        doctor's patients || user's doctors
+        doctor's patients
+        or user's doctors depending on the data sent by server.
+        Build this query from prescription table (doctor's patients => user_id in prescription table where doctor_id = session[id] and vice-versa)
       </div>
+      end if
     </div>
   </body>
 </html>
