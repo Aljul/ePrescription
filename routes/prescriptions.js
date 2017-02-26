@@ -11,12 +11,12 @@ module.exports = (knex) => {
     // else redirect login
   });
 
-  router.get("/login", (req, res) => {
-    res.render("login");
+  router.get("/new", (req, res) => {
+    res.render("prescription_new");
   });
 
-  router.get("/register", (req, res) => {
-    res.render("register");
+  router.get("/:id", (req, res) => {
+    res.render("prescription_details");
   });
 
   return router;
