@@ -49,15 +49,7 @@ contract PrescriptionFactory {
     addingToPharmacies(msg.sender, "Added to Pharmacies mapping successful");
   }
 
-  function isDoctorTrusted(address docAddress) constant returns(bool){
-    return doctors[docAddress];
-  }
-
-  function isPharmacyTrusted(address pharmAddress) constant returns(bool){
-    return pharmacies[pharmAddress];
-  }
-
-  function destroy() returns(bool){
+ function destroy() returns(bool){
     if (msg.sender != owner){
      // throw;
      return false;
@@ -76,6 +68,15 @@ contract PrescriptionFactory {
     return newPrescription;
   }
 
+  //// CONSTANT FUNCTIONS, DOES NOT MAKE A TRANSACTION
+
+  function isDoctorTrusted(address docAddress) constant returns(bool){
+    return doctors[docAddress];
+  }
+
+  function isPharmacyTrusted(address pharmAddress) constant returns(bool){
+    return pharmacies[pharmAddress];
+  }
   function getInfo(uint i) constant returns(address){
     Prescription p = Prescription(prescriptions[i]);
     return p.issuingDoctor();
