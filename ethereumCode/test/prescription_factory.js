@@ -25,13 +25,31 @@ contract('PrescriptionFactory', function(accounts) {
         assert.equal( thebool, true , "It did not add the pharmacies's address to the mapping");
       });
   });
+});
+
+contract('Prescription', function(accounts) {
+
+  it('should create a new prescription', function() {
+    return PrescriptionFactory.deployed().then(function(instance){
+      meta = instance;
+      return meta.createPrescription("new prescription", "MY PRESCRIPTION", accounts[1])
+      }).then((receipt) => {
+        // console.log(receipt)
+        return meta.getPrescription(0);
+      }).then((address) => {
+        return Prescription.at(address)
+      }).then((prescription) => {
+        let isValidAddress = eth_helper.isAddress(prescription.address)
+        assert(isValidAddress, true, "The prescription had a problem, a valid addess was not returned")
+      })
+  });
 
   it("should create a new prescription and return a valid address", function(){
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
       return meta.createPrescription("new prescription", "accounts[0]", accounts[1]  )
       }).then(function(){
-      return meta.getPrescription(0)
+      return meta.getPrescription(1)
       }).then((address) => {
         // console.log(address);
         let isValidAddress = eth_helper.isAddress(address);
@@ -46,7 +64,7 @@ contract('PrescriptionFactory', function(accounts) {
       meta = instance;
       return meta.createPrescription("new prescription", "accounts[0]", accounts[1])
       }).then(function(){
-      return meta.getInfo(1)
+      return meta.getInfo(2)
       }).then((ownersAddress) => {
         assert.equal(ownersAddress, accounts[0], 'Owner is not the right one');
     })
@@ -56,7 +74,7 @@ contract('PrescriptionFactory', function(accounts) {
       meta = instance;
       return meta.createPrescription("new prescription", "DATA", accounts[1])
       }).then(function(){
-        return meta.getPrescription(2)
+        return meta.getPrescription(3)
       }).then((prescriptionAddress) => {
         // console.log(prescriptionAddress)
         return Prescription.at(prescriptionAddress)
@@ -83,49 +101,4 @@ contract('PrescriptionFactory', function(accounts) {
         assert.equal(prescription, theAddress, 'It is not a valid address');
     })
   })
-});
-
-contract('Prescription', function(accounts) {
-  // beforeEach(function (done) {
-  //   console.log("hi");
-  //   done();
-  // });
-  it('should create a new prescription', function() {
-    return PrescriptionFactory.deployed().then(function(instance){
-      meta = instance;
-      return meta.createPrescription("new prescription", "MY PRESCRIPTION", accounts[1])
-      }).then((receipt) => {
-        // console.log(receipt)
-        return meta.getPrescription(0);
-      }).then((address) => {
-        return Prescription.at(address)
-      }).then((prescription) => {
-        let isValidAddress = eth_helper.isAddress(prescription.address)
-        assert(isValidAddress, true, "The prescription had a problem, a valid addess was not returned")
-      })
-  });
-
-  // it("should read the deployed prescription", function(){
-  //   Prescription.deployed().then(console.log)
-  // Prescription.deployed().then((r) => {console.log(r)})
-  // });
 })
-
-
-
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-
-
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.addToDoctors(0x938fdc87b4b1fa4b83e301abe978569d9c85d636))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.addToPharmacies(0x938fdc87b4b1fa4b83e301abe978569d9c85d636))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.isPharmacyTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.owner.call().then(console.log))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.destroy())})
- // PrescriptionFactory.deployed().then(r => {console.log(r.owner.call().then(console.log))})
-
-//  PrescriptionFactory.deployed().then(function(r) {return r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636)})
-
-// adddress of current contract
-//PrescriptionFactory.deployed().then((r) => {return r}).then((r) => {return r.constructor.class_defaults.from})
