@@ -12,31 +12,42 @@ contract PrescriptionFactory {
 
   event addingToDoctors(
     address  _from,
-    bytes32  _status);
+    string  _status);
+
+  event addingToPharmacies(
+    address  _from,
+    string  _status);
 
   event newPrescriptionCreated(
     address _from,
     bytes32 _message,
     address _theAddress);
 
+  // event returnAllPrescriptions(
+  //   bytes[] _thePrescriptions
+  //   );
+
   function PrescriptionFactory() {
     // constructor
     owner = msg.sender;
+    doctors[owner] = true; // the creators of the contract are trusted to create prescription
+    pharmacies[owner] = true; // the creators of the contract are trusted to look at prescriptions and destroy them
   }
 
   function addToDoctors(address newAddress) returns (bool){
     if(msg.sender != owner){
-      return false;
+      throw;
     }
     doctors[newAddress] = true;
-    addingToDoctors(msg.sender, "it happened!");
+    addingToDoctors(msg.sender, "Adding to doctors mapping successful!");
   }
 
   function addToPharmacies(address newAddress) returns (bool){
     if(msg.sender != owner){
-      return false;
+      throw;
     }
     pharmacies[newAddress] = true;
+    addingToPharmacies(msg.sender, "Added to Pharmacies mapping successful");
   }
 
   function isDoctorTrusted(address docAddress) constant returns(bool){
@@ -49,23 +60,22 @@ contract PrescriptionFactory {
 
   function destroy() returns(bool){
     if (msg.sender != owner){
-     return false;
+     throw;
     }
-    selfdestruct(owner); // change this, self destruct should go back to owner
+    selfdestruct(owner);
   }
 
   function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
-    // should check if doctor is valid
+    // should check if doctor is valid, then he can make prescriptions
+    if(!isDoctorTrusted(msg.sender)) throw;
+
     Prescription newPrescription = new Prescription(name, msg.sender, payload, forWho); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address of the newly created prescription in an array
-    patientsPrescriptions[forWho].push(newPrescription);// for a specific patient, save its prescription in an artray of prescriptions
-    newPrescriptionCreated(msg.sender, 'It happened', newPrescription);
+    patientsPrescriptions[forWho].push(newPrescription);// for a specific patient, save its prescription in an artray of prescriptions, will probably keep this one in the future
+    newPrescriptionCreated(msg.sender, 'Prescription created', newPrescription);
     return newPrescription;
   }
-// need to do it in 2 steps, when you make a transaction, it returns the txn receipt and stuff
-// so a new accessor function will get what you need.
-// make sure to write constant in front of it or it becomes a transaction
-// creating a txn
+
   function getInfo(uint i) constant returns(address){
     Prescription p = Prescription(prescriptions[i]);
     return p.issuingDoctor();
@@ -86,5 +96,11 @@ contract PrescriptionFactory {
     length = patientsPrescriptions[patient].length;
     return patientsPrescriptions[patient][length - 1];
     }
+
+  function getAllPrescriptionsForPatient(address patient) constant returns(Prescription[]){
+    Prescription[] allPrescriptions = patientsPrescriptions[patient];
+    // returnAllPrescriptions(allPrescriptions);
+    return allPrescriptions;
+  }
 
 }
