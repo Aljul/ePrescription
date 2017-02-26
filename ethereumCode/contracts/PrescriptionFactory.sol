@@ -1,33 +1,6 @@
 pragma solidity ^0.4.4;
 
-contract Prescription {
-  PrescriptionFactory creator;
-  bytes32 public name;
-  string  private data;
-  address public issuingDoctor;
-
-
-  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
-    name = prescriptionName;
-    issuingDoctor = doctorAddress;
-    data = thePrescription;
-    creator = PrescriptionFactory(msg.sender);
-    log0('hi');
-  }
-
- function getPrescriptionData() returns(string){
-    return data;
-  }
-
- function isTrusted() returns(bool){
-    return creator.isPharmacyTrusted(msg.sender);
-  }
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////////
-
+import "./Prescription.sol";
 
 contract PrescriptionFactory {
 
@@ -79,7 +52,7 @@ contract PrescriptionFactory {
     selfdestruct(owner); // change this, self destruct should go back to owner
   }
 
-  function createPrescription(bytes32 name) returns(Prescription prescriptionAddress){
+  function createPrescription(bytes32 name) returns(address prescriptionAddress){
     Prescription newPrescription = new Prescription(name, msg.sender, "DATA"); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address in an array
     newPrescriptionCreated(msg.sender, 'It happened');
@@ -94,10 +67,10 @@ contract PrescriptionFactory {
     return p.issuingDoctor();
   }
 
-  function getPrescription(uint i) constant returns(Prescription){
-    Prescription p = Prescription(prescriptions[i]);
-    return p;
-  }
+  // function getPrescription(uint i) constant returns(Prescription){
+  //   Prescription p = Prescription(prescriptions[i]);
+  //   return p;
+  // }
 
 
 }

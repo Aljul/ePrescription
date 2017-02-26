@@ -63,25 +63,27 @@ contract('PrescriptionFactory', function(accounts) {
 });
 
 contract('Prescription', function(accounts) {
-  beforeEach(function (done) {
-    console.log("hi");
-    done();
-  });
-  it('should create a new prescription', function(done) {
+  // beforeEach(function (done) {
+  //   console.log("hi");
+  //   done();
+  // });
+  it('should create a new prescription', function() {
     return PrescriptionFactory.deployed().then(function(instance){
-      let prescription = instance;
-      return prescription.createPrescription("new prescription", accounts[0])
+      let meta = instance;
+      return meta.createPrescription("new prescription", accounts[0])
       }).then((receipt) => {
         // console.log(receipt)
-        Prescription.deployed().then(console.log)
-         done();
+        return meta.getPrescription(0);
+      }).then((address) => {
+        console.log(PrescriptionFactory.at(address))
+        return
       })
   });
 
-  it("should read the deployed prescription", function(){
-    Prescription.deployed().then(console.log)
-  Prescription.deployed().then((r) => {console.log(r)})
-  });
+  // it("should read the deployed prescription", function(){
+  //   Prescription.deployed().then(console.log)
+  // Prescription.deployed().then((r) => {console.log(r)})
+  // });
 })
 
 
