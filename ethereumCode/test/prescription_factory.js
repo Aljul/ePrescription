@@ -69,14 +69,18 @@ contract('PrescriptionFactory', function(accounts) {
       })
   });
   it("should create a new prescription and add it to the patientsPrescription Mapping", function(){
+    var theAddress;
     return PrescriptionFactory.deployed().then(function(instance){
       meta = instance;
-      return meta.createPrescription("new prescription", "HELL YEA", accounts[2]  )
-      }).then(function(){
+      return meta.createPrescription("new prescription", "HELL YEA", accounts[2])
+      }).then(function(tx){
+        // console.log(tx)
+        // console.log(tx.logs[0].args._theAddress)
+        theAddress = tx.logs[0].args._theAddress;
       return meta.getPrescriptionForSpecificPatient(accounts[2], 0)
       }).then((prescription) => {
-        console.log(prescription);
-        // assert.equal(isValidAddress, true, 'It is not a valid address');
+        // console.log(prescription);
+        assert.equal(prescription, theAddress, 'It is not a valid address');
     })
   })
 });

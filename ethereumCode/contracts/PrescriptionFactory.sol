@@ -16,7 +16,8 @@ contract PrescriptionFactory {
 
   event newPrescriptionCreated(
     address _from,
-    bytes32 _message);
+    bytes32 _message,
+    address _theAddress);
 
   function PrescriptionFactory() {
     // constructor
@@ -54,10 +55,10 @@ contract PrescriptionFactory {
   }
 
   function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
-    Prescription newPrescription = new Prescription(name, msg.sender, payload); // returns the address to the new contract
+    Prescription newPrescription = new Prescription(name, msg.sender, payload, forWho); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address of the newly created prescription in an array
     patientsPrescriptions[forWho].push(newPrescription);// for a specific patient, save its prescription in an artray of prescriptions
-    newPrescriptionCreated(msg.sender, 'It happened');
+    newPrescriptionCreated(msg.sender, 'It happened', newPrescription);
     return newPrescription;
   }
 // need to do it in 2 steps, when you make a transaction, it returns the txn receipt and stuff
@@ -74,7 +75,7 @@ contract PrescriptionFactory {
     return p;
   }
 
-  function getPrescriptionForSpecificPatient(address patient, uint index) constant returns (Prescription){
+  function getPrescriptionForSpecificPatient(address patient, uint index) constant returns (address){
     return patientsPrescriptions[patient][index];
   }
 
