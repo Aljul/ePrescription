@@ -24,7 +24,7 @@ contract Prescription {
     return data;
   }
 
-  function isTrusted() returns(bool){
+  function isTrusted() constant returns(bool){
     return creator.isPharmacyTrusted(msg.sender);
   }
 

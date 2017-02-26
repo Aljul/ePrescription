@@ -8,20 +8,20 @@ contract('PrescriptionFactory', function(accounts) {
   var lastContractAddress;
   var p3Prescriptions = [];
   before(function () {
-    var example;
+    var contractInstance;
     return contract.then(function(instance){
-    example = instance;
-    return example.createPrescription("P1", "Data1", accounts[1]);
+    contractInstance = instance;
+    return contractInstance.createPrescription("P1", "Data1", accounts[1]);
     }).then(() => {
-      return example.createPrescription("P2", "Data2", accounts[2]);
+      return contractInstance.createPrescription("P2", "Data2", accounts[2]);
     }).then(() => {
-      return example.createPrescription("P3", "Data3", accounts[3]);
+      return contractInstance.createPrescription("P3", "Data3", accounts[3]);
     }).then((message) => {
       p3Prescriptions.push(message.logs[0].args._theAddress);
-      return example.createPrescription("P4", "Data4", accounts[3]);
+      return contractInstance.createPrescription("P4", "Data4", accounts[3]);
     }).then((message) => {
       p3Prescriptions.push(message.logs[0].args._theAddress);
-      return example.createPrescription("P5", "Data5", accounts[3]);
+      return contractInstance.createPrescription("P5", "Data5", accounts[3]);
     }).then((message) => {
       p3Prescriptions.push(message.logs[0].args._theAddress);
       lastContractAddress = message.logs[0].args._theAddress;
