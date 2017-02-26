@@ -1,27 +1,8 @@
 pragma solidity ^0.4.4;
 
-// import "./Prescription.sol";
+import './Prescription.sol';
 
-contract Prescription {
-  PrescriptionFactory creator;
-  bytes32 public name;
-  string  private data;
-  address public issuingDoctor;
-
-
-  function Prescription(bytes32 prescriptionName, address doctorAddress, string thePrescription) {
-    name = prescriptionName;
-    issuingDoctor = doctorAddress;
-    data = thePrescription;
-    creator = PrescriptionFactory(msg.sender);
-    log0('hi');
-  }
-
-  function getPrescriptionData() returns(string){
-    // if(creator.)
-    // how to access pharmacies?? from a level up
-  }
-}
+////////////////////////////////////////////////////////////////////////////////////
 
 
 contract PrescriptionFactory {
@@ -29,11 +10,15 @@ contract PrescriptionFactory {
   address public owner = 0xb3d285b2a44e00bb4aeb378baf446f092e38b084;
   mapping (address => bool) doctors; // stores public keys of doctors and pharmacies that are trusted
   mapping (address => bool) pharmacies; // can only be added by the owner
-  address[] prescriptionAddresses;
+  Prescription[] prescriptions;
 
   event addingToDoctors(
     address  _from,
     bytes32  _status);
+
+  event newPrescriptionCreated(
+    address _from,
+    bytes32 _message);
 
   function PrescriptionFactory() {
     // constructor
@@ -72,7 +57,8 @@ contract PrescriptionFactory {
 
   function createPrescription(bytes32 name) returns(Prescription prescriptionAddress){
     Prescription newPrescription = new Prescription(name, msg.sender, "DATA"); // returns the address to the new contract
-    prescriptionAddresses.push(newPrescription); // save the address in an array
+    prescriptions.push(newPrescription); // save the address in an array
+    newPrescriptionCreated(msg.sender, 'It happened');
     return newPrescription;
   }
 
@@ -82,12 +68,12 @@ contract PrescriptionFactory {
 // make sure to write constant in front of it or it becomes a transaction
 // creating a txn
   function getInfo(uint i) constant returns(address){
-    Prescription p = Prescription(prescriptionAddresses[i]);
+    Prescription p = Prescription(prescriptions[i]);
     return p.issuingDoctor();
   }
 
   function getPrescription(uint i) constant returns(Prescription){
-    Prescription p = Prescription(prescriptionAddresses[i]);
+    Prescription p = Prescription(prescriptions[i]);
     return p;
   }
 

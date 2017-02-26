@@ -14,7 +14,7 @@ contract Prescription {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
-    log0('hi');
+    log0('his');
   }
 
   function getPrescriptionData() returns(string){
