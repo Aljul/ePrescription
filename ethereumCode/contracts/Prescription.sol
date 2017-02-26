@@ -29,9 +29,10 @@ contract Prescription {
   }
 
   function destroy(){
-    if (creator.isPharmacyTrusted(msg.sender)){
-      selfdestruct(msg.sender);
+    if (!creator.isPharmacyTrusted(msg.sender)){
+      throw;
     }
+    selfdestruct(msg.sender);
   }
 
 }

@@ -55,6 +55,7 @@ contract PrescriptionFactory {
   }
 
   function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
+    // should check if doctor is valid
     Prescription newPrescription = new Prescription(name, msg.sender, payload, forWho); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address of the newly created prescription in an array
     patientsPrescriptions[forWho].push(newPrescription);// for a specific patient, save its prescription in an artray of prescriptions
@@ -75,23 +76,15 @@ contract PrescriptionFactory {
     return p;
   }
 
+
   function getPrescriptionForSpecificPatient(address patient, uint index) constant returns (address){
     return patientsPrescriptions[patient][index];
   }
 
+  function getLatestPrescriptionForPatient(address patient) constant returns (address){
+    uint length;
+    length = patientsPrescriptions[patient].length;
+    return patientsPrescriptions[patient][length - 1];
+    }
 
 }
-
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-
-
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.addToDoctors(0x938fdc87b4b1fa4b83e301abe978569d9c85d636))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
-// PrescriptionFactory.deployed().then(r => {console.log(r.addToPharmacies(0x938fdc87b4b1fa4b83e301abe978569d9c85d636))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.isPharmacyTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636).then(console.log))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.owner.call().then(console.log))})
- // PrescriptionFactory.deployed().then(r => {console.log(r.destroy())})
- // PrescriptionFactory.deployed().then(r => {console.log(r.owner.call().then(console.log))})
-
-//  PrescriptionFactory.deployed().then(function(r) {return r.isDoctorTrusted(0x938fdc87b4b1fa4b83e301abe978569d9c85d636)})
