@@ -33,11 +33,22 @@ contract('PrescriptionFactory', function(accounts) {
   it("should add a trusted doctor to the mapping", function() {
      return  contract.then(function(instance){
       meta = instance;
-      return meta.addToDoctors(accounts[0]);
+      return meta.addToDoctors(accounts[1]);
       }).then(function(receipt){
-        return meta.isDoctorTrusted.call(accounts[0]);
+        return meta.isDoctorTrusted.call(accounts[1]);
       }).then(function(thebool){
         assert.equal( thebool, true , "It did not add the doctor's address to the mapping");
+      });
+  });
+
+   it("should not let me add a trusted doctor to the mapping", function() {
+     return  contract.then(function(instance){
+      meta = instance;
+      return meta.addToDoctors(accounts[2], {from: accounts[1]});
+      }).then(function(receipt){
+        return meta.isDoctorTrusted.call(accounts[2]);
+      }).then(function(thebool){
+        assert.equal( thebool, false , "It did not add the doctor's address to the mapping");
       });
   });
 

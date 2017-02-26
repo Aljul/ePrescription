@@ -23,9 +23,6 @@ contract PrescriptionFactory {
     bytes32 _message,
     address _theAddress);
 
-  // event returnAllPrescriptions(
-  //   bytes[] _thePrescriptions
-  //   );
 
   function PrescriptionFactory() {
     // constructor
@@ -36,7 +33,8 @@ contract PrescriptionFactory {
 
   function addToDoctors(address newAddress) returns (bool){
     if(msg.sender != owner){
-      throw;
+      // throw; // shoulw be throw, this is here for testing only
+      return false;
     }
     doctors[newAddress] = true;
     addingToDoctors(msg.sender, "Adding to doctors mapping successful!");
@@ -44,7 +42,8 @@ contract PrescriptionFactory {
 
   function addToPharmacies(address newAddress) returns (bool){
     if(msg.sender != owner){
-      throw;
+      //throw;
+      return false;
     }
     pharmacies[newAddress] = true;
     addingToPharmacies(msg.sender, "Added to Pharmacies mapping successful");
@@ -60,7 +59,8 @@ contract PrescriptionFactory {
 
   function destroy() returns(bool){
     if (msg.sender != owner){
-     throw;
+     // throw;
+     return false;
     }
     selfdestruct(owner);
   }
@@ -99,7 +99,6 @@ contract PrescriptionFactory {
 
   function getAllPrescriptionsForPatient(address patient) constant returns(Prescription[]){
     Prescription[] allPrescriptions = patientsPrescriptions[patient];
-    // returnAllPrescriptions(allPrescriptions);
     return allPrescriptions;
   }
 
