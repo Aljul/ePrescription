@@ -9,6 +9,7 @@ const knexConfig    = require("./knexfile");
 const knex          = require("knex")(knexConfig[ENV]);
 const cookieSession = require("cookie-session");
 const bodyParser    = require("body-parser");
+const bcrypt        = require('bcrypt');
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");

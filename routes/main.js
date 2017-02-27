@@ -1,7 +1,8 @@
 "use strict";
 
-const express = require('express');
+const express = require("express");
 const router  = express.Router();
+const bcrypt  = require('bcrypt');
 
 module.exports = (knex) => {
 
@@ -29,14 +30,33 @@ module.exports = (knex) => {
 
   router.post("/login", (req, res) => {
     let emailField = req.body.email;
-    let pwField = req.params["password"];
-    req.session["user_id"] = "test_id";
-    res.send(`
-      post to /login worked.\n
-      user_id = ${req.session["user_id"]}\n
-      and email = ${emailField}
-      and password = ${pwField}
-    `);
+    let pwField = req.body.password;
+    console.log(`emailField: ${emailField}`);
+    knex
+      .select("id", "password_digest")
+      .from("users")
+      .where("email", emailField)
+      .then((result) => {
+        console.log("knex query worked");
+        console.log(`result: ${result}`);
+        console.log(`result[0]: ${result[0]}`);
+        console.log(JSON.stringify(result));
+        if (result[0]) {
+          var passwordOK = bcrypt.compareSync(pwField, result[0].password_digest);
+          if (passwordOK) {
+            console.log("passwordOK === true");
+            req.session["user_id"] = result[0].user_id;
+            res.send(`
+              emailField: ${emailField}\n
+              pwField: ${pwField}\n
+              user_id: ${result[0].user_id}
+            `)
+          }
+        } else if (!result[0]) {
+          res.send("invalid email");
+        }
+          else res.status(401).send("invalid password!");
+      });
   });
 
   return router;

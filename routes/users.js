@@ -12,7 +12,7 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
-    let user_id = req.params.id;
+    let user_id = req.session["user_id"];
     res.render("user_details", { user_id: user_id });
   });
 
