@@ -6,9 +6,9 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  bytes data;
+  bytes private data;
   address public issuingDoctor;
-  address public patientAddress;
+  address private patientAddress;
 
 
   event destruction(

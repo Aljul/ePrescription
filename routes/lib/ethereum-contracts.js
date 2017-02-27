@@ -153,10 +153,10 @@ function fulfillPrescription(prescriptionAddress){
 }
 
 
-retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accounts[0])
-.then((address) => {
-  // console.log(address)
-  return fulfillPrescription(address)
-}).then((response) => {
-  console.log(response);
-})
+// retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accounts[0])
+// .then((address) => {
+//   // console.log(address)
+//   return fulfillPrescription(address)
+// }).then((response) => {
+//   console.log(response);
+// })

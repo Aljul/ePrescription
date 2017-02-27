@@ -14,25 +14,25 @@ module.exports = {
     // console.log(instance)
     return contractInstance.createPrescription("P1", "Data1", web3.eth.accounts[1], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
-      console.log(message)
+      // console.log(message)
 
       return contractInstance.createPrescription("P2", "Data2", web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
-      console.log(message)
+      // console.log(message)
 
       return contractInstance.createPrescription("P3", "Data3", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
-      console.log(message)
+      // console.log(message)
       // p3Prescriptions.push(message.logs[0].args._theAddress);
       return contractInstance.createPrescription("P4", "Data4", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
-      console.log(message)
+      // console.log(message)
       // p3Prescriptions.push(message.logs[0].args._theAddress);
       return contractInstance.createPrescription("P5", "Data5", web3.eth.accounts[3],  {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
-      console.log(message)
-      console.log(web3.eth.accounts[0])
-console.log(web3.eth.getBalance(web3.eth.accounts[0]))
+      // console.log(message)
+      // console.log(web3.eth.accounts[0])
+// console.log(web3.eth.getBalance(web3.eth.accounts[0]))
 
 
       return "Done";
@@ -50,14 +50,14 @@ console.log(web3.eth.getBalance(web3.eth.accounts[0]))
       factoryInstance = instance;
       return factoryInstance.addToDoctors(web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS});
     }).then(function(message){
-      console.log(message)
+      // console.log(message)
       return factoryInstance.addToPharmacies(web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
-      console.log(message)
+      // console.log(message)
 
       return factoryInstance.createPrescription("Test", "Test Prescription", web3.eth.accounts[5], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
-      console.log(message.logs[0])
+      // console.log(message.logs[0])
       // createdPrescription = message.logs[0].args._theAddress;
       return "Done";
     }).catch((err) => {
