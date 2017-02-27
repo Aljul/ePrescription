@@ -31,31 +31,19 @@ module.exports = (knex) => {
   router.post("/login", (req, res) => {
     let emailField = req.body.email;
     let pwField = req.body.password;
-    console.log(`emailField: ${emailField}`);
     knex
       .select("id", "password_digest")
       .from("users")
       .where("email", emailField)
       .then((result) => {
-        console.log("knex query worked");
-        console.log(`result: ${result}`);
-        console.log(`result[0]: ${result[0]}`);
-        console.log(JSON.stringify(result));
-        if (result[0]) {
-          var passwordOK = bcrypt.compareSync(pwField, result[0].password_digest);
-          if (passwordOK) {
-            console.log("passwordOK === true");
-            req.session["user_id"] = result[0].user_id;
-            res.send(`
-              emailField: ${emailField}\n
-              pwField: ${pwField}\n
-              user_id: ${result[0].user_id}
-            `)
-          }
-        } else if (!result[0]) {
+        if (!result[0]) {
           res.send("invalid email");
+        } else if (result[0] && bcrypt.compareSync(pwField, result[0].password_digest)) {
+          req.session["user_id"] = result[0].user_id;
+          res.redirect("/");
+        } else {
+          res.status(401).send("invalid password!");
         }
-          else res.status(401).send("invalid password!");
       });
   });
 
