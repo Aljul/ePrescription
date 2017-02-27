@@ -6,12 +6,12 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  bytes32  public data;
+  bytes32 data;
   address public issuingDoctor;
-  address patientAddress;
+  address public patientAddress;
 
 
-  function Prescription(bytes32 prescriptionName, address doctorAddress, bytes32 thePrescription, address patient) {
+  function Prescription(bytes32 prescriptionName,address doctorAddress, bytes32 thePrescription,  address patient) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
@@ -33,6 +33,10 @@ contract Prescription {
 
   function isTrusted() constant returns(bool){
     return creator.isPharmacyTrusted(msg.sender);
+  }
+
+   function getPatientAddress() constant returns(address){
+    return patientAddress;
   }
 
 }
