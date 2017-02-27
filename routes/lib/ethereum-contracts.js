@@ -19,8 +19,16 @@ PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
 AbstractPrescriptionFactory.setProvider(provider);
 
-// seed.populatePrescriptionFactory(web3, PrescriptionFactory, Prescription);
-// seed.createPrescriptions(web3, PrescriptionFactory, Prescription);
+// seed if testrpc is clean
+// console.log(web3.eth.getBalance(web3.eth.accounts[0]).toNumber())
+var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
+
+if (accountTotal == 99861106200000000000){
+  seed.populatePrescriptionFactory(web3, PrescriptionFactory, Prescription);
+  seed.createPrescriptions(web3, PrescriptionFactory, Prescription);
+}
+
+
 
 function publishPrescription(patientAddress, doctorAddress, prescriptionData, prescriptionName){
  return PrescriptionFactory.deployed().then(function(instance){
@@ -123,13 +131,13 @@ function printPrescription(prescriptionAddress){
   })
 }
 
-retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accounts[0])
-.then((address) => {
-  // console.log(address)
-  return printPrescription(address)
-}).then((data) => {
-  console.log(data);
-})
+// retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accounts[0])
+// .then((address) => {
+//   // console.log(address)
+//   return printPrescription(address)
+// }).then((data) => {
+//   console.log(data);
+// })
 
 
 
