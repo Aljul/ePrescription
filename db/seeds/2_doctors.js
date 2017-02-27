@@ -6,26 +6,18 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('doctors').insert([
         {
-          first_name: 'Julie',
-          last_name: "Brodeur",
+          user_id: 1,
           speciality: "Family Medicine",
-          address: "360 rue saint-jacques",
-          phone: "111-111-1111",
-          email: "julie.brodeur@email.com",
           permit_number: "11111",
           permit_registration_date: "2017-02-23",
           status: "Registered - Active"
         },
         {
-          first_name: 'Ling Yuan',
-          last_name: "Kong",
+          user_id: 2,
           speciality: "Internal Medicine Medicine",
-          address: "361 rue saint-jacques",
-          phone: "222-222-2222",
-          email: "lingyuan.kong@email.com",
           permit_number: "22222",
           permit_registration_date: "2017-02-23",
-          status: "Registered - Active",
+          status: "Registered - Active"
         }
       ]);
     });

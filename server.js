@@ -12,15 +12,13 @@ app.set("view engine", "ejs");
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");
-const loginRoutes = require("./routes/login");
-const registerRoutes = require("./routes/register");
-const doctorsRoutes = require("./routes/doctors");
+const prescriptionsRoutes  = require("./routes/prescriptions");
+const usersRoutes  = require("./routes/users");
 
 // connect routes
 app.use("/", mainRoutes(knex));
-app.use("/login", loginRoutes(knex));
-app.use("/register", registerRoutes(knex));
-app.use("/doctors", doctorsRoutes(knex));
+app.use("/prescriptions", prescriptionsRoutes(knex));
+app.use("/users", usersRoutes(knex));
 
 // listening on port
 app.listen(PORT, () => {
