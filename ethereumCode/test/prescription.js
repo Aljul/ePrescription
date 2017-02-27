@@ -7,6 +7,7 @@ const Prescription = artifacts.require("./Prescription.sol")
 contract('Prescription', function(accounts) {
   var contract = PrescriptionFactory.deployed();
   var createdPrescription;
+
   before(function(){
     // add trusted doctors and pharmacies to their mapping
     var factoryInstance;
@@ -22,7 +23,6 @@ contract('Prescription', function(accounts) {
       return "Done";
     })
   })
-
 
   it('should return that the pharmacy is trusted', function(){
     return Prescription.at(createdPrescription).then(function(prescInstance){
@@ -41,7 +41,6 @@ contract('Prescription', function(accounts) {
       assert.equal(response, false, "The pharmacist is trusted when he really shouldn't be");
     })
   })
-
 
   it('should create a new prescription', function() {
     return contract.then(function(instance){
@@ -71,8 +70,6 @@ contract('Prescription', function(accounts) {
     })
   })
 
-
-
   it("should create a new prescription and return its owner", function(){
     return contract.then(function(instance){
       meta = instance;
@@ -83,6 +80,7 @@ contract('Prescription', function(accounts) {
         assert.equal(ownersAddress, accounts[0], 'Owner is not the right one');
     })
   })
+
   it("should create a new prescription and return its data", function(){
     return contract.then(function(instance){
       meta = instance;
@@ -100,6 +98,7 @@ contract('Prescription', function(accounts) {
         assert.equal(prescriptionData, "DATA", "The prescription data is not the same")
       })
   });
+
   it("should create a new prescription and add it to the patientsPrescription Mapping", function(){
     var theAddress;
     return contract.then(function(instance){

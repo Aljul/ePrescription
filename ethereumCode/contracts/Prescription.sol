@@ -20,19 +20,19 @@ contract Prescription {
     log0('hi');
   }
 
+  function destroy(){
+    if (!creator.isPharmacyTrusted(msg.sender)){
+      throw;
+    }
+    selfdestruct(msg.sender);
+  }
+
   function getPrescriptionData() constant returns(bytes32){
     return data;
   }
 
   function isTrusted() constant returns(bool){
     return creator.isPharmacyTrusted(msg.sender);
-  }
-
-  function destroy(){
-    if (!creator.isPharmacyTrusted(msg.sender)){
-      throw;
-    }
-    selfdestruct(msg.sender);
   }
 
 }
