@@ -11,6 +11,11 @@ contract Prescription {
   address public patientAddress;
 
 
+  event destruction(
+    address _from,
+    bytes32 _message,
+    uint _amount);
+
   function Prescription(bytes32 prescriptionName,address doctorAddress, bytes thePrescription,  address patient) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
@@ -20,11 +25,13 @@ contract Prescription {
     log0('hi');
   }
 
-  function destroy(){
+  function destroy() {
     if (!creator.isPharmacyTrusted(msg.sender)){
       throw;
     }
+    destruction(msg.sender, "Destroying the Prescription", 3);
     selfdestruct(msg.sender);
+
   }
 
   function getPrescriptionData() constant returns(bytes){

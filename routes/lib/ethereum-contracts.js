@@ -20,7 +20,6 @@ Prescription.setProvider(provider);
 AbstractPrescriptionFactory.setProvider(provider);
 
 // seed if testrpc is clean
-// console.log(web3.eth.getBalance(web3.eth.accounts[0]).toNumber())
 var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
 
 if (accountTotal == 99861106200000000000){
@@ -87,7 +86,7 @@ function getPrescriptionData(prescriptionAddress){
     console.log(data);
     return web3.toAscii(data)
   }).catch((err) => {
-  console.log(err)
+    console.log(err)
   return err;
   })
 }
@@ -124,10 +123,9 @@ function printPrescription(prescriptionAddress){
     ISSUED BY: ${docAddress}
     DATA: ${prescriptionData}`;
     return verbosePrescription
-
   }).catch((err) => {
-  console.log("The error is",err)
-  return err;
+    console.log("The error is", err)
+    return err;
   })
 }
 
@@ -140,37 +138,25 @@ function printPrescription(prescriptionAddress){
 // })
 
 
+function fulfillPrescription(prescriptionAddress){
+   return Prescription.at(prescriptionAddress).then(function(instance){
+    prescription = instance;
+    // console.log(instance);
+    return prescription.destroy({from: web3.eth.accounts[0]})
+  }).then((response) => {
+    // console.log(response)
+    return response
+  }).catch((err) => {
+    console.log("The error is", err)
+    return err;
+  })
+}
 
 
-
-
-
-
-// console.log()
-// console.log(web3.eth.getBalance(web3.eth.accounts[0]))
-
-// seed.createPrescriptions(web3, PrescriptionFactory, Prescription);
-
-// PrescriptionFactory.deployed()
-// .then((instance) => {
-//   factory = instance;
-//   // console.log(factory)
-//   return factory.owner()
-// }).then((ownerAddress) => {
-//   console.log(ownerAddress);
-// })
-// .catch((err) => {console.log(err)})
-
-
-
-// PrescriptionFactory.deployed()
-// .then((instance) => {
-//   factory = instance;
-//   // console.log(factory)
-//   return factory.addToPharmacies("0X29170A1E6D201AE7F03D571524C4F120D217057A", {from: web3.eth.accounts[0]})
-// }).then((response) => {
-//   console.log(response);
-//   console.log(response.logs[0].args)
-// })
-// .catch((err) => {console.log(err)})
-
+retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accounts[0])
+.then((address) => {
+  // console.log(address)
+  return fulfillPrescription(address)
+}).then((response) => {
+  console.log(response);
+})

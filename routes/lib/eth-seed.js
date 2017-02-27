@@ -48,14 +48,14 @@ console.log(web3.eth.getBalance(web3.eth.accounts[0]))
     const contract = PrescriptionFactory.deployed();
       return contract.then(function(instance){
       factoryInstance = instance;
-      return factoryInstance.addToDoctors(web3.eth.accounts[2], {from: web3.eth.accounts[0]});
+      return factoryInstance.addToDoctors(web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS});
     }).then(function(message){
       console.log(message)
-      return factoryInstance.addToPharmacies(web3.eth.accounts[3], {from: web3.eth.accounts[0]})
+      return factoryInstance.addToPharmacies(web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
       console.log(message)
 
-      return factoryInstance.createPrescription("Test", "Test Prescription", web3.eth.accounts[5], {from: web3.eth.accounts[0], gas: 400000})
+      return factoryInstance.createPrescription("Test", "Test Prescription", web3.eth.accounts[5], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
       console.log(message.logs[0])
       // createdPrescription = message.logs[0].args._theAddress;
