@@ -57,7 +57,7 @@ contract PrescriptionFactory {
     selfdestruct(owner);
   }
 
-  function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
+  function createPrescription(bytes32 name, bytes payload, address forWho) returns(Prescription prescriptionAddress){
     // should check if doctor is valid, then he can make prescriptions
     // if(!isDoctorTrusted(msg.sender)) throw;
 

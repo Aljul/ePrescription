@@ -6,12 +6,12 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  bytes32 data;
+  bytes data;
   address public issuingDoctor;
   address public patientAddress;
 
 
-  function Prescription(bytes32 prescriptionName,address doctorAddress, bytes32 thePrescription,  address patient) {
+  function Prescription(bytes32 prescriptionName,address doctorAddress, bytes thePrescription,  address patient) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
@@ -27,7 +27,7 @@ contract Prescription {
     selfdestruct(msg.sender);
   }
 
-  function getPrescriptionData() constant returns(bytes32){
+  function getPrescriptionData() constant returns(bytes){
     return data;
   }
 
