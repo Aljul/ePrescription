@@ -1,5 +1,5 @@
 module.exports = function(req, res, next) {
-  // Build username of loggedin user from his first and last name
+  // Parse user's info from his cookie and set it to req.user
   if (req.session["user"]) {
     req.user = JSON.parse(req.session["user"]);
   } else { req.user = null }
