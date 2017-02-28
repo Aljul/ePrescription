@@ -22,6 +22,8 @@ AbstractPrescriptionFactory.setProvider(provider);
 // seed if testrpc is clean
 var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
 
+console.log(web3.eth.getBalance(web3.eth.accounts[0]).toNumber())
+
 if (accountTotal == 99861106200000000000){
   seed.populatePrescriptionFactory(web3, PrescriptionFactory, Prescription);
   seed.createPrescriptions(web3, PrescriptionFactory, Prescription);

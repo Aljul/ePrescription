@@ -33,8 +33,6 @@ module.exports = {
       // console.log(message)
       // console.log(web3.eth.accounts[0])
 // console.log(web3.eth.getBalance(web3.eth.accounts[0]))
-
-
       return "Done";
     }).catch((err) => {
       console.log("the error is ", err);
