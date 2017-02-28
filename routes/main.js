@@ -42,7 +42,11 @@ module.exports = (knex) => {
     // add escape function later in app_helpers.js and call it on req.bodys
     let email = req.body.email;
     let password = req.body.password;
-    dbHelpers.logIn(req, res, email, password);
+    dbHelpers.logIn(email, password, function(userObject, err) {
+      if (err) { return res.send(err) }
+      appHelpers.buildUserCookie(req, userObject);
+      res.redirect("/");
+    });
   });
 
   return router;
