@@ -1,3 +1,6 @@
 [submodule "public/scripts/javascripts/qrcodejs"]
 	path = public/scripts/javascripts/qrcodejs
 	url = https://github.com/davidshimjs/qrcodejs.git
+[submodule "public/scripts/javascripts/html5-qrcode"]
+	path = public/scripts/javascripts/html5-qrcode
+	url = https://github.com/dwa012/html5-qrcode
