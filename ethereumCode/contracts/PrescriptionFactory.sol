@@ -57,9 +57,9 @@ contract PrescriptionFactory {
     selfdestruct(owner);
   }
 
-  function createPrescription(bytes32 name, bytes32 payload, address forWho) returns(Prescription prescriptionAddress){
+  function createPrescription(bytes32 name, bytes payload, address forWho) returns(Prescription prescriptionAddress){
     // should check if doctor is valid, then he can make prescriptions
-    if(!isDoctorTrusted(msg.sender)) throw;
+    // if(!isDoctorTrusted(msg.sender)) throw;
 
     Prescription newPrescription = new Prescription(name, msg.sender, payload, forWho); // returns the address to the new contract
     prescriptions.push(newPrescription); // save the address of the newly created prescription in an array
