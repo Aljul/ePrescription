@@ -4,6 +4,7 @@
   <script type="text/javascript" src="./javascripts/jquery-3.1.1.min.js"></script>
    <script src="./javascripts/html5-qrcode/lib/jsqrcode-combined.min.js"></script>
   <script type="text/javascript" src="./javascripts/html5-qrcode/lib/html5-qrcode.min.js"></script>
+  <script type="text/javascript" src="./javascripts/qrcodejs/qrcode.min.js"></script>
    <script src="./qr-reader.js"></script>
 
   <title>QR TEST</title>
@@ -35,6 +36,17 @@
 <br>
 
 </div>
+</section>
+
+
+
+
+<section id="create_qr_code">
+  <div id="qrcode"></div>
+<script type="text/javascript">
+new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
+</script>
+
 </section>
 </body>
 </html>
