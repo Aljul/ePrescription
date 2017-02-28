@@ -8,12 +8,11 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    res.render("users");
+    res.render("users", { user: req.user });
   });
 
   router.get("/:id", (req, res) => {
-    let user_id = req.session["user_id"];
-    res.render("user_details", { user_id: user_id });
+    res.render("user_details", { user: req.user });
   });
 
   // ***** POST routes *****

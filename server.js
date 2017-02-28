@@ -9,12 +9,15 @@ const knexConfig    = require("./knexfile");
 const knex          = require("knex")(knexConfig[ENV]);
 const cookieSession = require("cookie-session");
 const bodyParser    = require("body-parser");
-const bcrypt        = require('bcrypt');
+const bcrypt        = require("bcrypt");
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");
 const prescriptionsRoutes  = require("./routes/prescriptions");
 const usersRoutes  = require("./routes/users");
+
+// require our middleware.js
+const middleware = require("./routes/lib/middleware")
 
 // set ejs as view engine
 app.set("view engine", "ejs");
@@ -25,6 +28,9 @@ app.use(cookieSession({
 }));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// use middleware.js
+app.use(middleware);
 
 // connect routes
 app.use("/", mainRoutes(knex));

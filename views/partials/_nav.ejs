@@ -2,24 +2,22 @@
   <div>
     <div>
       <a href="/"> ePrescription </a>
-      <p> Start of If statement </p>
-      <% //if (username) { %>
-        <% // if user.isDoctor === true { %>
+      <% if (user) { %>
+        <% if (user.isDoctor === true) { %>
           <p> Doctor is true! </p>
           <a href="/prescriptions/new"> New Prescription </a>
           <a href="/users"> Patients </a>
           <a href="/prescriptions"> Prescriptions </a>
           <p> ^ This is a doctor </p>
-        <% //} else if logged in{ %>
+        <% } else { %>
           <p> Doctor is false! </p>
           <a href="/prescriptions/:id"> Most Recent </a>
           <a href="/users"> Doctors </a>
           <a href="/prescriptions"> Prescriptions </a>
-        <% //} %>
+        <% } %>
           <p> ^ This is a regular user </p>
-        <%= username %> | <a href="/logout"> Logout </a>
-      <% //} %>
-      <p> end of If statement </p>
+        <%= user.username %> | <a href="/logout"> Logout </a>
+      <% } %>
     </div>
   </div>
 </nav>
