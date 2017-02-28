@@ -3,7 +3,7 @@
     <div>
       <a href="/"> ePrescription </a>
       <p> Start of If statement </p>
-      <% //if logged in { %>
+      <% //if (username) { %>
         <% // if user.isDoctor === true { %>
           <p> Doctor is true! </p>
           <a href="/prescriptions/new"> New Prescription </a>
@@ -17,7 +17,7 @@
           <a href="/prescriptions"> Prescriptions </a>
         <% //} %>
           <p> ^ This is a regular user </p>
-        <a href="/logout"> Logout </a>
+        <%= username %> | <a href="/logout"> Logout </a>
       <% //} %>
       <p> end of If statement </p>
     </div>
