@@ -10,6 +10,15 @@ module.exports = {
       username: `${userObject.first_name} ${userObject.last_name}`,
       isDoctor: userObject.isDoctor
     });
+  },
+
+  // Returns empty keys of an object in emptyKeys array
+  validatesObject: function(userObject) {
+    let emptyKeys = []
+    for (key in userObject) {
+      if (!userObject[key]) { emptyKeys.push(key); }
+    }
+    return emptyKeys
   }
 
 }

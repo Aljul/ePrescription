@@ -36,8 +36,6 @@ module.exports = (knex) => {
 
   //  ***** POST routes *****
 
-  // When you log in, user info are stored in JSON object req.session["user"].
-  // This info is parsed in middleware.js to be called easily in views
   router.post("/login", (req, res) => {
     // add escape function later in app_helpers.js and call it on req.bodys
     let email = req.body.email;

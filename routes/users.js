@@ -34,10 +34,11 @@ module.exports = (knex) => {
       phone: req.body.phone,
       birthdate: req.body.birthdate
     }
-    //if (email && password && passwordConfirmation && firstName && lastName && address && phone && birthdate) {
-      dbHelpers.emailAvailable(req, res, email).then((result) => {
+    let emptyKeys = appHelpers.validatesObject(userObject);
+    if (emptyKeys == false) {
+      dbHelpers.emailAvailable(req, res, userObject.email).then((result) => {
         if (!result[0]) {
-          if (password === passwordConfirmation) {
+          if (userObject.password === userObject.passwordConfirmation) {
             dbHelpers.register(userObject, function(expandedUserObject) {
               appHelpers.buildUserCookie(req, expandedUserObject);
               res.redirect("/");
@@ -45,7 +46,7 @@ module.exports = (knex) => {
           } else { res.send("passwords do not match") }
         } else { res.send("email already exists") }
       });
-    //} else { res.send("please fill all the fields") }
+    } else { res.send(`missing the following fields ${emptyKeys}`) }
   });
 
   return router;

@@ -1,4 +1,5 @@
 const bcrypt  = require('bcrypt');
+let saltRounds = 10;
 
 // Here goes db functions that require database interaction
 module.exports = function makeDbHelpers(knex) {
@@ -34,7 +35,7 @@ module.exports = function makeDbHelpers(knex) {
         .returning(["id","isDoctor"])
         .insert({
           email: userObject.email,
-          password_digest: bcrypt.hashSync(userObject.password),
+          password_digest: bcrypt.hashSync(userObject.password, saltRounds),
           first_name: userObject.firstName,
           last_name: userObject.lastName,
           address: userObject.address,
