@@ -34,5 +34,5 @@ module.exports = {
   }
 
 }
-const encMessage = module.exports.createCipher('123', 'some clearvsdvsvddsvsd text')
+const encMessage = module.exports.createCipher('123', 'This is a very long prescription, you will need to take this and that anfd this and that')
 const decMessage = module.exports.decipher('123', encMessage);
