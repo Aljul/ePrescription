@@ -8,7 +8,8 @@ module.exports = {
     req.session["user"] = JSON.stringify({
       id: userObject.id,
       username: `${userObject.first_name} ${userObject.last_name}`,
-      isDoctor: userObject.isDoctor
+      isDoctor: userObject.isDoctor,
+      publicKey: userObject.public_key
     });
   },
 

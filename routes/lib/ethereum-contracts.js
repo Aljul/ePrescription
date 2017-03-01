@@ -42,7 +42,7 @@ module.exports = {
     // console.log(message.logs[0].args._theAddress);
     return message.logs[0].args._theAddress
    }).catch((err) => {
-    console.log(err)
+    // console.log(err)
     return err;
     })
    },
@@ -55,7 +55,7 @@ module.exports = {
     // console.log(message)
     return message
    }).catch((err) => {
-    console.log(err)
+    // console.log(err)
     return err;
     })
   },
@@ -65,10 +65,10 @@ module.exports = {
     var contractInstance = instance;
     return contractInstance.getLatestPrescriptionForPatient(patientAddress, {from: doctorAddress})
    }).then((message) => {
-    console.log(message)
+    // console.log(message)
     return message
    }).catch((err) => {
-    console.log(err)
+    // console.log(err)
     return err;
     })
   },
@@ -80,10 +80,10 @@ module.exports = {
       console.log(instance);
       return prescription.getPrescriptionData()
     }).then((data) => {
-      console.log(data);
+      // console.log(data);
       return web3.toAscii(data)
     }).catch((err) => {
-      console.log(err)
+      // console.log(err)
     return err;
     })
   },
