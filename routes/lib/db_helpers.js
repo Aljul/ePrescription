@@ -103,5 +103,5 @@ module.exports = function makeDbHelpers(knex) {
         return err;
       })
     }
-
+  }
 }
