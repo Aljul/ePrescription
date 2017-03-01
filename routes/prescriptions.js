@@ -22,22 +22,32 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
-    //check if :id === "mostRecent" and if so, render prescription_id: mostRecentRx() ou dekoi de mm
-    //2e function qui get les details de la prescription qu'on lui pousse l'id en parametre ?
-    //  genre result de mostRecentRx pour l'id dans getRxDetails(rx_id) pour populer la view?
-    let id_param = req.params.id;
+
+    let rx_id = req.params.id;
     let user_id = req.user.id;
     let prescription_id;
-    if (id_param === "mostrecent") {
-      dbHelpers.mostRecentRxId(user_id, (queryResult, err) => {
-        if (err) { return res.send(err) }
-        prescription_id = queryResult.id;
-        res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
-      });
-    } else {
-      prescription_id = id_param
-      res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
-    }
+
+    //*** TEST ****
+    dbHelpers.getRxById(rx_id).then((result) => {
+      console.log("getRxById fct :");
+      console.log(result[0]);
+    });
+
+    res.render("prescription_details", { user: req.user });
+    //*** END TEST ***
+
+    // if (rx_id === "mostrecent") {
+    //   dbHelpers.getMostRecentRxId(user_id).then((result) => {
+    //     if (result[0].id) {
+    //       //passer result[0].id dans getFullRx()
+    //     } else { res.send("You currently have no prescriptions") }
+    //   })
+    //   res.render("prescription_details", { user: req.user });
+    // } else {
+    //   prescription_id = rx_id
+    //   passer rx_id a getFullRx()
+    //   res.render("prescription_details", { user: req.user });
+    // }
   });
 
   //  ***** POST routes *****

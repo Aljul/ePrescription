@@ -14,17 +14,29 @@ module.exports = function makeDbHelpers(knex) {
     },
 
     // Get most recent prescription for user_id
-    mostRecentRxId: function(user_id, callback) {
+    getMostRecentRxId: function(user_id) {
       return knex("prescriptions")
       .max("id as id")
       .where("user_id", user_id)
-      .then((result) => {
-        result[0] ? callback(result[0], null) : callback(null, "You currenly have no prescription");
-      });
     },
 
-    rxDetails: function(id) {
-      //return prescription and it's details for specific id(arg)
+    // Return prescription by prescriptions.id
+    getRxById: function(rx_id) {
+      return knex("prescriptions")
+      .where("id", rx_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "There's no prescription with this id"
+        }
+        return result;
+      })
+      .catch((err) => {
+        throw err;
+      })
+    },
+
+    getFullRx: function(rx_id) {
+      // need user first_name and last_name
     },
 
     // Build user cookie with his info upon login
