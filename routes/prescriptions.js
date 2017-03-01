@@ -9,21 +9,21 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
     // if session id correspond a doctor
-    res.render("prescriptions");
+    res.render("prescriptions", { user: req.user });
     // else redirect login
   });
 
   router.get("/new", (req, res) => {
-    res.render("prescription_new");
+    res.render("prescription_new", { user: req.user });
   });
 
   router.get("/:id", (req, res) => {
     let prescription_id = req.params.id;
-    res.render("prescription_details", { prescription_id: prescription_id });
+    res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
   });
 
   //  ***** POST routes *****
-  
+
   router.post("/new", (req, res) => {
     res.send("post to prescriptions/new worked");
   });
