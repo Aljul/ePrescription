@@ -49,6 +49,30 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    getDoctorNameById: function(doctor_id) {
+      return knex
+      .select()
+    }
+
+    getUserNameById: function(user_id) {
+
+    }
+
+    // Return name of drug assigned to id
+    getDrugNameById: function(drug_id){
+      return knex
+      .select("name")
+      .from("drugs")
+      .where("id", drug_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, drug not found"
+        }
+        return result[0].id;
+      })
+
+    },
+
     getFullRx: function(rx_id) {
       // need user first_name and last_name
     },
@@ -56,7 +80,7 @@ module.exports = function makeDbHelpers(knex) {
     // Build user cookie with his info upon login
     logIn: function(email, password, callback) {
       return knex
-      .select("id", "password_digest", "first_name", "last_name", "isDoctor", "public_key")
+      .select("id", "password_digest", "first_name", "last_name", "isDoctor")
       .from("users")
       .where("email", email)
       .then((result) => {
@@ -151,8 +175,8 @@ module.exports = function makeDbHelpers(knex) {
     },
 
     createFullRx: function(user, body){
-      // console.log(user)
-      // console.log(body)
+      console.log(user)
+      console.log(body)
       let Rx = {
         quantity: body.quantity,
         measurement: body.measurement,
@@ -173,7 +197,7 @@ module.exports = function makeDbHelpers(knex) {
       .then((drug_id) => {
         Rx["prescription_id"] = prescriptionId;
         Rx["drug_id"] = drug_id;
-        // console.log(Rx);
+        console.log(Rx);
         return this.createRxDetails(Rx);
       })
     }

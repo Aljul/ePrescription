@@ -30,11 +30,11 @@ module.exports = (knex) => {
     //*** TEST ****
     dbHelpers.getRxById(rx_id).then((result) => {
       console.log("getRxById fct :");
-      console.log(result[0]);
+      console.log(result);
     });
     dbHelpers.getRxDetailsById(rx_id).then((result) => {
       console.log("getRxDetailsById fct :");
-      console.log(result[0]);
+      console.log(result[);
     });
 
     res.render("prescription_details", { user: req.user });
@@ -77,8 +77,8 @@ module.exports = (knex) => {
 
 
 // Add the prescription to the blockchain
-console.log(req.user);
-  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user)
+
+  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user.)
 
 
 
