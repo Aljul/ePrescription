@@ -34,9 +34,12 @@ module.exports = (knex) => {
     });
     dbHelpers.getRxDetailsById(rx_id).then((result) => {
       console.log("getRxDetailsById fct :");
-      console.log(result[);
+      console.log(result);
     });
-
+    dbHelpers.getDrugNameById(3).then((result) => {
+      console.log("getDrugNameById fct :");
+      console.log(result);
+    });
     res.render("prescription_details", { user: req.user });
     //*** END TEST ***
 

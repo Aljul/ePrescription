@@ -35,6 +35,7 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Get prescription_details for prescriptions.id = rx_id
     getRxDetailsById: function(rx_id) {
       return knex("prescription_details")
       .where("prescription_id", rx_id)
@@ -49,14 +50,16 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Get name (in users table) of the doctor with corresponding doctor_id
     getDoctorNameById: function(doctor_id) {
       return knex
       .select()
-    }
+    },
 
+    // Get fist and last name of a user corresponding to user_id
     getUserNameById: function(user_id) {
 
-    }
+    },
 
     // Return name of drug assigned to id
     getDrugNameById: function(drug_id){
@@ -68,9 +71,8 @@ module.exports = function makeDbHelpers(knex) {
         if(result.length === 0){
           throw "Error, drug not found"
         }
-        return result[0].id;
+        return result;
       })
-
     },
 
     getFullRx: function(rx_id) {
