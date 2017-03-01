@@ -45,9 +45,9 @@ const dbHelpers = require("./lib/db_helpers.js")(knex);
       frequency: req.body.frequency,
       note: req.body.note
     }
-    console.log(Rx)
+    console.log(req)
 
-    dbHelpers.createRx(Rx, drugName, function(){console.log("done!")})
+    // dbHelpers.createRx(Rx, drugName, function(){console.log("done!")})
     res.send("post to prescriptions/new worked");
   });
 

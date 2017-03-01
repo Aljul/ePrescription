@@ -58,11 +58,14 @@ module.exports = function makeDbHelpers(knex) {
       .from("drugs")
       .where("name", drugName)
       .then((result) => {
+        console.log(result)
+        if(result.length === 0){
+          throw "Error, drug not found"
+        }
         return result;
       })
       .catch((err) => {
-        console.log(err);
-        return err;
+        throw err;
       })
     },
 
@@ -75,6 +78,7 @@ module.exports = function makeDbHelpers(knex) {
         .insert(prescription)
         .into("prescription_details")
       }).then((result) => {
+
         console.log("New prescripton generated");
         return;
       })
