@@ -32,7 +32,8 @@ module.exports = (knex) => {
       lastName: req.body.lastName,
       address: req.body.address,
       phone: req.body.phone,
-      birthdate: req.body.birthdate
+      birthdate: req.body.birthdate,
+      public_key: req.body.public_key
     }
     // return array of empty keys in userObject
     let emptyKeys = appHelpers.validatesObject(userObject);

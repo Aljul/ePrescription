@@ -40,7 +40,8 @@ module.exports = function makeDbHelpers(knex) {
           last_name: userObject.lastName,
           address: userObject.address,
           phone: userObject.phone,
-          birthdate: userObject.birthdate
+          birthdate: userObject.birthdate,
+          public_key: userObject.public_key
         })
         .into("users")
         .then((result) => {
