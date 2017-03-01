@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="./javascripts/jquery-3.1.1.min.js"></script>
+   <script src="./javascripts/html5-qrcode/lib/jsqrcode-combined.min.js"></script>
+  <script type="text/javascript" src="./javascripts/html5-qrcode/lib/html5-qrcode.min.js"></script>
+  <script type="text/javascript" src="./javascripts/qrcodejs/qrcode.min.js"></script>
+   <script src="./qr-reader.js"></script>
+
+  <title>QR TEST</title>
+</head>
+<body>
+ <section id="main_content" class="inner center">
+
+
+<h3 class="center">QR code Reader Demo</h3>
+
+<div  class="center" id="reader" style="width:300px;height:250px;"></div>
+
+<h6 class="center">Result</h6>
+<span id="read" class="center"></span>
+ <div id="reader" style="width:300px;height:250px">
+ </div>
+<br>
+
+<h6 class="center">Read Error (Debug only)</h6>
+<span class="center">Will constantly show a message, can be ignored</span>
+<span id="read_error" class="center"></span>
+
+<br>
+<h6 class="center">Video Error</h6>
+<span id="vid_error" class="center"></span>
+
+<br>
+<br>
+<br>
+
+</div>
+</section>
+
+<section id="create_qr_code2">
+  <div id="qrcode"></div>
+<script type="text/javascript">
+new QRCode(document.getElementById("qrcode"), "12d93385624fc85f1f5d5bf40f9e09ac5efc25faf1c299ef360ed0057758c506634d1465b3fe3640bb263ecdcd70cc1e08b83630f4f917b68eb068d13104c120e489f5ed43735710732395b79752c651");
+</script>
+</section>
+
+<br/>
+<br/>
+<br/>
+<br>
+<br>
+<br>
+
+
+<section id="create_qr_code">
+  <div id="qrcode"></div>
+<script type="text/javascript">
+new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
+</script>
+
+</section>
+
+</body>
+</html>

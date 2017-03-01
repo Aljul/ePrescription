@@ -8,6 +8,11 @@
     <% include ./partials/_nav %>
     <div class="container">
       <h3> Login </h3>
+      <form action="/login" method="POST">
+        <input type="text" name="email" placeholder="email">
+        <input type="text" name="password" placeholder="password">
+        <input type="submit">  Post to /login
+      </form>
       <a href="/register"> New patient ? Click here to create an account ! </a>
     </div>
   </body>

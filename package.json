@@ -18,11 +18,16 @@
   },
   "homepage": "https://github.com/Aljul/ePrescription#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.16.1",
+    "cookie-session": "^2.0.0-beta.1",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
     "knex": "^0.12.7",
-    "pg": "^6.1.2"
+    "pg": "^6.1.2",
+    "truffle-contract": "^1.1.10",
+    "web3": "^0.18.2"
   }
 }

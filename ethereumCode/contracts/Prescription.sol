@@ -6,12 +6,17 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  bytes32  public data;
+  bytes private data;
   address public issuingDoctor;
-  address patientAddress;
+  address private patientAddress;
 
 
-  function Prescription(bytes32 prescriptionName, address doctorAddress, bytes32 thePrescription, address patient) {
+  event destruction(
+    address _from,
+    bytes32 _message,
+    uint _amount);
+
+  function Prescription(bytes32 prescriptionName,address doctorAddress, bytes thePrescription,  address patient) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
@@ -20,19 +25,25 @@ contract Prescription {
     log0('hi');
   }
 
-  function destroy(){
+  function destroy() {
     if (!creator.isPharmacyTrusted(msg.sender)){
       throw;
     }
+    destruction(msg.sender, "Destroying the Prescription", 3);
     selfdestruct(msg.sender);
+
   }
 
-  function getPrescriptionData() constant returns(bytes32){
+  function getPrescriptionData() constant returns(bytes){
     return data;
   }
 
   function isTrusted() constant returns(bool){
     return creator.isPharmacyTrusted(msg.sender);
+  }
+
+   function getPatientAddress() constant returns(address){
+    return patientAddress;
   }
 
 }
