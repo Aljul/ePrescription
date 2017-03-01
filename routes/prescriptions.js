@@ -63,8 +63,8 @@ module.exports = (knex) => {
 
 
 // Add the prescription to the blockchain
-
-  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user.)
+console.log(req.user);
+  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user)
 
 
 
