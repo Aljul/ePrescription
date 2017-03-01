@@ -74,34 +74,83 @@ module.exports = function makeDbHelpers(knex) {
       .from("drugs")
       .where("name", drugName)
       .then((result) => {
-        console.log(result)
+        // console.log(result)
         if(result.length === 0){
           throw "Error, drug not found"
         }
-        return result;
+        return result[0].id;
       })
-      .catch((err) => {
-        throw err;
+
+    },
+
+    getUserByPublicKey: function(patientAddress){
+      return knex
+      .select("id")
+      .from("users")
+      .where("public_key", patientAddress)
+      .then((address) => {
+        // console.log(address);
+        if(address.length === 0){
+          throw "Error, no user found at that address"
+        }
+        return address[0].id;
+      })
+
+    },
+
+    createRxDetails: function(Rx){
+      return knex
+      .insert(Rx)
+      .into("prescription_details")
+      .then((result) => {
+
+      console.log("New prescription generated");
+      return result;
       })
     },
 
-    createRx: function(Rx, drugName, callback){
-      let prescription = Rx;
-      this.getDrugId(drugName)
-      .then((drugId) => {
-        prescription["drug_id"] = drugId[0].id;
-        return knex
-        .insert(prescription)
-        .into("prescription_details")
-      }).then((result) => {
-
-        console.log("New prescripton generated");
-        return;
+    createRxTemplate: function(doctorId, patientId){
+      return knex
+      .returning("id")
+      .insert({
+        doctor_id: doctorId,
+        user_id: patientId,
+        status: "active"
+        })
+      .into('prescriptions')
+      .then((result) => {
+        // console.log(result)
+        return result;
       })
-      .catch((err) => {
-        console.log(err)
-        return err;
+    },
+
+    createFullRx: function(user, body){
+      console.log(user)
+      console.log(body)
+      let Rx = {
+        quantity: body.quantity,
+        measurement: body.measurement,
+        frequency: body.frequency,
+        note: body.note
+      }
+      let patient_id;
+      let prescriptionId;
+      return this.getUserByPublicKey(body.patientPublicKey)
+      .then((userId) => {
+        patient_id = userId;
+      return this.createRxTemplate(user.id, patient_id)
+      })
+      .then((prescription_id) => {
+        prescriptionId = prescriptionId;
+        return this.getDrugId(body.drugName)
+      })
+      .then((drug_id) => {
+        Rx["prescription_id"] = prescriptionId;
+        Rx["drug_id"] = drug_id;
+        console.log(Rx);
+        return this.createRxDetails(Rx);
       })
     }
   }
 }
+
