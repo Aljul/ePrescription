@@ -23,13 +23,16 @@ module.exports = (knex) => {
 
   // Creater new user on successful registration
   router.post("/new", (req, res) => {
+
     // add escape function later in app_helpers.js and call it on req.bodys
+
+    // To avoid bugs, set keys with the same name as their database's counterparts when applicable.
     let userObject = {
       email: req.body.email,
       password: req.body.password,
       passwordConfirmation: req.body.passwordConfirmation,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
       address: req.body.address,
       phone: req.body.phone,
       birthdate: req.body.birthdate
@@ -41,7 +44,6 @@ module.exports = (knex) => {
         if (!result[0]) {
           if (userObject.password === userObject.passwordConfirmation) {
             dbHelpers.register(userObject, function(expandedUserObject) {
-              console.log(JSON.stringify(expandedUserObject));
               appHelpers.buildUserCookie(req, expandedUserObject);
               res.redirect("/");
             });

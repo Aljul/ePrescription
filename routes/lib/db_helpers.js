@@ -36,8 +36,8 @@ module.exports = function makeDbHelpers(knex) {
         .insert({
           email: userObject.email,
           password_digest: bcrypt.hashSync(userObject.password, saltRounds),
-          first_name: userObject.firstName,
-          last_name: userObject.lastName,
+          first_name: userObject.first_name,
+          last_name: userObject.last_name,
           address: userObject.address,
           phone: userObject.phone,
           birthdate: userObject.birthdate
