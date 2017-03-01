@@ -1,9 +1,11 @@
 const Web3                            = require('web3');
+const EthereumTx                      = require('ethereumjs-tx')
 const contract                        = require("truffle-contract");
 const PrescriptionFactoryJSON         = require('../../ethereumCode/build/contracts/PrescriptionFactory.json');
 const PrescriptionJSON                = require('../../ethereumCode/build/contracts/Prescription.json')
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
+const encryption                      = require('./encryption.js')
 var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3   = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
@@ -19,6 +21,8 @@ PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
 AbstractPrescriptionFactory.setProvider(provider);
 
+const privateKey = Buffer.from('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
+
 
 module.exports = {
 
@@ -33,7 +37,7 @@ module.exports = {
   publishPrescription: function(patientAddress, doctorAddress, prescriptionData, prescriptionName){
    return PrescriptionFactory.deployed().then(function(instance){
     var contractInstance = instance;
-    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: doctorAddress, gas: GAS})
+    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS})
    }).then((message) => {
     // console.log(message)
     if(message.logs.length == 0){

@@ -80,7 +80,17 @@ module.exports = function makeDbHelpers(knex) {
         }
         return result[0].id;
       })
+    },
 
+    getDoctorKeys: function(doctorId){
+      return knex
+      .select("public_key", "priv_key")
+      .from("doctors")
+      .where("id", doctorId)
+      .then((keys) => {
+        console.log(keys)
+        return keys[0];
+      })
     },
 
     getUserByPublicKey: function(patientAddress){
