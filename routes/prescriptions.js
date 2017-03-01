@@ -4,6 +4,8 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
+// Require db helpers functions
+const dbHelpers = require("./lib/db_helpers.js")(knex);
 
   // ***** GET routes *****
 
@@ -25,7 +27,6 @@ module.exports = (knex) => {
   //  ***** POST routes *****
 
   router.post("/new", (req, res) => {
-    console.log(req)
     // if(!req.user.isDoctor){
     //   return res.send('Not a doctor, you cannot do this');
     // }
@@ -37,7 +38,16 @@ module.exports = (knex) => {
     //     return res.send('need to be filled')
     //   }
     // }
+    let drugName = req.body.drugName;
+    let Rx = {
+      quantity: req.body.quantity,
+      measurement: req.body.measurement,
+      frequency: req.body.frequency,
+      note: req.body.note
+    }
+    console.log(Rx)
 
+    dbHelpers.createRx(Rx, drugName, function(){console.log("done!")})
     res.send("post to prescriptions/new worked");
   });
 

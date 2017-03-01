@@ -50,6 +50,40 @@ module.exports = function makeDbHelpers(knex) {
           callback(userObject);
           console.log("New user successfully added to DB");
         });
+    },
+
+    getDrugId: function(drugName){
+      return knex
+      .select("id")
+      .from("drugs")
+      .where("name", drugName)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      })
+    },
+
+    createRx: function(Rx, drugName, callback){
+      let prescription = Rx;
+      this.getDrugId(drugName)
+      .then((drugId) => {
+        prescription["drug_id"] = drugId[0].id;
+        return knex
+        .insert(prescription)
+        .into("prescription_details")
+      }).then((result) => {
+        console.log("New prescripton generated");
+        return;
+      })
+      .catch((err) => {
+        console.log(err)
+        return err;
+      })
+
+
     }
   }
 }
