@@ -34,12 +34,14 @@ module.exports = (knex) => {
       phone: req.body.phone,
       birthdate: req.body.birthdate
     }
+    // return array of empty keys in userObject
     let emptyKeys = appHelpers.validatesObject(userObject);
-    if (emptyKeys == false) {
+    if (!emptyKeys.length) {
       dbHelpers.emailAvailable(req, res, userObject.email).then((result) => {
         if (!result[0]) {
           if (userObject.password === userObject.passwordConfirmation) {
             dbHelpers.register(userObject, function(expandedUserObject) {
+              console.log(JSON.stringify(expandedUserObject));
               appHelpers.buildUserCookie(req, expandedUserObject);
               res.redirect("/");
             });
