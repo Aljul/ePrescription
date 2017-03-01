@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
-  return knex("prescriptions_details").del().then(function () {
-    console.log("prescriptions_details deleted");
+  return knex("prescription_details").del().then(function () {
+    console.log("prescription_details deleted");
     return knex("prescriptions").del()
   }).then(function () {
     console.log("prescriptions deleted");

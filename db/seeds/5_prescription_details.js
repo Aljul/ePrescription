@@ -1,6 +1,6 @@
 
 exports.seed = function(knex, Promise) {
-  return knex('prescriptions_details').insert([
+  return knex('prescription_details').insert([
     {
       prescription_id: 1,
       drug_id: 1,
