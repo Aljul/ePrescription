@@ -50,12 +50,6 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
-    // Get name (in users table) of the doctor with corresponding doctor_id
-    getDoctorNameById: function(doctor_id) {
-      return knex
-      .select()
-    },
-
     // Get fist and last name of a user corresponding to user_id
     getUserNameById: function(user_id) {
       return knex
@@ -67,6 +61,20 @@ module.exports = function makeDbHelpers(knex) {
           throw "Error, user not found"
         }
         return result;
+      })
+    },
+
+    // Get name (in users table) of the doctor with corresponding doctor_id
+    getDoctorNameById: function(doctor_id) {
+      return knex
+      .select("user_id")
+      .from("doctors")
+      .where("id", doctor_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, doctor not found"
+        }
+        return this.getUserNameById(result[0].user_id)
       })
     },
 

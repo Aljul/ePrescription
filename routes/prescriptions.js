@@ -44,6 +44,10 @@ module.exports = (knex) => {
       console.log("getUserNameById fct :");
       console.log(result);
     });
+    dbHelpers.getDoctorNameById(1).then((result) => {
+      console.log("getUserNameById fct :");
+      console.log(result);
+    });
     res.render("prescription_details", { user: req.user });
     //*** END TEST ***
 
