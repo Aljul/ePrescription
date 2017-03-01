@@ -6,11 +6,25 @@ module.exports = function makeDbHelpers(knex) {
   return {
 
     // Checks if email is in database
-    emailAvailable: function(req, res, email) {
+    emailAvailable: function(email) {
       return knex
       .select("email")
       .from("users")
       .where("email", email)
+    },
+
+    // Get most recent prescription for user_id
+    mostRecentRxId: function(user_id, callback) {
+      return knex("prescriptions")
+      .max("id as id")
+      .where("user_id", user_id)
+      .then((result) => {
+        result[0] ? callback(result[0], null) : callback(null, "You currenly have no prescription");
+      });
+    },
+
+    rxDetails: function(id) {
+      //return prescription and it's details for specific id(arg)
     },
 
     // Build user cookie with his info upon login
@@ -30,27 +44,28 @@ module.exports = function makeDbHelpers(knex) {
       });
     },
 
+    // Insert new user into database
     register: function(userObject, callback) {
-        knex
-        .returning(["id","isDoctor"])
-        .insert({
-          email: userObject.email,
-          password_digest: bcrypt.hashSync(userObject.password, saltRounds),
-          first_name: userObject.firstName,
-          last_name: userObject.lastName,
-          address: userObject.address,
-          phone: userObject.phone,
-          birthdate: userObject.birthdate,
-          public_key: userObject.public_key
-        })
-        .into("users")
-        .then((result) => {
-          // expand user object with returning values and pass it to callback
-          userObject.id = result[0].id;
-          userObject.isDoctor = result[0].isDoctor;
-          callback(userObject);
-          console.log("New user successfully added to DB");
-        });
+      knex
+      .returning(["id","isDoctor"])
+      .insert({
+        email: userObject.email,
+        password_digest: bcrypt.hashSync(userObject.password, saltRounds),
+        first_name: userObject.firstName,
+        last_name: userObject.lastName,
+        address: userObject.address,
+        phone: userObject.phone,
+        birthdate: userObject.birthdate,
+        public_key: userObject.public_key
+      })
+      .into("users")
+      .then((result) => {
+        // expand user object with returning values and pass it to callback
+        userObject.id = result[0].id;
+        userObject.isDoctor = result[0].isDoctor;
+        callback(userObject);
+        console.log("New user successfully added to DB");
+      });
     },
 
     getDrugId: function(drugName){
@@ -87,8 +102,6 @@ module.exports = function makeDbHelpers(knex) {
         console.log(err)
         return err;
       })
-
-
     }
-  }
+
 }

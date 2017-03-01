@@ -13,6 +13,6 @@ exports.seed = function(knex, Promise) {
     return knex("users").del()
   }).then(function () {
     console.log("users deleted");
-    console.log("=== END OF DELETION ===");
+    console.log("=== END OF DELETION SEED FILE ===");
   });
 }
