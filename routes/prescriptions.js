@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router  = express.Router();
-
+const eth_connect = require('./lib/ethereum-contracts.js');
 module.exports = (knex) => {
   // Require db helpers functions
   const dbHelpers = require('./lib/db_helpers.js')(knex);
@@ -43,17 +43,44 @@ module.exports = (knex) => {
   //  ***** POST routes *****
 
   router.post("/new", (req, res) => {
-    // if(!req.user.isDoctor){
-    //   return res.send('Not a doctor, you cannot do this');
-    // }
-
-    // console.log(req)
+    if(!req.user.isDoctor){
+      return res.send('Not a doctor, you cannot do this');
+    }
     // clause to say that if something is missing in req.body -- then send an error
-    // for (var key in req.body){
-    //   if (!req.body[key]){
-    //     return res.send('need to be filled')
-    //   }
-    // }
+    for (var key in req.body){
+      if (!req.body[key]){
+        return res.send('need to be filled')
+      }
+    }
+
+// Add the prescription to our database
+    dbHelpers.createFullRx(req.user, req.body)
+    .then(console.log)
+    .catch((err) => {
+      console.log("There was an error while adding the prescription to the DB:", err);
+      return err
+    })
+
+
+// Add the prescription to the blockchain
+
+  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user.)
+
+
+
+
+    res.send("post to prescriptions/new worked");
+  });
+
+  return router;
+}
+
+
+
+
+
+
+
     // let drugName = req.body.drugName;
     // let Rx = {
     //   quantity: req.body.quantity,
@@ -75,15 +102,3 @@ module.exports = (knex) => {
     // .catch((err) => {
     //   console.log("Error while trying to add a prescription to the database:", err);
     // })
-
-    dbHelpers.createFullRx(req.user, req.body)
-    .then(console.log)
-    .catch((err) => {
-      console.log("There was an error while adding the prescription to the DB:", err);
-      return err
-    })
-    res.send("post to prescriptions/new worked");
-  });
-
-  return router;
-}
