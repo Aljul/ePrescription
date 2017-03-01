@@ -141,7 +141,7 @@ module.exports = function makeDbHelpers(knex) {
       return this.createRxTemplate(user.id, patient_id)
       })
       .then((prescription_id) => {
-        prescriptionId = prescriptionId;
+        prescriptionId = prescription_id[0];
         return this.getDrugId(body.drugName)
       })
       .then((drug_id) => {
