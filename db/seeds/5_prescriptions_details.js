@@ -34,12 +34,28 @@ exports.seed = function(knex, Promise) {
       note: ""
     },
     {
-      prescription_id: 2,
+      prescription_id: 3,
       drug_id: 5,
       quantity: 1,
       measurement: "tablespoon",
       frequency: "once before bed",
       note: "Measure carefully, 1.1 tablespoon will lead to overdose"
+    },
+    {
+      prescription_id: 4,
+      drug_id: 4,
+      quantity: 0.5,
+      measurement: "tablet",
+      frequency: "once a day",
+      note: ""
+    },
+    {
+      prescription_id: 5,
+      drug_id: 4,
+      quantity: 0.5,
+      measurement: "tablet",
+      frequency: "once a day",
+      note: ""
     }
   ]).then(function () {
     console.log("prescriptions_details seeded");
