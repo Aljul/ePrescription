@@ -58,7 +58,16 @@ module.exports = function makeDbHelpers(knex) {
 
     // Get fist and last name of a user corresponding to user_id
     getUserNameById: function(user_id) {
-
+      return knex
+      .select("first_name", "last_name")
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, user not found"
+        }
+        return result;
+      })
     },
 
     // Return name of drug assigned to id

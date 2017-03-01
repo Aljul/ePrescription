@@ -40,6 +40,10 @@ module.exports = (knex) => {
       console.log("getDrugNameById fct :");
       console.log(result);
     });
+    dbHelpers.getUserNameById(user_id).then((result) => {
+      console.log("getUserNameById fct :");
+      console.log(result);
+    });
     res.render("prescription_details", { user: req.user });
     //*** END TEST ***
 
