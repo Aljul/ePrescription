@@ -55,16 +55,6 @@ exports.seed = function(knex, Promise) {
       phone: "555-555-5555",
       birthdate: "1999-12-31",
       isDoctor: false
-    },
-    {
-      first_name: "test",
-      last_name: "doc",
-      email: "doc",
-      password_digest: seedHash,
-      address: "quelque part",
-      phone: "666-666-6666",
-      birthdate: "2000-12-31",
-      isDoctor: true
     }
   ]).then(function () {
     console.log("users seeded");

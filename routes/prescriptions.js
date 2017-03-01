@@ -4,6 +4,10 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
+  // Require db helpers functions
+  const dbHelpers = require('./lib/db_helpers.js')(knex);
+  // Require app helpers functions
+  const appHelpers = require('./lib/app_helpers.js');
 
   // ***** GET routes *****
 
@@ -18,8 +22,22 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
-    let prescription_id = req.params.id;
-    res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
+    //check if :id === "mostRecent" and if so, render prescription_id: mostRecentRx() ou dekoi de mm
+    //2e function qui get les details de la prescription qu'on lui pousse l'id en parametre ?
+    //  genre result de mostRecentRx pour l'id dans getRxDetails(rx_id) pour populer la view?
+    let id_param = req.params.id;
+    let user_id = req.user.id;
+    let prescription_id;
+    if (id_param === "mostrecent") {
+      dbHelpers.mostRecentRxId(user_id, (queryResult, err) => {
+        if (err) { return res.send(err) }
+        prescription_id = queryResult.id;
+        res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
+      });
+    } else {
+      prescription_id = id_param
+      res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
+    }
   });
 
   //  ***** POST routes *****
