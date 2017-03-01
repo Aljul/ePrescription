@@ -35,6 +35,20 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    getRxDetailsById: function(rx_id) {
+      return knex("prescription_details")
+      .where("prescription_id", rx_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "There's no prescription details with this id"
+        }
+        return result;
+      })
+      .catch((err) => {
+        throw err;
+      })
+    },
+
     getFullRx: function(rx_id) {
       // need user first_name and last_name
     },
@@ -165,4 +179,3 @@ module.exports = function makeDbHelpers(knex) {
     }
   }
 }
-

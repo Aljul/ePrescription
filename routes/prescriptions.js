@@ -32,6 +32,10 @@ module.exports = (knex) => {
       console.log("getRxById fct :");
       console.log(result[0]);
     });
+    dbHelpers.getRxDetailsById(rx_id).then((result) => {
+      console.log("getRxDetailsById fct :");
+      console.log(result[0]);
+    });
 
     res.render("prescription_details", { user: req.user });
     //*** END TEST ***
