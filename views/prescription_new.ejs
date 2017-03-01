@@ -7,15 +7,45 @@
   <body class="index">
     <% include ./partials/_nav %>
     <div class="container">
-      <div>
-        new Prescription form
-        <form action="/prescriptions/new" method="POST">
-          <input type="submit"> Test submit for post to /prescriptions/new
-        </form>
-      </div>
+      <h3> Create an account </h3>
+      <form action="/prescriptions/new" method="POST">
+        Drug Name:
+        <input type="text" name="drugName" placeholder="Drug Name" >
+        <br>
+        <br>
+        Quantity:
+        <input type="number" name="quantity" placeholder="Quantity">
+        <br>
+        <br>
+        Please choose a measurement:
+        <select name="measurement" id="measurementSelect">
+          <option value="mg">mg</option>
+          <option value="g">g</option>
+          <option value="kg">kg</option>
+          <option value="ml">ml</option>
+          <option value="l">l</option>
+          <option value="tsp">tsp</option>
+          <option value="tbp">tbp</option>
+          <option value="pill">pill</option>
+          <option value="tablet">tablet</option>
+        </select>
+        <br>
+        <br>
+        Frequency:
+        <input type="text" name="frequency" placeholder="Frequency">
+        <br>
+        <br>
+        Further Details:
+        <input type="textarea" name="note" placeholder="Further Details">
+        <br>
+        <br>
+        Patient's Address:
+        <input type="text" name="patientPublicKey" placeholder="Patient's Address" >
+        <input type="submit">
+      </form>
+    </div>
 
 
       <!-- THIS IS WHERE THE DOCTOR WILL NEED TO SCAN THE PATIENT's ADDRESS AS A QR CODE -->
-    </div>
   </body>
 </html>
