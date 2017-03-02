@@ -46,7 +46,7 @@ module.exports = (knex) => {
   //  ***** POST routes *****
 
   router.post("/new", (req, res) => {
-    let prescription_id;
+    let rxAddress;
 
     if(!req.user.isDoctor){
       return res.send('Not a doctor, you cannot do this');
@@ -58,51 +58,40 @@ module.exports = (knex) => {
       }
     }
 
-// Add the prescription to our database
-    dbHelpers.createFullRx(req.user, req.body)
-    .then((prescriptionId) => {
-      prescription_id = prescriptionId;
-    })
-    .catch((err) => {
-      console.log("There was an error while adding the prescription to the DB:", err);
-      return err
-    })
-
 // Add the prescription to the blockchain
-  dbHelpers.getDoctorKeys(req.user.id)
-  .then((keys) => {
-
-    let prescriptionData = {
-      drugName: req.body.drugName,
-      quantity:  req.body.quantity,
-      measurement: req.body.measurement,
-      frequency: req.body.frequency,
-      note: req.body.note,
-      patientPublicKey: req.body.patientPublicKey
-    }
-
-    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "tedewst")
+    dbHelpers.getDoctorKeys(req.user.id)
+    .then((keys) => {
+      let prescriptionData = {
+        drugName: req.body.drugName,
+        quantity:  req.body.quantity,
+        measurement: req.body.measurement,
+        frequency: req.body.frequency,
+        note: req.body.note,
+        patientPublicKey: req.body.patientPublicKey
+      }
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "tedewst")
     })
-    .then((result) => {
-      var address = eth_connect.getTransactionReceipt(result)
-      return eth_connect.printPrescription(address.logs[0].address)
+    .then((txHash) => {
+      var txDetails = eth_connect.getTransactionReceipt(txHash)
+       rxAddress = txDetails.logs[0].address;
+      return eth_connect.printPrescription(rxAddress)
     })
     .then((printedRx) => {
       console.log(printedRx)
       return printedRx
     })
-    .catch((err) => {
-      console.log(err, "this is it")
-      return res.send("you messed up")
-   })
     .then(() => {
+      req.body["rx_address"] = rxAddress;
 
-      return res.redirect(`${prescription_id}`)
-    // return res.send("post to prescriptions/new worked");
+    // Add the prescription to our database
+    return dbHelpers.createFullRx(req.user, req.body)
     })
-
-
-
+    .then((prescriptionId) => {
+      return res.redirect(`${prescriptionId}`)
+    })
+    .catch((err) => {
+      return res.send("There was an error while adding the prescription to the blockchain or our DB:" + err)
+    })
   });
 
   return router;
