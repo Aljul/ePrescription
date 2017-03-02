@@ -88,7 +88,7 @@ module.exports = function makeDbHelpers(knex) {
       .from("doctors")
       .where("id", doctorId)
       .then((keys) => {
-        console.log(keys)
+        // console.log(keys)
         return keys[0];
       })
     },

@@ -54,20 +54,19 @@ module.exports = (knex) => {
       }
     }
 
-// Add the prescription to our database
-    dbHelpers.createFullRx(req.user, req.body)
-    .then(console.log)
-    .catch((err) => {
-      console.log("There was an error while adding the prescription to the DB:", err);
-      return err
-    })
-
+// // Add the prescription to our database
+//     dbHelpers.createFullRx(req.user, req.body)
+//     .then(console.log)
+//     .catch((err) => {
+//       console.log("There was an error while adding the prescription to the DB:", err);
+//       return err
+//     })
 
 // Add the prescription to the blockchain
 console.log(JSON.stringify(req.body))
   dbHelpers.getDoctorKeys(req.user.id)
   .then((keys) => {
-    return eth_connect.publishPrescription(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "test")
+    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "test")
   }).then(console.log)
 
 
