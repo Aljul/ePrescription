@@ -92,6 +92,7 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Returns an object with view ready prescription_details
     rxObjectDetailsBuilder: function (rxDetails) {
       let rxDetailsObject = {};
       return this.getDrugNameById(rxDetails["drug_id"]).then((getDrugNameByIdResult) => {
@@ -101,12 +102,11 @@ module.exports = function makeDbHelpers(knex) {
         rxDetailsObject.measurement = rxDetails.measurement
         rxDetailsObject.frequency = rxDetails.frequency
         rxDetailsObject.note = rxDetails.note
-        //rxObject.rxDetails.push(rxDetailsObject);
         return rxDetailsObject
       });
     },
 
-    // Returns object with user-friendly data about a prescription
+    // Returns a promise of an object containing view-friendly data about a prescription
     rxObjectBuilder: function(rx_id) {
       let rxObject = {};
       return this.getRxById(rx_id).then((getRxByIdResult) => {
@@ -115,27 +115,17 @@ module.exports = function makeDbHelpers(knex) {
         return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
           rxObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
           return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
-            rxObject.patientName = `${getUserNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+            rxObject.patientName = `${getUserNameByIdResult["first_name"]} ${getUserNameByIdResult["last_name"]}`;
             return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
-              // for object in getRxDetailsByIdResult array.
-              //  I want to this.getDrugNameById(drug_id) and add it to an object
-              //  I also want to add quantity, measurement, frequency and note to that object
-              // All of these objects (if more than one) would be pushed in to rxObject.rxdetails (an array).
-              // I would then return rxObject ready to be fed to my view in prescriptions.js (get prescriptions/:id)
-              // console.log(rxObject);
-              // console.log(getRxDetailsByIdResult);
-              // rxObject.rxDetails = [];
+              // Building promises array to execute a loop with promise(s) within.
               var promises = [];
               for (let i = 0; i <= getRxDetailsByIdResult.length - 1; i++) {
                 var p = this.rxObjectDetailsBuilder(getRxDetailsByIdResult[i]);
-                // .then((rxObjectDetailsBuilderResult) => {
-                //   console.log(rxObjectDetailsBuilderResult);
-                //   rxObject.rxDetails.push(rxObjectDetailsBuilderResult);
-                // });
                 promises.push(p);
               }
-              return Promise.all(promises).then((values) => {
-                rxObject.rxDetails = values;
+              return Promise.all(promises).then((rxDetailsObject) => {
+                // Assigning array of rxDetailsObject(s) to key
+                rxObject.rxDetails = rxDetailsObject;
                 return rxObject
               });
             }).catch((err) => {

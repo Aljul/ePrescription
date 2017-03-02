@@ -22,28 +22,21 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
-
     let rx_id = req.params.id;
     let user_id = req.user.id;
-
-    // in testing
-    dbHelpers.rxObjectBuilder(rx_id).then((rxObject) => {
-      console.log(rxObject);
-    });
-    res.render("prescription_details", { user: req.user });
-
-
-    // if (rx_id === "mostrecent") {
-    //   dbHelpers.getMostRecentRxId(user_id).then((result) => {
-    //     if (result[0].id) {
-    //       //passer result[0].id dans rxObjectBuilder()
-    //     } else { res.send("You currently have no prescriptions") }
-    //   })
-    //   res.render("prescription_details", { user: req.user, rxObject: rxObject });
-    // } else {
-    //   passer rx_id a rxObjectBuilder()
-    //   res.render("prescription_details", { user: req.user, rxObject: rxObject });
-    // }
+    if (rx_id === "mostrecent") {
+      dbHelpers.getMostRecentRxId(user_id).then((result) => {
+        if (result[0].id) {
+          dbHelpers.rxObjectBuilder(result[0].id).then((rxObject) => {
+            res.render("prescription_details", { user: req.user, rxObject: rxObject });
+          });
+        } else { res.send("You currently have no prescriptions") }
+      })
+    } else {
+      dbHelpers.rxObjectBuilder(rx_id).then((rxObject) => {
+        res.render("prescription_details", { user: req.user, rxObject: rxObject });
+      });
+    }
   });
 
   //  ***** POST routes *****
