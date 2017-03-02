@@ -60,6 +60,7 @@ module.exports = {
     // const decoded = encryption.decipher('1234', doctorKeys.priv_key)
     // console.log(decoded)
     // const privateKey = Buffer.from(decoded, 'hex')
+    console.log(doctorKeys.public_key)
     const privateKey = Buffer.from("d126806aea8c43173a50854d0f35c09f738d68a86fa9e877e0f982cc4c774304", "hex")
     console.log(privateKey)
     PrescriptionFactory.deployed().then((instance) => {
@@ -68,6 +69,8 @@ module.exports = {
     }).then((data) => {
       console.log(data.params[0].data)
       var rawTx = {
+        from: doctorKeys.public_key,
+        to: '0x0000000000000000000000000000000000000000',
         nonce: '0x00',
         gasPrice: '0x09184e72a000',
         gasLimit: web3.toHex(GAS),
@@ -78,8 +81,8 @@ module.exports = {
       var tx = new EthereumTx(rawTx);
       tx.sign(privateKey);
       var serializedTx = tx.serialize();
-      return web3.eth.sendRawTransaction(serializedTx.toString('hex'), {from: doctorKeys.public_key})
-    }).then((result) => {console.log(result)})
+      return web3.eth.sendRawTransaction(serializedTx.toString('hex'))
+    }).then((result) => {console.log("this is the result",result)})
       .catch((err) => {console.log(err)})
    //  // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
    // return PrescriptionFactory.deployed().then(function(instance){

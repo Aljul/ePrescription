@@ -28,3 +28,6 @@ exports.seed = function(knex, Promise) {
     console.log("doctors seeded");
   });
 };
+
+
+0XCB721D25A65DBB70C76FAFBA978B46AC20685C6CA9E496D1645A21AE87B3682D
