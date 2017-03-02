@@ -6,10 +6,16 @@
   </head>
   <body class="index">
     <% include ./partials/_nav %>
+        <a href="/prescriptions/new"> Create a new prescription </a>
     <div class="container">
       <div>
         prescriptions
+
         <%= JSON.stringify(rxHeaders) %>
+
+        <a href="/prescriptions/1"> test link to presc 1 </a>
+
+
       </div>
     </div>
   </body>
