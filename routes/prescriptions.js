@@ -54,6 +54,49 @@ module.exports = (knex) => {
       }
     }
 
+  dbHelpers.getDoctorKeys(req.user.id)
+  .then((keys) => {
+
+    let prescriptionData = {
+      drugName: req.body.drugName,
+      quantity:  req.body.quantity,
+      measurement: req.body.measurement,
+      frequency: req.body.frequency,
+      note: req.body.note,
+      patientPublicKey: req.body.patientPublicKey
+    }
+
+
+
+    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "tedewst")
+    })
+    .then((result) => {
+      var address = eth_connect.getTransactionReceipt(result)
+      return eth_connect.printPrescription(address.logs[0].address)
+    })
+    .then((printedRx) => {
+      console.log(printedRx)
+      return printedRx
+    })
+    .catch((err) => {
+      console.log(err, "this is it")
+      return res.send("you messed up")
+   })
+    .then(() => {
+
+    return res.send("post to prescriptions/new worked");
+    })
+
+
+
+  });
+
+  return router;
+}
+
+
+
+
 // // Add the prescription to our database
 //     dbHelpers.createFullRx(req.user, req.body)
 //     .then(console.log)
@@ -74,40 +117,13 @@ module.exports = (knex) => {
 
 // Add the prescription to the blockchain
 // console.log(JSON.stringify(req.body))
-  return dbHelpers.getDoctorKeys(req.user.id)
-  .then((keys) => {
-    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "tedewst")
-  }).then((result) => {
-    console.log("the ressult is", result)
-  var address = eth_connect.getTransactionReceipt(result)
-  console.log(address)
-  console.log(address.logs[0].address)
-  return eth_connect.printPrescription(address.logs[0].address)
-  })
-  .then(console.log)
-  .catch((err) => {console.log(err)})
+
 
 //RETRIVE ALL PRESCRIPTIONS LINKED OT A PATIENT
 
   // console.log(address)
   // eth_connect.printPrescription("0x3d90d98b5903e07b499312a7817cfa5d7b931f37")
   // .then(console.log)
-
-
-eth_connect.retrieveLatestPrescriptionAddress("0x6f46cf5569aefa1acc1009290c8e043747172d89", "0xe6be9892c9d39bbe3d29daa12da80420c20649fe")
-
-
-    res.send("post to prescriptions/new worked");
-  });
-
-  return router;
-}
-
-
-
-
-
-
 
     // let drugName = req.body.drugName;
     // let Rx = {

@@ -26,7 +26,7 @@ module.exports = {
 
   } catch(err) {
     console.log("Error:", err.message)
-    return "Something went wrong with the decryption. Are you sure you have the correct secret?"
+    throw "Something went wrong with the decryption. Are you sure you have the correct secret?"
   }
 
   console.log(decrypted);

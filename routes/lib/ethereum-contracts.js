@@ -51,38 +51,33 @@ module.exports = {
     })
    },
 
-   publishPrescriptionSIGNED: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
-    // console.log(web3.eth)
-//     web3.eth.sendTransaction({to: "0xe6be9892c9d39bbe3d29daa12da80420c20649fe", value: "1000000000000000000"},  function(err, address) {
-//   if (!err)
-//     console.log(address); // "0x7f9fade1c0d57a7af66ab4ead7c2eb7b11a91385"
-// })
-    // const decoded = encryption.decipher('1234', doctorKeys.priv_key)
-    // console.log(decoded)
-    // const privateKey = Buffer.from(decoded, 'hex')
-    // console.log(doctorKeys.public_key)
-    const privateKey = Buffer.from("d126806aea8c43173a50854d0f35c09f738d68a86fa9e877e0f982cc4c774304", "hex")
-    // console.log(privateKey)
+  publishPrescriptionSIGNED: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
+
+    const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
+
+    console.log(decoded)
+    const privateKey = Buffer.from(decoded, 'hex')
+
     return PrescriptionFactory.deployed().then((instance) => {
       let contractInstance = instance;
-    return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {gas: GAS})
-    }).then((data) => {
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {gas: GAS})
+      })
+      .then((data) => {
       console.log(data.params[0])
       var rawTx = data.params[0];
-
       var tx = new EthereumTx(rawTx);
       tx.sign(privateKey);
-      console.log(tx.verifySignature());
       var serializedTx = tx.serialize();
-      console.log(serializedTx)
-      // EthereumTx.verifySignature(serializedTx)
       return web3.eth.sendRawTransaction(serializedTx.toString("hex"))
-    })
-    .then((result) => {
+      })
+      .then((result) => {
       console.log("this is the result",result)
       return result;
+      })
+      .catch((err) => {
+      console.log(err)
+      return err;
     })
-    .catch((err) => {console.log(err)})
    //  // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
    // return PrescriptionFactory.deployed().then(function(instance){
    //  var contractInstance = instance;
