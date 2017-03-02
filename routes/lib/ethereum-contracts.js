@@ -15,7 +15,7 @@ web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 40000
+const GAS = 4000000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
@@ -32,14 +32,14 @@ module.exports = {
   },
 
   publishPrescription: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
-    PrescriptionFactory.deployed().then((instance) => {
-    console.log(instance.createPrescription.request(prescriptionName, prescriptionData, patientAddress))
+     PrescriptionFactory.deployed().then((instance) => {
+    // console.log(instance.createPrescription.request(prescriptionName, prescriptionData, patientAddress))
     })
    return PrescriptionFactory.deployed().then(function(instance){
     var contractInstance = instance;
-    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
+    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS})
    }).then((message) => {
-    // console.log(message)
+    console.log(message)
     if(message.logs.length == 0){
       throw 'Something went wrong when creating the prescription';
     }
@@ -60,30 +60,29 @@ module.exports = {
     // const decoded = encryption.decipher('1234', doctorKeys.priv_key)
     // console.log(decoded)
     // const privateKey = Buffer.from(decoded, 'hex')
-    console.log(doctorKeys.public_key)
+    // console.log(doctorKeys.public_key)
     const privateKey = Buffer.from("d126806aea8c43173a50854d0f35c09f738d68a86fa9e877e0f982cc4c774304", "hex")
-    console.log(privateKey)
-    PrescriptionFactory.deployed().then((instance) => {
+    // console.log(privateKey)
+    return PrescriptionFactory.deployed().then((instance) => {
       let contractInstance = instance;
-    return instance.createPrescription.request(prescriptionName, prescriptionData, patientAddress)
+    return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress)
     }).then((data) => {
-      console.log(data.params[0].data)
-      var rawTx = {
-        from: doctorKeys.public_key,
-        to: '0x0000000000000000000000000000000000000000',
-        nonce: '0x00',
-        gasPrice: '0x09184e72a000',
-        gasLimit: web3.toHex(GAS),
-        value: '0x00',
-        data: data.params[0].data
-      }
+      console.log(data.params[0])
+      var rawTx = data.params[0];
 
-      var tx = new EthereumTx(rawTx);
+      var tx = new EthereumTx(rawTx.toString("hex"));
       tx.sign(privateKey);
+      console.log(tx.verifySignature());
       var serializedTx = tx.serialize();
-      return web3.eth.sendRawTransaction(serializedTx.toString('hex'))
-    }).then((result) => {console.log("this is the result",result)})
-      .catch((err) => {console.log(err)})
+      console.log(serializedTx)
+      // EthereumTx.verifySignature(serializedTx)
+      return web3.eth.sendRawTransaction(serializedTx)
+    })
+    .then((result) => {
+      console.log("this is the result",result)
+      return result;
+    })
+    .catch((err) => {console.log(err)})
    //  // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
    // return PrescriptionFactory.deployed().then(function(instance){
    //  var contractInstance = instance;
@@ -120,7 +119,7 @@ module.exports = {
     var contractInstance = instance;
     return contractInstance.getLatestPrescriptionForPatient(patientAddress, {from: doctorAddress})
    }).then((message) => {
-    // console.log(message)
+    console.log(message)
     return message
    }).catch((err) => {
     // console.log(err)
@@ -128,6 +127,9 @@ module.exports = {
     })
   },
 
+  getTransactionReceipt: function(txHash){
+    return web3.eth.getTransactionReceipt(txHash)
+  },
 
   getPrescriptionData: function(prescriptionAddress){
     return Prescription.at(prescriptionAddress).then(function(instance){

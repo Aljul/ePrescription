@@ -62,14 +62,38 @@ module.exports = (knex) => {
 //       return err
 //     })
 
+// dbHelpers.getDoctorKeys(req.user.id)
+//   .then((keys) => {
+// return eth_connect.publishPrescription(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "tedewst")
+// })
+// .then((address) => {
+//   console.log("the address is:",address)
+//   return eth_connect.printPrescription(address)
+// })
+// .then(console.log)
+
 // Add the prescription to the blockchain
-console.log(JSON.stringify(req.body))
-  dbHelpers.getDoctorKeys(req.user.id)
+// console.log(JSON.stringify(req.body))
+  return dbHelpers.getDoctorKeys(req.user.id)
   .then((keys) => {
-    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "test")
-  }).then(console.log)
+    return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "tedewst")
+  }).then((result) => {
+    console.log("the ressult is", result)
+  var address = eth_connect.getTransactionReceipt(result)
+  console.log(address)
+  return eth_connect.printPrescription(address.contractAddress)
+  })
+  .then(console.log)
+  .catch((err) => {console.log(err)})
+
+//RETRIVE ALL PRESCRIPTIONS LINKED OT A PATIENT
+
+  // console.log(address)
+  // eth_connect.printPrescription("0x3d90d98b5903e07b499312a7817cfa5d7b931f37")
+  // .then(console.log)
 
 
+eth_connect.retrieveLatestPrescriptionAddress("0x6f46cf5569aefa1acc1009290c8e043747172d89", "0xe6be9892c9d39bbe3d29daa12da80420c20649fe")
 
 
     res.send("post to prescriptions/new worked");
