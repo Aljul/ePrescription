@@ -27,8 +27,11 @@ module.exports = (knex) => {
     let user_id = req.user.id;
 
     // in testing
-    console.log(dbHelpers.rxObjectBuilder(rx_id));
+    dbHelpers.rxObjectBuilder(rx_id).then((rxObject) => {
+      console.log(rxObject);
+    });
     res.render("prescription_details", { user: req.user });
+
 
     // if (rx_id === "mostrecent") {
     //   dbHelpers.getMostRecentRxId(user_id).then((result) => {
