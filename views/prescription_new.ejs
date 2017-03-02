@@ -4,7 +4,7 @@
   <body class="index">
     <% include ./partials/_nav %>
     <div class="container">
-      <h3> Create an account </h3>
+      <h3> Create a Prescription </h3>
       <form action="/prescriptions/new" method="POST">
         Drug Name:
         <input type="text" name="drugName" placeholder="Drug Name" value = "Nexium">
@@ -38,7 +38,7 @@
         <br>
         Patient's Address:
         <input id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Click me to read qr code</button>
+        <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">Click me to read qr code</button>
         <br>
         <br>
         Enter you professional Password:
