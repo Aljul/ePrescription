@@ -13,9 +13,11 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    // if session id correspond a doctor
-    res.render("prescriptions", { user: req.user });
-    // else redirect login
+    let user_id = req.user.id;
+    // if user isn't doctor
+    dbHelpers.getUserRxHeadersList(user_id).then((rxHeadersArray) => {
+      res.render("prescriptions", { user: req.user, rxHeaders: rxHeadersArray });
+    });
   });
 
   router.get("/new", (req, res) => {

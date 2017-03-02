@@ -122,7 +122,8 @@ module.exports = function makeDbHelpers(knex) {
       });
     },
 
-    // Returns a promise of an object containing view-friendly data about a prescription
+    // Assembling rxObjectHeaderBuilder and rxObjectDetailsBuilder loop results.
+    // Returns a promise of an object containing view-friendly data about a prescription.
     rxObjectBuilder: function(rx_id) {
       return this.rxObjectHeaderBuilder(rx_id).then((rxObject) => {
         return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
@@ -143,10 +144,30 @@ module.exports = function makeDbHelpers(knex) {
       });
     },
 
-    // Return all the prescriptions received by a user
-    getUserRxList: function(user_id) {
+    // Returns all the prescriptions ids received by a user
+    getUserRxIds: function(user_id) {
       return knex
-      .select()
+      .select("id")
+      .from("prescriptions")
+      .where("user_id", user_id)
+      .then((result) => {
+        return result;
+      });
+    },
+
+    // Returns array of all prescriptions headers (objects) received by a user
+    getUserRxHeadersList: function(user_id) {
+      return this.getUserRxIds(user_id).then((result) => {
+        // Building promises array to execute a loop with promise(s) within.
+        var promises = [];
+        for (let i = 0; i <= result.length - 1; i++) {
+          var p = this.rxObjectHeaderBuilder(result[i].id);
+          promises.push(p);
+        }
+        return Promise.all(promises).then((rxHeadersArray) => {
+          return rxHeadersArray
+        });
+      });
     },
 
     // Build user cookie with his info upon login
