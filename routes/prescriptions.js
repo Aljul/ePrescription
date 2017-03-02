@@ -46,6 +46,8 @@ module.exports = (knex) => {
   //  ***** POST routes *****
 
   router.post("/new", (req, res) => {
+    let prescription_id;
+
     if(!req.user.isDoctor){
       return res.send('Not a doctor, you cannot do this');
     }
@@ -56,6 +58,17 @@ module.exports = (knex) => {
       }
     }
 
+// Add the prescription to our database
+    dbHelpers.createFullRx(req.user, req.body)
+    .then((prescriptionId) => {
+      prescription_id = prescriptionId;
+    })
+    .catch((err) => {
+      console.log("There was an error while adding the prescription to the DB:", err);
+      return err
+    })
+
+// Add the prescription to the blockchain
   dbHelpers.getDoctorKeys(req.user.id)
   .then((keys) => {
 
@@ -84,7 +97,8 @@ module.exports = (knex) => {
    })
     .then(() => {
 
-    return res.send("post to prescriptions/new worked");
+      return res.redirect(`${prescription_id}`)
+    // return res.send("post to prescriptions/new worked");
     })
 
 
@@ -97,13 +111,6 @@ module.exports = (knex) => {
 
 
 
-// // Add the prescription to our database
-//     dbHelpers.createFullRx(req.user, req.body)
-//     .then(console.log)
-//     .catch((err) => {
-//       console.log("There was an error while adding the prescription to the DB:", err);
-//       return err
-//     })
 
 // dbHelpers.getDoctorKeys(req.user.id)
 //   .then((keys) => {

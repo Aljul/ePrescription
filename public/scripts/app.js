@@ -25,4 +25,11 @@ console.log('clicked')
   );
 
 })
+
+
+$('#myModal').on('hide.bs.modal', function () {
+  $('#reader').html5_qrcode_stop();
+  $('#reader').empty()
+    console.log('Fired at start of hide event!');
+});
   });

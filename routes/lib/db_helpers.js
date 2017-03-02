@@ -327,6 +327,8 @@ module.exports = function makeDbHelpers(knex) {
         Rx["drug_id"] = drug_id;
         console.log(Rx);
         return this.createRxDetails(Rx);
+      }).then(() => {
+        return prescriptionId;
       })
     }
   }
