@@ -33,3 +33,4 @@ $('#myModal').on('hide.bs.modal', function () {
     console.log('Fired at start of hide event!');
 });
   });
+

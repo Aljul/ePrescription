@@ -131,7 +131,8 @@ module.exports = function makeDbHelpers(knex) {
         rxDetailsObject.quantity = rxDetails.quantity
         rxDetailsObject.measurement = rxDetails.measurement
         rxDetailsObject.frequency = rxDetails.frequency
-        rxDetailsObject.note = rxDetails.note
+        rxDetailsObject.note = rxDetails.note,
+        rxDetailsObject.rx_address = rxDetails.rx_address
         return rxDetailsObject
       });
     },
@@ -309,7 +310,8 @@ module.exports = function makeDbHelpers(knex) {
         quantity: body.quantity,
         measurement: body.measurement,
         frequency: body.frequency,
-        note: body.note
+        note: body.note,
+        rx_address: body.rx_address
       }
       let patient_id;
       let prescriptionId;

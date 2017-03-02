@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<% var prescription = rxObject%>
 <html lang="en" id="index">
+<% include ./partials/_header %>
   <head>
     <title>ePrescription</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,5 +15,17 @@
         <!-- This is where the QR code generator will be. It will be both for the SECRET and the CONTRACT ADDRESS. think about caching the address of the contract, not the secret-->
       </div>
     </div>
+
+<div id="rx_address"><%= rxObject.rxDetails[0].rx_address%></div>
+<section id="create_qr_code2">
+  <div id="qrcode" style="float: right"></div>
+
+
+<script type="text/javascript">
+console.log(document.getElementById("rx_address").innerHTML)
+new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+</script>
+
+
   </body>
 </html>
