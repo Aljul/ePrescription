@@ -51,7 +51,11 @@ module.exports = (knex) => {
           } else { res.send("passwords do not match") }
         } else { res.send("email already exists") }
       });
-    } else { res.send(`missing the following fields ${emptyKeys}`) }
+    } else {
+      req.flash('errors', emptyKeys)
+      console.log(req.flash())
+      res.redirect('/register')
+       }
   });
 
   return router;

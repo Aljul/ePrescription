@@ -30,7 +30,7 @@ module.exports = (knex) => {
 
   router.get("/register", (req, res) => {
     if (!req.session["user"]) {
-      res.render("register", { user: req.user });
+      res.render("register", { user: req.user, errors: undefined});
     } else { res.redirect("/"); }
   });
 

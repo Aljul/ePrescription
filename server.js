@@ -10,6 +10,7 @@ const knex          = require("knex")(knexConfig[ENV]);
 const cookieSession = require("cookie-session");
 const bodyParser    = require("body-parser");
 const bcrypt        = require("bcrypt");
+var flash           = require('connect-flash');
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");
@@ -28,6 +29,7 @@ app.use(cookieSession({
 }));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(flash());
 
 app.use(express.static("public"));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
