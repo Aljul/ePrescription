@@ -21,8 +21,6 @@ PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
 AbstractPrescriptionFactory.setProvider(provider);
 
-const privateKey = Buffer.from('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
-
 
 module.exports = {
 
@@ -34,10 +32,11 @@ module.exports = {
    return seed.createPrescriptions(web3, PrescriptionFactory, Prescription);
   },
 
-  publishPrescription: function(patientAddress, doctorAddress, prescriptionData, prescriptionName){
+  publishPrescription: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
+    // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
    return PrescriptionFactory.deployed().then(function(instance){
     var contractInstance = instance;
-    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS})
+    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
    }).then((message) => {
     // console.log(message)
     if(message.logs.length == 0){
@@ -53,6 +52,7 @@ module.exports = {
 
   retrieveAllPrescriptionAddresses: function(patientAddress, doctorAddress){
     return PrescriptionFactory.deployed().then(function(instance){
+      console.log(instance)
     var contractInstance = instance;
     return contractInstance.getAllPrescriptionsForPatient(patientAddress, {from: doctorAddress})
    }).then((message) => {

@@ -11,7 +11,7 @@ exports.seed = function(knex, Promise) {
       speciality: "Family Medicine",
       permit_number: "11111",
       permit_registration_date: "2017-02-23",
-      public_key: "0x9bbf0c0522ce98017fa13fc8b53bad29185b64db",
+      public_key: "0xe6be9892c9d39bbe3d29daa12da80420c20649fe",
       priv_key: priv1,
       status: "Registered - Active"
     },
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
       speciality: "Internal Medicine Medicine",
       permit_number: "22222",
       permit_registration_date: "2017-02-23",
-      public_key: "0x3bdca715378717da627a28d263303afde8c4e2fd",
+      public_key: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8",
       priv_key: priv2,
       status: "Registered - Active"
     }

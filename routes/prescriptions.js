@@ -1,5 +1,6 @@
 "use strict";
 
+
 const express = require('express');
 const router  = express.Router();
 const eth_connect = require('./lib/ethereum-contracts.js');
@@ -65,8 +66,8 @@ module.exports = (knex) => {
 // Add the prescription to the blockchain
 console.log(JSON.stringify(req.body))
   dbHelpers.getDoctorKeys(req.user.id)
-  .then((keys) =>{
-    // return eth_connect.publishPrescription(req.body.patientPublicKey, docPubKey, JSON.stringify(req.body), "test")
+  .then((keys) => {
+    return eth_connect.publishPrescription(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "test")
   }).then(console.log)
 
 
