@@ -8,8 +8,8 @@
     <% include ./partials/_nav %>
     <div class="container">
       <div>
-        Prescription details for id = <%= prescription_id %>
-
+        Prescription details
+        <%= JSON.stringify(rxObject) %>
         <!-- This is where the QR code generator will be. It will be both for the SECRET and the CONTRACT ADDRESS. think about caching the address of the contract, not the secret-->
       </div>
     </div>

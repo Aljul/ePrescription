@@ -23,21 +23,20 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
-    //check if :id === "mostRecent" and if so, render prescription_id: mostRecentRx() ou dekoi de mm
-    //2e function qui get les details de la prescription qu'on lui pousse l'id en parametre ?
-    //  genre result de mostRecentRx pour l'id dans getRxDetails(rx_id) pour populer la view?
-    let id_param = req.params.id;
+    let rx_id = req.params.id;
     let user_id = req.user.id;
-    let prescription_id;
-    if (id_param === "mostrecent") {
-      dbHelpers.mostRecentRxId(user_id, (queryResult, err) => {
-        if (err) { return res.send(err) }
-        prescription_id = queryResult.id;
-        res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
-      });
+    if (rx_id === "mostrecent") {
+      dbHelpers.getMostRecentRxId(user_id).then((result) => {
+        if (result[0].id) {
+          dbHelpers.rxObjectBuilder(result[0].id).then((rxObject) => {
+            res.render("prescription_details", { user: req.user, rxObject: rxObject });
+          });
+        } else { res.send("You currently have no prescriptions") }
+      })
     } else {
-      prescription_id = id_param
-      res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
+      dbHelpers.rxObjectBuilder(rx_id).then((rxObject) => {
+        res.render("prescription_details", { user: req.user, rxObject: rxObject });
+      });
     }
   });
 
@@ -68,6 +67,7 @@ console.log(JSON.stringify(req.body))
   .then((keys) => {
     return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "test")
   }).then(console.log)
+  // eth_connect.publishPrescription(req.body.patientPublicKey, req.user.)
 
 
 

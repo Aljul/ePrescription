@@ -14,23 +14,132 @@ module.exports = function makeDbHelpers(knex) {
     },
 
     // Get most recent prescription for user_id
-    mostRecentRxId: function(user_id, callback) {
+    getMostRecentRxId: function(user_id) {
       return knex("prescriptions")
       .max("id as id")
       .where("user_id", user_id)
+    },
+
+    // Return prescription by prescriptions.id
+    getRxById: function(rx_id) {
+      return knex("prescriptions")
+      .where("id", rx_id)
       .then((result) => {
-        result[0] ? callback(result[0], null) : callback(null, "You currenly have no prescription");
+        if(result.length === 0){
+          throw "There's no prescription with this id"
+        }
+        return result[0];
+      })
+      .catch((err) => {
+        throw err;
+      })
+    },
+
+    // Get prescription_details for prescriptions.id = rx_id
+    getRxDetailsById: function(rx_id) {
+      return knex("prescription_details")
+      .where("prescription_id", rx_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "There's no prescription details with this id"
+        }
+        return result;
+      })
+      .catch((err) => {
+        throw err;
+      })
+    },
+
+    // Get fist and last name of a user corresponding to user_id
+    getUserNameById: function(user_id) {
+      return knex
+      .select("first_name", "last_name")
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, user not found"
+        }
+        return result[0];
+      })
+    },
+
+    // Get name (in users table) of the doctor with corresponding doctor_id
+    getDoctorNameById: function(doctor_id) {
+      return knex
+      .select("user_id")
+      .from("doctors")
+      .where("id", doctor_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, doctor not found"
+        }
+        return this.getUserNameById(result[0].user_id)
+      })
+    },
+
+    // Return name of drug assigned to id
+    getDrugNameById: function(drug_id){
+      return knex
+      .select("name")
+      .from("drugs")
+      .where("id", drug_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, drug not found"
+        }
+        return result[0];
+      })
+    },
+
+    // Returns an object with view ready prescription_details
+    rxObjectDetailsBuilder: function (rxDetails) {
+      let rxDetailsObject = {};
+      return this.getDrugNameById(rxDetails["drug_id"]).then((getDrugNameByIdResult) => {
+        rxDetailsObject.drugName = getDrugNameByIdResult["name"];
+      }).then(() => {
+        rxDetailsObject.quantity = rxDetails.quantity
+        rxDetailsObject.measurement = rxDetails.measurement
+        rxDetailsObject.frequency = rxDetails.frequency
+        rxDetailsObject.note = rxDetails.note
+        return rxDetailsObject
       });
     },
 
-    rxDetails: function(id) {
-      //return prescription and it's details for specific id(arg)
+    // Returns a promise of an object containing view-friendly data about a prescription
+    rxObjectBuilder: function(rx_id) {
+      let rxObject = {};
+      return this.getRxById(rx_id).then((getRxByIdResult) => {
+        rxObject.status = getRxByIdResult["status"];
+        rxObject.createdAt = getRxByIdResult["created_at"];
+        return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
+          rxObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+          return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
+            rxObject.patientName = `${getUserNameByIdResult["first_name"]} ${getUserNameByIdResult["last_name"]}`;
+            return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
+              // Building promises array to execute a loop with promise(s) within.
+              var promises = [];
+              for (let i = 0; i <= getRxDetailsByIdResult.length - 1; i++) {
+                var p = this.rxObjectDetailsBuilder(getRxDetailsByIdResult[i]);
+                promises.push(p);
+              }
+              return Promise.all(promises).then((rxDetailsObject) => {
+                // Assigning array of rxDetailsObject(s) to key
+                rxObject.rxDetails = rxDetailsObject;
+                return rxObject
+              });
+            }).catch((err) => {
+              console.log(err);
+            });
+          });
+        });
+      });
     },
 
     // Build user cookie with his info upon login
     logIn: function(email, password, callback) {
       return knex
-      .select("id", "password_digest", "first_name", "last_name", "isDoctor", "public_key")
+      .select("id", "password_digest", "first_name", "last_name", "isDoctor")
       .from("users")
       .where("email", email)
       .then((result) => {
@@ -135,8 +244,8 @@ module.exports = function makeDbHelpers(knex) {
     },
 
     createFullRx: function(user, body){
-      // console.log(user)
-      // console.log(body)
+      console.log(user)
+      console.log(body)
       let Rx = {
         quantity: body.quantity,
         measurement: body.measurement,
@@ -157,10 +266,9 @@ module.exports = function makeDbHelpers(knex) {
       .then((drug_id) => {
         Rx["prescription_id"] = prescriptionId;
         Rx["drug_id"] = drug_id;
-        // console.log(Rx);
+        console.log(Rx);
         return this.createRxDetails(Rx);
       })
     }
   }
 }
-
