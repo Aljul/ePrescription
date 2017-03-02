@@ -65,18 +65,18 @@ module.exports = {
     // console.log(privateKey)
     return PrescriptionFactory.deployed().then((instance) => {
       let contractInstance = instance;
-    return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress)
+    return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {gas: GAS})
     }).then((data) => {
       console.log(data.params[0])
       var rawTx = data.params[0];
 
-      var tx = new EthereumTx(rawTx.toString("hex"));
+      var tx = new EthereumTx(rawTx);
       tx.sign(privateKey);
       console.log(tx.verifySignature());
       var serializedTx = tx.serialize();
       console.log(serializedTx)
       // EthereumTx.verifySignature(serializedTx)
-      return web3.eth.sendRawTransaction(serializedTx)
+      return web3.eth.sendRawTransaction(serializedTx.toString("hex"))
     })
     .then((result) => {
       console.log("this is the result",result)
