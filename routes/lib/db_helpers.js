@@ -64,8 +64,22 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Get users.id of the doctor corresponding to doctor_id
+    getUserIdByDoctorId: function(doctor_id) {
+      return knex
+      .select("user_id")
+      .from("doctors")
+      .where("id", doctor_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, doctor not found"
+        }
+        return result[0].id
+      })
+    },
+
     // Get name (in users table) of the doctor with corresponding doctor_id
-    getDoctorNameById: function(doctor_id) {
+    getDoctorNameByDoctorId: function(doctor_id) {
       return knex
       .select("user_id")
       .from("doctors")
@@ -98,8 +112,8 @@ module.exports = function makeDbHelpers(knex) {
       return this.getRxById(rx_id).then((getRxByIdResult) => {
         rxHeaderObject.status = getRxByIdResult["status"];
         rxHeaderObject.createdAt = getRxByIdResult["created_at"];
-        return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
-          rxHeaderObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+        return this.getDoctorNameByDoctorId(getRxByIdResult["doctor_id"]).then((getDoctorNameByDoctorIdResult) => {
+          rxHeaderObject.doctorName = `${getDoctorNameByDoctorIdResult["first_name"]} ${getDoctorNameByDoctorIdResult["last_name"]}`;
           return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
             rxHeaderObject.patientName = `${getUserNameByIdResult["first_name"]} ${getUserNameByIdResult["last_name"]}`;
             return rxHeaderObject
@@ -144,20 +158,31 @@ module.exports = function makeDbHelpers(knex) {
       });
     },
 
-    // Returns all the prescriptions ids received by a user
-    getUserRxIds: function(user_id) {
-      return knex
-      .select("id")
-      .from("prescriptions")
-      .where("user_id", user_id)
-      .then((result) => {
-        return result;
-      });
+    // Returns all the prescriptions ids written by a doctor (doctorBoolean === true)
+    // Or returns all the prescriptions ids received by a user (doctorBoolean === false)
+    getUserRxIds: function(user_id, doctorBoolean) {
+      if (doctorBoolean === true) {
+        return knex
+        .select("id")
+        .from("prescriptions")
+        .where("doctor_id", user_id)
+        .then((result) => {
+          return result;
+        });
+      } else {
+        return knex
+        .select("id")
+        .from("prescriptions")
+        .where("user_id", user_id)
+        .then((result) => {
+          return result;
+        });
+      }
     },
 
-    // Returns array of all prescriptions headers (objects) received by a user
-    getUserRxHeadersList: function(user_id) {
-      return this.getUserRxIds(user_id).then((result) => {
+    // Returns array of all prescriptions headers (objects) of a user
+    getUserRxHeadersList: function(user_id, doctorBoolean) {
+      return this.getUserRxIds(user_id, doctorBoolean).then((result) => {
         // Building promises array to execute a loop with promise(s) within.
         var promises = [];
         for (let i = 0; i <= result.length - 1; i++) {
