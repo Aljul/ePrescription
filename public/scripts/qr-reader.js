@@ -4,6 +4,10 @@
       $('#read').html(data);
       $('#reader').html("Found the data!");
       $('#reader').html5_qrcode_stop();
+      // console.log(($('#public_key')))
+      var pub_key = data.replace(/bitcoin:/gi, "")
+      $('#public_key').val(pub_key);
+      $('#myModal').modal('toggle');
 
     },
     function(error){

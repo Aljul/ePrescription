@@ -37,8 +37,8 @@
         <br>
         <br>
         Patient's Address:
-        <input type="text" name="patientPublicKey" placeholder="Patient's Address" value = "0x6f46cf5569aefa1acc1009290c8e043747172d89">
-        <button id="qr-code-reader"> Click me to read qr code </button>
+        <input id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Click me to read qr code</button>
         <br>
         <br>
         Enter you professional Password:
@@ -49,5 +49,13 @@
 
 
       <!-- THIS IS WHERE THE DOCTOR WILL NEED TO SCAN THE PATIENT's ADDRESS AS A QR CODE -->
+
+
+
+      <% include ./partials/_qr-code-reader-modal %>
+
+
+
+
   </body>
 </html>
