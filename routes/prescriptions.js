@@ -25,43 +25,21 @@ module.exports = (knex) => {
 
     let rx_id = req.params.id;
     let user_id = req.user.id;
-    let prescription_id;
 
-    //*** TEST ****
-    dbHelpers.getRxById(rx_id).then((result) => {
-      console.log("getRxById fct :");
-      console.log(result);
-    });
-    dbHelpers.getRxDetailsById(rx_id).then((result) => {
-      console.log("getRxDetailsById fct :");
-      console.log(result);
-    });
-    dbHelpers.getDrugNameById(3).then((result) => {
-      console.log("getDrugNameById fct :");
-      console.log(result);
-    });
-    dbHelpers.getUserNameById(user_id).then((result) => {
-      console.log("getUserNameById fct :");
-      console.log(result);
-    });
-    dbHelpers.getDoctorNameById(1).then((result) => {
-      console.log("getUserNameById fct :");
-      console.log(result);
-    });
+    // in testing
+    console.log(dbHelpers.rxObjectBuilder(rx_id));
     res.render("prescription_details", { user: req.user });
-    //*** END TEST ***
 
     // if (rx_id === "mostrecent") {
     //   dbHelpers.getMostRecentRxId(user_id).then((result) => {
     //     if (result[0].id) {
-    //       //passer result[0].id dans getFullRx()
+    //       //passer result[0].id dans rxObjectBuilder()
     //     } else { res.send("You currently have no prescriptions") }
     //   })
-    //   res.render("prescription_details", { user: req.user });
+    //   res.render("prescription_details", { user: req.user, rxObject: rxObject });
     // } else {
-    //   prescription_id = rx_id
-    //   passer rx_id a getFullRx()
-    //   res.render("prescription_details", { user: req.user });
+    //   passer rx_id a rxObjectBuilder()
+    //   res.render("prescription_details", { user: req.user, rxObject: rxObject });
     // }
   });
 

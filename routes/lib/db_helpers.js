@@ -28,7 +28,7 @@ module.exports = function makeDbHelpers(knex) {
         if(result.length === 0){
           throw "There's no prescription with this id"
         }
-        return result;
+        return result[0];
       })
       .catch((err) => {
         throw err;
@@ -60,7 +60,7 @@ module.exports = function makeDbHelpers(knex) {
         if(result.length === 0){
           throw "Error, user not found"
         }
-        return result;
+        return result[0];
       })
     },
 
@@ -88,12 +88,48 @@ module.exports = function makeDbHelpers(knex) {
         if(result.length === 0){
           throw "Error, drug not found"
         }
-        return result;
+        return result[0];
       })
     },
 
-    getFullRx: function(rx_id) {
-      // need user first_name and last_name
+    // Returns object with user-friendly data about a prescription
+    rxObjectBuilder: function(rx_id) {
+      let rxObject = {};
+      return this.getRxById(rx_id).then((getRxByIdResult) => {
+        rxObject.status = getRxByIdResult["status"];
+        rxObject.createdAt = getRxByIdResult["created_at"];
+        return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
+          rxObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+          return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
+            rxObject.patientName = `${getUserNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+            return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
+              console.log(getRxDetailsByIdResult);
+              // for object in getRxDetailsByIdResult array.
+              //  I want to this.getDrugNameById(druge_id) and add it to an object
+              //  I also want to add quantity, measurement, frequency and note to that object
+              // All of these objects (if more than one) would be pushed in to rxObject.rxdetails (an array).
+              // I would then return rxObject ready to be fed to my view in prescriptions.js (get prescriptions/:id)
+              rxObject.rxDetails = [];
+              for (object of getRxDetailsByIdResult) {
+                this.getDrugNameById(object["drug_id"]).then((getDrugNameByIdResult) => {
+                  return rxObject.rxDetails.push(getDrugNameByIdResult["name"]);
+                });
+              }
+              console.log(rxObject);
+            });
+          });
+        });
+      }).catch((err) => {
+        console.log(err);
+      });
+      /*
+      rxObject = {
+        doctorName:
+        patientName:
+        rxStatus:
+        rxCreatedAt:
+      }
+      */
     },
 
     // Build user cookie with his info upon login
