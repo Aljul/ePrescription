@@ -28,14 +28,14 @@ module.exports = (knex) => {
     if (rx_id === "mostrecent") {
       dbHelpers.getMostRecentRxId(user_id).then((result) => {
         if (result[0].id) {
-          dbHelpers.rxObjectBuilder(result[0].id).then((rxObject) => {
-            res.render("prescription_details", { user: req.user, rxObject: rxObject });
+          dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
+            res.render("prescription_details", { user: req.user, rxObject: result });
           });
         } else { res.send("You currently have no prescriptions") }
       })
     } else {
-      dbHelpers.rxObjectBuilder(rx_id).then((rxObject) => {
-        res.render("prescription_details", { user: req.user, rxObject: rxObject });
+      dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+        res.render("prescription_details", { user: req.user, rxObject: result });
       });
     }
   });

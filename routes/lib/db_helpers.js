@@ -92,6 +92,22 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Returns an object with view ready prescription header
+    rxObjectHeaderBuilder: function(rx_id) {
+      let rxHeaderObject = {};
+      return this.getRxById(rx_id).then((getRxByIdResult) => {
+        rxHeaderObject.status = getRxByIdResult["status"];
+        rxHeaderObject.createdAt = getRxByIdResult["created_at"];
+        return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
+          rxHeaderObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
+          return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
+            rxHeaderObject.patientName = `${getUserNameByIdResult["first_name"]} ${getUserNameByIdResult["last_name"]}`;
+            return rxHeaderObject
+          });
+        });
+      });
+    },
+
     // Returns an object with view ready prescription_details
     rxObjectDetailsBuilder: function (rxDetails) {
       let rxDetailsObject = {};
@@ -108,32 +124,29 @@ module.exports = function makeDbHelpers(knex) {
 
     // Returns a promise of an object containing view-friendly data about a prescription
     rxObjectBuilder: function(rx_id) {
-      let rxObject = {};
-      return this.getRxById(rx_id).then((getRxByIdResult) => {
-        rxObject.status = getRxByIdResult["status"];
-        rxObject.createdAt = getRxByIdResult["created_at"];
-        return this.getDoctorNameById(getRxByIdResult["doctor_id"]).then((getDoctorNameByIdResult) => {
-          rxObject.doctorName = `${getDoctorNameByIdResult["first_name"]} ${getDoctorNameByIdResult["last_name"]}`;
-          return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
-            rxObject.patientName = `${getUserNameByIdResult["first_name"]} ${getUserNameByIdResult["last_name"]}`;
-            return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
-              // Building promises array to execute a loop with promise(s) within.
-              var promises = [];
-              for (let i = 0; i <= getRxDetailsByIdResult.length - 1; i++) {
-                var p = this.rxObjectDetailsBuilder(getRxDetailsByIdResult[i]);
-                promises.push(p);
-              }
-              return Promise.all(promises).then((rxDetailsObject) => {
-                // Assigning array of rxDetailsObject(s) to key
-                rxObject.rxDetails = rxDetailsObject;
-                return rxObject
-              });
-            }).catch((err) => {
-              console.log(err);
-            });
+      return this.rxObjectHeaderBuilder(rx_id).then((rxObject) => {
+        return this.getRxDetailsById(rx_id).then((getRxDetailsByIdResult) => {
+          // Building promises array to execute a loop with promise(s) within.
+          var promises = [];
+          for (let i = 0; i <= getRxDetailsByIdResult.length - 1; i++) {
+            var p = this.rxObjectDetailsBuilder(getRxDetailsByIdResult[i]);
+            promises.push(p);
+          }
+          return Promise.all(promises).then((rxDetailsObject) => {
+            // Assigning array of rxDetailsObject(s) to key
+            rxObject.rxDetails = rxDetailsObject;
+            return rxObject
           });
+        }).catch((err) => {
+          return console.log(err);
         });
       });
+    },
+
+    // Return all the prescriptions received by a user
+    getUserRxList: function(user_id) {
+      return knex
+      .select()
     },
 
     // Build user cookie with his info upon login
