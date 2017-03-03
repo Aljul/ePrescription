@@ -1,0 +1,7 @@
+.list-group-item {
+  overflow: auto;
+}
+
+#prescriptions-header {
+  margin-bottom: 1em;
+}

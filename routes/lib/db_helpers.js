@@ -233,7 +233,7 @@ module.exports = function makeDbHelpers(knex) {
     // Or returns all the prescriptions ids received by a user (doctorBoolean === false)
     getUserRxIds: function(user_id, doctorBoolean) {
       if (doctorBoolean === true) {
-        this.getDoctorIdByUserId(user_id).then((doctor_id) => {
+        return this.getDoctorIdByUserId(user_id).then((doctor_id) => {
           return knex
           .select("id")
           .from("prescriptions")
