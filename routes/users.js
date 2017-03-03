@@ -52,8 +52,9 @@ module.exports = (knex) => {
         } else { res.send("email already exists") }
       });
     } else {
-      req.flash('errors', emptyKeys)
-      console.log(req.flash())
+      // console.log(req.flash("true", "true"))
+      console.log(req)
+      res.locals.messages = req.flash()
       res.redirect('/register')
        }
   });

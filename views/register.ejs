@@ -19,15 +19,15 @@
         <input type="submit"> Test submit for post to /users/new
       </form>
     </div>
-  <%= errors%>
+  <%= JSON.stringify(locals) %>
   <body class="index">
-  <% if (errors) {%>
+  <% if (error_messages) {%>
   <div class="errors">
   The following fields need to be filled:
   <ul>
-  <%for( var i = 0; i < errors.length; i++){%>
+  <%for( var i = 0; i < error_messages.length; i++){%>
     <li>
-    <%= errors[i] %>
+    <%= error_messages[i] %>
     </li>
   <%}%>
   </ul>
