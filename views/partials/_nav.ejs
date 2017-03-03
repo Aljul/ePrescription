@@ -1,23 +1,26 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav id="nav" class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">ePrescription</a>
+      <a id="nav-brand" class="navbar-brand" href="/">ePrescription</a>
+    </div>
+    <div id="navbar-div" class="navbar">
+      <ul id="navbar-pills" class="nav nav-pills">
       <% if (user) { %>
         <% if (user.isDoctor === true) { %>
-          <p> Doctor is true! </p>
-          <a href="/prescriptions/new"> New Prescription </a>
-          <a href="/users"> Patients </a>
-          <a href="/prescriptions"> Prescriptions </a>
-          <p> ^ This is a doctor </p>
+          <li><a href="/prescriptions/new">New Prescription</a></li>
+          <li><a href="/users">Patients</a></li>
+          <li><a href="/prescriptions">Prescriptions</a></li>
         <% } else { %>
-          <p> Doctor is false! </p>
-          <a href="/prescriptions/mostrecent"> Most Recent </a>
-          <a href="/users"> Doctors </a>
-          <a href="/prescriptions"> Prescriptions </a>
-          <p> ^ This is a regular user </p>
+          <li><a href="/prescriptions/mostrecent">Most Recent</a></li>
+          <li><a href="/users">Doctors</a></li>
+          <li><a href="/prescriptions">Prescriptions</a></li>
         <% } %>
-        <%= user.username %> | <a href="/logout"> Logout </a>
+        <ul class="nav nav-pills navbar-right">
+          <li><p class="nav navbar-text"><%= user.username %></p></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
       <% } %>
+      </ul>
     </div>
   </div>
 </nav>

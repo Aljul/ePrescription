@@ -3,16 +3,12 @@
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-        <a href="/prescriptions/new"> Create a new prescription </a>
     <div class="container">
       <div>
-        prescriptions
-
+        <% if (user.isDoctor === true) { %>
+          <a href="/prescriptions/new"> Create a new prescription </a>
+        <% } %>
         <%= JSON.stringify(rxHeaders) %>
-
-        <a href="/prescriptions/1"> test link to presc 1 </a>
-
-
       </div>
     </div>
   </body>

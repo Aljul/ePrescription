@@ -1,0 +1,14 @@
+#nav {
+  height: auto;
+}
+
+#nav > div {
+  height: 0;
+}
+#navbar-pills ul {
+  padding: 0em 1.0714em;
+}
+
+#navbar-pills li a {
+  padding-top: 1.1em;
+}
