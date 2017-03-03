@@ -22,7 +22,13 @@ module.exports = (knex) => {
   });
 
   router.get("/new", (req, res) => {
+    if(req.user.isDoctor){
     res.render("prescription_new", { user: req.user });
+    } else {
+      //give him an error message saying he is not a doctor and cannot create a new prescription
+      res.redirect('/prescriptions');
+    }
+
   });
 
   router.get("/:id", (req, res) => {
@@ -37,9 +43,15 @@ module.exports = (knex) => {
         } else { res.send("You currently have no prescriptions") }
       })
     } else {
-      dbHelpers.rxObjectBuilder(rx_id).then((result) => {
-        res.render("prescription_details", { user: req.user, rxObject: result });
-      });
+      dbHelpers.getPrescriptionById(rx_id).then( (rx) => {
+        if(user_id === rx[0].user_id || (req.user.isDoctor && user_id === rx[0].doctor_id)){
+          return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+            return res.render("prescription_details", { user: req.user, rxObject: {result} });
+          });
+        }
+        return res.send("You are not the patient nor the doctor that emmited this prescription")
+        })
+
     }
   });
 
