@@ -12,7 +12,11 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    res.render("users", { user: req.user });
+    dbHelpers.getAllPatientsForDoctor(req.user.id)
+    .then((result) => {
+      res.render("users", { user: req.user, prescriptions: result});
+    })
+
   });
 
   router.get("/:id", (req, res) => {

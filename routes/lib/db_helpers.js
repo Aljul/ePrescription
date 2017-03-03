@@ -35,6 +35,34 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    getAllRxWrittenByDoctor: function(doctor_id){
+      return knex
+      .select("prescription_id", "quantity", "measurement","frequency", "note", "drugs.name", "rx_address", "status", "first_name", "last_name")
+      .from("prescription_details")
+      .innerJoin("prescriptions", "prescriptions.id", "prescription_details.prescription_id")
+      .innerJoin("drugs", "drugs.id", "prescription_details.drug_id")
+      .innerJoin("users", "users.id", "prescriptions.user_id")
+      .where("prescriptions.doctor_id", doctor_id)
+      .then((result) => {
+        return result
+      })
+    },
+
+    getAllPatientsForDoctor: function(doctor_id){
+      return knex
+      .select("first_name", "last_name", "users.id")
+      .distinct("public_key")
+      .from("prescription_details")
+      .innerJoin("prescriptions", "prescriptions.id", "prescription_details.prescription_id")
+      .innerJoin("drugs", "drugs.id", "prescription_details.drug_id")
+      .innerJoin("users", "users.id", "prescriptions.user_id")
+      .where("prescriptions.doctor_id", doctor_id)
+      .then((result) => {
+        console.log(result)
+        return result
+      })
+    },
+
     // Get prescription_details for prescriptions.id = rx_id
     getRxDetailsById: function(rx_id) {
       return knex("prescription_details")
