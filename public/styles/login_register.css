@@ -20,3 +20,9 @@
   width: 100%;
   background-color: #71eeb8;
 }
+
+@media (max-width: 600px) {
+  #register-form-title {
+    margin: 0em 0em 1em 0em;
+  }
+}

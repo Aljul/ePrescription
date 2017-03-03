@@ -6,10 +6,19 @@
     <div class="container">
 
       <div>
+        <%= JSON.stringify(rxHeaders) %>
+        <% if(rxHeaders.length > 0) { %>
+          <ul>
+          <% for (let i = 0; i < rxHeaders.length; i++) { %>
+            <li><%= JSON.stringify(rxHeaders[i]) %></li>
+          <% } %>
+          </ul>
+        <% } else { %>
+          <p> You currently have no prescriptions </p>
+        <% } %>
         <% if (user.isDoctor === true) { %>
           <a href="/prescriptions/new"> Create a new prescription </a>
         <% } %>
-        <%= JSON.stringify(rxHeaders) %>
       </div>
     </div>
   </body>
