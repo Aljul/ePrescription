@@ -18,7 +18,11 @@
           <a <%=`href=/prescriptions/${rxHeaders[i].prescription_id}`%> class="list-group-item">
           <li class="list-group-item">
             <span class="badge pull-right"><%=`ID: ${rxHeaders[i].prescription_id}`%></span>
-            <p><%=rxHeaders[i].patientName%></p>
+            <% if (user.isDoctor) { %>
+              <p><%=rxHeaders[i].patientName%></p>
+            <% } else { %>
+              <p><%=`Dr.${rxHeaders[i].doctorName}`%></p>
+            <% } %>
             <span class="badge pull-right"><%=rxHeaders[i].status%></span>
             <p><%=(rxHeaders[i].createdAt).toString().substring(0, 24)%></p>
           </li>

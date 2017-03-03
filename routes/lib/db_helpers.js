@@ -345,8 +345,7 @@ module.exports = function makeDbHelpers(knex) {
           throw "Error, no user found at that address"
         }
         return address[0].id;
-      })
-
+      });
     },
 
     createRxDetails: function(Rx){
@@ -354,9 +353,8 @@ module.exports = function makeDbHelpers(knex) {
       .insert(Rx)
       .into("prescription_details")
       .then((result) => {
-
-      console.log("New prescription generated");
-      return result;
+        console.log("New prescription generated");
+        return result;
       })
     },
 
