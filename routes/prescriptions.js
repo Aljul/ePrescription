@@ -16,7 +16,7 @@ module.exports = (knex) => {
     let user_id = req.user.id;
     let isDoctor = req.user.isDoctor;
     // if user isn't doctor
-    dbHelpers.getUserRxHeadersList(user_id, isDoctor).then((rxHeadersArray) => {
+    dbHelpers.getAllPrescriptionsForPatient(user_id).then((rxHeadersArray) => {
       res.render("prescriptions", { user: req.user, rxHeaders: rxHeadersArray });
     });
   });
