@@ -4,7 +4,17 @@
   <body class="index">
     <% include ./partials/_nav %>
     <div class="container">
+    <% if (rxHeaders) { %>
+        <ul>
+        <% rxHeaders.forEach(function(rx){%>
+        <li>
+        <%= JSON.stringify(rx) %>
+        <a href="/prescriptions/${rxHeaders."> Create a new prescription </a>
 
+        </li>
+        <%});%>
+        </ul>
+        <%}%>
       <div>
         <%= JSON.stringify(rxHeaders) %>
         <% if(rxHeaders.length > 0) { %>

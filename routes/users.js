@@ -12,9 +12,16 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    dbHelpers.getAllPatientsForDoctor(req.user.id)
+    if(req.user.isDoctor){
+      dbHelpers.getAllPatientsForDoctor(req.user.id)
+      .then((result) => {
+        return res.render("users", { user: req.user, prescriptions: result});
+      })
+    }
+
+    dbHelpers.getAllDoctorsForPatient(req.user.id)
     .then((result) => {
-      res.render("users", { user: req.user, prescriptions: result});
+      return res.render("users", { user: req.user, prescriptions: result});
     })
 
   });
