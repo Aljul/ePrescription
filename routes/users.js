@@ -16,14 +16,13 @@ module.exports = (knex) => {
       dbHelpers.getAllPatientsForDoctor(req.user.id)
       .then((result) => {
         return res.render("users", { user: req.user, prescriptions: result});
-      })
+      });
+    } else {
+      dbHelpers.getAllDoctorsForPatient(req.user.id)
+      .then((result) => {
+        return res.render("users", { user: req.user, prescriptions: result});
+      });
     }
-
-    dbHelpers.getAllDoctorsForPatient(req.user.id)
-    .then((result) => {
-      return res.render("users", { user: req.user, prescriptions: result});
-    })
-
   });
 
   router.get("/:id", (req, res) => {
