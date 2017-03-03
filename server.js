@@ -41,6 +41,11 @@ app.use(cookieSession({
 // }));
 // app.use(flash());
 // parse application/x-www-form-urlencoded
+  // app.use(function(req, res, next){
+  //     res.locals.success_messages = req.flash('success_messages');
+  //     res.locals.error_messages = req.flash('error_messages');
+  //     next();
+  // });
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static("public"));
@@ -52,11 +57,6 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use(middleware);
 
 // connect routes
-  app.use(function(req, res, next){
-      res.locals.success_messages = req.flash('success_messages');
-      res.locals.error_messages = req.flash('error_messages');
-      next();
-  });
 app.use("/", mainRoutes(knex));
 app.use("/prescriptions", prescriptionsRoutes(knex));
 app.use("/users", usersRoutes(knex));

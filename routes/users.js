@@ -54,7 +54,7 @@ module.exports = (knex) => {
     } else {
       // console.log(req.flash("true", "true"))
       console.log(req)
-      req.flash('info', 'Flash is back!')
+      // req.flash('info', 'Flash is back!')
       res.redirect('/register')
        }
   });
