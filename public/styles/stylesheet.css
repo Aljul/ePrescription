@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 #username-logout {
   padding-right: 1em;
 }
@@ -6,11 +10,18 @@
   padding: 0 15px;
 }
 
+#username-logout #logout {
+  margin-left: 15px;
+}
+
 .nav-item:hover {
-    background-color: pink;
+  background-color: #71eeb8;
 }
 
 @media (max-width: 800px) {
+  #username-logout #logout {
+    margin-left: 0;
+  }
   .navbar-header {
     float: none;
   }
