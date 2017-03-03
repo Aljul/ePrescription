@@ -20,18 +20,5 @@
       </form>
     </div>
   <%= JSON.stringify(locals) %>
-  <body class="index">
-  <% if (error_messages) {%>
-  <div class="errors">
-  The following fields need to be filled:
-  <ul>
-  <%for( var i = 0; i < error_messages.length; i++){%>
-    <li>
-    <%= error_messages[i] %>
-    </li>
-  <%}%>
-  </ul>
-  </div>
-  <%}%>
   </body>
 </html>
