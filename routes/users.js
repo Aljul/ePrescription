@@ -50,8 +50,10 @@ module.exports = (knex) => {
     }
     // return array of empty keys in userObject
     let emptyKeys = appHelpers.validatesObject(userObject);
+    console.log(userObject)
+    console.log(emptyKeys)
     if (!emptyKeys.length) {
-      dbHelpers.emailAvailable(req, res, userObject.email).then((result) => {
+      dbHelpers.emailAvailable(userObject.email).then((result) => {
         if (!result[0]) {
           if (userObject.password === userObject.passwordConfirmation) {
             dbHelpers.register(userObject, function(expandedUserObject) {
@@ -63,7 +65,6 @@ module.exports = (knex) => {
       });
     } else {
       // console.log(req.flash("true", "true"))
-      console.log(req)
       // req.flash('info', 'Flash is back!')
       res.redirect('/register')
        }
