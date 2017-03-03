@@ -10,8 +10,9 @@ const knex          = require("knex")(knexConfig[ENV]);
 const cookieSession = require("cookie-session");
 const bodyParser    = require("body-parser");
 const bcrypt        = require("bcrypt");
-var flash           = require('connect-flash');
+// var flash           = require('connect-flash-plus');
 const cookieParser  = require('cookie-parser')
+// var session         = require('express-session')
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");
@@ -25,21 +26,20 @@ const middleware = require("./routes/lib/middleware")
 app.set("view engine", "ejs");
 // use cookie-session
 
-  var sessionStore = new session.MemoryStore;
-  app.use(cookieParser('oss117'));
+app.use(cookieParser('oss117'));
 
-// app.use(cookieSession({
-//   name: "session_id",
-//   secret: "oss117"
-// }));
- app.use(session({
-    cookie: { maxAge: 60000 },
-    store: sessionStore,
-    saveUninitialized: true,
-    resave: 'true',
-    secret: 'secret'
+app.use(cookieSession({
+  name: "session_id",
+  secret: "oss117"
 }));
-app.use(flash());
+
+//TO BE CONTINUED IN THE FUTURE
+// app.use(session({
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: false
+// }));
+// app.use(flash());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -52,11 +52,11 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use(middleware);
 
 // connect routes
-app.use(function(req, res, next){
-    res.locals.success_messages = req.flash('success_messages');
-    res.locals.error_messages = req.flash('error_messages');
-    next();
-});
+  app.use(function(req, res, next){
+      res.locals.success_messages = req.flash('success_messages');
+      res.locals.error_messages = req.flash('error_messages');
+      next();
+  });
 app.use("/", mainRoutes(knex));
 app.use("/prescriptions", prescriptionsRoutes(knex));
 app.use("/users", usersRoutes(knex));
