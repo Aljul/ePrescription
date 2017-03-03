@@ -12,12 +12,12 @@
       <ul class="nav navbar-nav">
         <% if (user.isDoctor === true) { %>
           <li class="nav-item"><a href="/prescriptions/new">New Prescription</a></li>
-          <li class="nav-item"><a href="/users">Patients</a></li>
-          <li class="nav-item"><a href="/prescriptions">Prescriptions</a></li>
+          <li class="nav-item"><a href="/users">My Patients</a></li>
+          <li class="nav-item"><a href="/prescriptions">Active Prescriptions</a></li>
         <% } else { %>
           <li class="nav-item"><a href="/prescriptions/mostrecent">Most Recent</a></li>
-          <li class="nav-item"><a href="/users">Doctors</a></li>
-          <li class="nav-item"><a href="/prescriptions">Prescriptions</a></li>
+          <li class="nav-item"><a href="/users">My Doctors</a></li>
+          <li class="nav-item"><a href="/prescriptions">My Prescriptions</a></li>
         <% } %>
       </ul>
       <ul id="username-logout" class="nav navbar-nav navbar-right">

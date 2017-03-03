@@ -48,6 +48,21 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    getAllDoctorsForPatient: function(patient_id){
+      return knex
+      .select("first_name", "last_name", "users.id", "speciality", "permit_number")
+      .distinct("doctors.public_key")
+      .from("prescription_details")
+      .innerJoin("prescriptions", "prescriptions.id", "prescription_details.prescription_id")
+      .innerJoin("doctors", "doctors.id", "prescriptions.doctor_id")
+      .innerJoin("users", "users.id", "prescriptions.user_id")
+      .where("prescriptions.user_id", patient_id)
+      .then((result) => {
+        console.log(result)
+        return result
+      })
+    },
+
     getAllPatientsForDoctor: function(doctor_id){
       return knex
       .select("first_name", "last_name", "users.id")
@@ -140,6 +155,7 @@ module.exports = function makeDbHelpers(knex) {
       return this.getRxById(rx_id).then((getRxByIdResult) => {
         rxHeaderObject.status = getRxByIdResult["status"];
         rxHeaderObject.createdAt = getRxByIdResult["created_at"];
+        rxHeaderObject.doctor_id = getRxByIdResult["doctor_id"];
         return this.getDoctorNameByDoctorId(getRxByIdResult["doctor_id"]).then((getDoctorNameByDoctorIdResult) => {
           rxHeaderObject.doctorName = `${getDoctorNameByDoctorIdResult["first_name"]} ${getDoctorNameByDoctorIdResult["last_name"]}`;
           return this.getUserNameById(getRxByIdResult["user_id"]).then((getUserNameByIdResult) => {
