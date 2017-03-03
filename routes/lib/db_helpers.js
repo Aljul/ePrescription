@@ -64,7 +64,7 @@ module.exports = function makeDbHelpers(knex) {
       .from("prescription_details")
       .innerJoin("prescriptions", "prescriptions.id", "prescription_details.prescription_id")
       .innerJoin("doctors", "doctors.id", "prescriptions.doctor_id")
-      .innerJoin("users", "users.id", "prescriptions.user_id")
+      .innerJoin("users", "users.id", "prescriptions.doctor_id")
       .where("prescriptions.user_id", patient_id)
       .then((result) => {
         return result
