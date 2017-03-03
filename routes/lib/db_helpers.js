@@ -78,7 +78,7 @@ module.exports = function makeDbHelpers(knex) {
 
     getAllPrescriptionsForPatient: function(user_id){
       return knex
-      .select("prescription_id", "doctor_id","status", "name", "note")
+      .select("*")
       .from("prescription_details")
       .innerJoin("prescriptions", "prescriptions.id", "prescription_details.prescription_id")
       .innerJoin("drugs", "drugs.id", "prescription_details.drug_id")
@@ -118,7 +118,7 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
-    // Get users.id of the doctor corresponding to doctor_id
+    // Get users.id of the doctor corresponding to doctor_id and returns it
     getUserIdByDoctorId: function(doctor_id) {
       return knex
       .select("user_id")
@@ -127,6 +127,20 @@ module.exports = function makeDbHelpers(knex) {
       .then((result) => {
         if(result.length === 0){
           throw "Error, doctor not found"
+        }
+        return result[0].id
+      })
+    },
+
+    // Get doctors.id of the user corresponding to user_id and returns it
+    getDoctorIdByUserId: function(user_id) {
+      return knex
+      .select("id")
+      .from("doctors")
+      .where("user_id", user_id)
+      .then((result) => {
+        if(result.length === 0){
+          throw "Error, user is not a doctor"
         }
         return result[0].id
       })
@@ -164,6 +178,7 @@ module.exports = function makeDbHelpers(knex) {
     rxObjectHeaderBuilder: function(rx_id) {
       let rxHeaderObject = {};
       return this.getRxById(rx_id).then((getRxByIdResult) => {
+        rxHeaderObject.prescription_id = getRxByIdResult["id"];
         rxHeaderObject.status = getRxByIdResult["status"];
         rxHeaderObject.createdAt = getRxByIdResult["created_at"];
         rxHeaderObject.doctor_id = getRxByIdResult["doctor_id"];
@@ -218,12 +233,14 @@ module.exports = function makeDbHelpers(knex) {
     // Or returns all the prescriptions ids received by a user (doctorBoolean === false)
     getUserRxIds: function(user_id, doctorBoolean) {
       if (doctorBoolean === true) {
-        return knex
-        .select("id")
-        .from("prescriptions")
-        .where("doctor_id", user_id)
-        .then((result) => {
-          return result;
+        this.getDoctorIdByUserId(user_id).then((doctor_id) => {
+          return knex
+          .select("id")
+          .from("prescriptions")
+          .where("doctor_id", doctor_id)
+          .then((result) => {
+            return result;
+          });
         });
       } else {
         return knex

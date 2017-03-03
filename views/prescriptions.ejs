@@ -4,31 +4,26 @@
   <body class="index">
     <% include ./partials/_nav %>
     <div class="container">
-    <% if (rxHeaders) { %>
+      <%= JSON.stringify(rxHeaders) %>
+      <% if (rxHeaders.length != 0) { %>
         <ul>
-        <% rxHeaders.forEach(function(rx){%>
-        <li>
-        <%= JSON.stringify(rx) %>
-        <a href="/prescriptions/${rxHeaders."> Create a new prescription </a>
-
-        </li>
-        <%});%>
+        <% for (let i = 0; i < rxHeaders.length; i++) { %>
+          <li><%=`
+          Prescription: ${rxHeaders[i].prescription_id}
+          Doctor: ${rxHeaders[i].doctorName}
+          Patient: ${rxHeaders[i].patientName}
+          Status: ${rxHeaders[i].status}
+          Created: ${rxHeaders[i].createdAt}
+          `%></li>
+        <% } %>
         </ul>
-        <%}%>
+      <% } else { %>
+        <p> You currently have no prescriptions </p>
+      <% } %>
       <div>
-        <%= JSON.stringify(rxHeaders) %>
-        <% if(rxHeaders.length > 0) { %>
-          <ul>
-          <% for (let i = 0; i < rxHeaders.length; i++) { %>
-            <li><%= JSON.stringify(rxHeaders[i]) %></li>
-          <% } %>
-          </ul>
-        <% } else { %>
-          <p> You currently have no prescriptions </p>
-        <% } %>
-        <% if (user.isDoctor === true) { %>
-          <a href="/prescriptions/new"> Create a new prescription </a>
-        <% } %>
+      <% if (user.isDoctor === true) { %>
+        <a href="/prescriptions/new"> Create a new prescription </a>
+      <% } %>
       </div>
     </div>
   </body>
