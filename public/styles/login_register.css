@@ -1,0 +1,22 @@
+.form {
+  list-style-type: none;
+  text-align: center;
+}
+
+.form input {
+  margin: 0.7em 0em;
+}
+
+.form-control:focus {
+  border-color: #71eeb8;
+}
+
+.form-title {
+  margin: 2em 0;
+}
+
+.form-submit {
+  margin-top: 1em;
+  width: 100%;
+  background-color: #71eeb8;
+}

@@ -1,23 +1,35 @@
-<nav>
-  <div>
-    <div>
-      <a href="/"> ePrescription </a>
-      <% if (user) { %>
-        <% if (user.isDoctor === true) { %>
-          <p> Doctor is true! </p>
-          <a href="/prescriptions/new"> New Prescription </a>
-          <a href="/users"> Patients </a>
-          <a href="/prescriptions"> Prescriptions </a>
-          <p> ^ This is a doctor </p>
-        <% } else { %>
-          <p> Doctor is false! </p>
-          <a href="/prescriptions/mostrecent"> Most Recent </a>
-          <a href="/users"> Doctors </a>
-          <a href="/prescriptions"> Prescriptions </a>
-          <p> ^ This is a regular user </p>
-        <% } %>
-        <%= user.username %> | <a href="/logout"> Logout </a>
-      <% } %>
-    </div>
+<nav id="nav" class="navbar navbar-default navbar-static-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/">ePrescription</a>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
   </div>
+  <% if (user) { %>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <% if (user.isDoctor === true) { %>
+          <li class="nav-item"><a href="/prescriptions/new">New Prescription</a></li>
+          <li class="nav-item"><a href="/users">Patients</a></li>
+          <li class="nav-item"><a href="/prescriptions">Prescriptions</a></li>
+        <% } else { %>
+          <li class="nav-item"><a href="/prescriptions/mostrecent">Most Recent</a></li>
+          <li class="nav-item"><a href="/users">Doctors</a></li>
+          <li class="nav-item"><a href="/prescriptions">Prescriptions</a></li>
+        <% } %>
+      </ul>
+      <ul id="username-logout" class="nav navbar-nav navbar-right">
+        <li id="username">
+          <p class="navbar-text navbar-right">
+            <%= user.username %>
+          </p>
+        </li>
+        <li id="logout" class="nav-item">
+          <a href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  <% } %>
 </nav>

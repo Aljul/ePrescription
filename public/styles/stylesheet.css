@@ -1,0 +1,6 @@
+@import "navbar.css";
+@import "login_register.css";
+
+body {
+  overflow-x: hidden;
+}
