@@ -34,7 +34,7 @@ module.exports = (knex) => {
           dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
             res.render("prescription_details", { user: req.user, rxObject: result });
           });
-        } else { res.send("You currently have no prescriptions") }
+        } else { res.redirect("/prescriptions") }
       })
     } else {
       dbHelpers.rxObjectBuilder(rx_id).then((result) => {
