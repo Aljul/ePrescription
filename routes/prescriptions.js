@@ -37,8 +37,8 @@ module.exports = (knex) => {
     if (rx_id === "mostrecent") {
       dbHelpers.getMostRecentRxId(user_id).then((result) => {
         if (result[0].id) {
-          dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
-            res.render("prescription_details", { user: req.user, rxObject: result });
+          return dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
+            return res.render("prescription_details", { user: req.user, rxObject: result });
           });
         } else { res.send("You currently have no prescriptions") }
       })
