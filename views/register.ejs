@@ -3,20 +3,26 @@
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <h3> Create an account </h3>
-      <form action="/users/new" method="POST">
-        <input type="text" name="email" placeholder="email">
-        <input type="text" name="password" placeholder="password">
-        <input type="text" name="passwordConfirmation" placeholder="confirm password">
-        <input type="text" name="firstName" placeholder="first name">
-        <input type="text" name="lastName" placeholder="last name">
-        <input type="text" name="address" placeholder="address">
-        <input type="text" name="phone" placeholder="phone">
-        <input type="text" name="birthdate" placeholder="birthdate">
-        <input type="text" name="public_key" placeholder="Address/Public Key">
-        <input type="submit"> Test submit for post to /users/new
-      </form>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <ul class="form">
+          <h3 class="form-title"> Register </h3>
+          <form action="/users/new" method="POST">
+            <input class="form-control" type="text" name="email" placeholder="Email" autofocus>
+            <input class="form-control" type="text" name="password" placeholder="Password">
+            <input class="form-control" type="text" name="passwordConfirmation" placeholder="Confirm Password">
+            <input class="form-control" type="text" name="firstName" placeholder="First Name">
+            <input class="form-control" type="text" name="lastName" placeholder="Last Name">
+            <input class="form-control" type="text" name="address" placeholder="Address">
+            <input class="form-control" type="text" name="phone" placeholder="Phone">
+            <input class="form-control" type="text" name="birthdate" placeholder="Birthdate">
+            <input class="form-control" type="text" name="public_key" placeholder="Address/Public Key">
+            <input class="btn btn-default form-submit" type="submit">
+          </form>
+        </ul>
+      </div>
+      <div class="col-sm-4"></div>
     </div>
   </body>
 </html>
