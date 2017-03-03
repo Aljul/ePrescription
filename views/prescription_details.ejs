@@ -12,14 +12,14 @@
       </div>
     </div>
 
-<div id="rx_address">
+<div id="rx_address"><%= rxObject.rxDetails[0].rx_address%></div>
 <section id="create_qr_code2">
   <div id="qrcode" style="padding-left: 20px"></div>
 
 
 <script type="text/javascript">
-console.log(document.getElementById("rx_address").innerHTML)
-new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+  console.log(document.getElementById("rx_address").innerHTML)
+  new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
 </script>
 
 

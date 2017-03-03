@@ -13,7 +13,7 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
     if (req.session["user"]) {
-      res.render("main", { user: req.user });
+      req.user.isDoctor ? res.redirect("prescriptions/new") : res.redirect("prescriptions/mostrecent");
     } else { res.redirect("login"); }
   });
 

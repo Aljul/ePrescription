@@ -21,6 +21,15 @@
   background-color: #71eeb8;
 }
 
+.form-submit:hover {
+  background-color: #71eeb8;
+}
+
+.form-submit:focus {
+  border-color: #71eeb8;
+  background-color: #71eeb8;
+}
+
 @media (max-width: 600px) {
   #register-form-title {
     margin: 0em 0em 1em 0em;
