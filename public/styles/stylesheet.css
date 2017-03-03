@@ -1,59 +1,6 @@
+@import "navbar.css";
+@import "login_register.css";
+
 body {
   overflow-x: hidden;
-}
-
-#username-logout {
-  padding-right: 1em;
-}
-
-#username-logout #username {
-  padding: 0 15px;
-}
-
-#username-logout #logout {
-  margin-left: 15px;
-}
-
-.nav-item:hover {
-  background-color: #71eeb8;
-}
-
-@media (max-width: 800px) {
-  #username-logout #logout {
-    margin-left: 0;
-  }
-  .navbar-header {
-    float: none;
-  }
-  .navbar-left,.navbar-right {
-    float: none !important;
-  }
-  .navbar-toggle {
-    display: block;
-  }
-  .navbar-collapse {
-    border-top: 1px solid transparent;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-  }
-  .navbar-fixed-top {
-  	top: 0;
-  	border-width: 0 0 1px;
-  }
-  .navbar-collapse.collapse {
-    display: none!important;
-  }
-  .navbar-nav {
-    float: none!important;
-    margin-top: 7.5px;
-  }
-  .navbar-nav>li {
-    float: none;
-  }
-  .navbar-nav>li>a {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  .collapse.in {
-  	display:block !important;
-  }
 }

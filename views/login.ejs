@@ -3,14 +3,20 @@
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <h3> Login </h3>
-      <form action="/login" method="POST">
-        <input type="text" name="email" placeholder="email">
-        <input type="text" name="password" placeholder="password">
-        <input type="submit">  Post to /login
-      </form>
-      <a href="/register"> New patient ? Click here to create an account ! </a>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <ul class="form">
+          <h3 id="login"> Login </h3>
+          <form action="/login" method="POST">
+            <input class="form-control" type="text" name="email" placeholder="Email" autofocus>
+            <input class="form-control" type="text" name="password" placeholder="Password">
+            <input id="login-submit" class="btn btn-default" type="submit">
+          </form>
+          <a href="/register"> New patient ? Click here to create an account ! </a>
+        </ul>
+      </div>
+      <div class="col-sm-4"></div>
     </div>
   </body>
 </html>
