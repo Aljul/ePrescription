@@ -1,0 +1,15 @@
+{
+  "package_name": "e-prescription-prototype",
+"version": "0.0.1",
+"description": "ePrescription is a simple blockchain based solution to make prescriptions easily accessible, unforgeable and decentralised",
+"authors": [
+  "Patrick Guay github:Dev43"
+  "Alexandre Julien github:Aljul"
+],
+"keywords": [
+  "ethereum",
+  "prescription",
+  "health",
+],
+"license": "MIT"
+}
