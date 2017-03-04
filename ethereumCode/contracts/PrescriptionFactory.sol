@@ -8,6 +8,7 @@ contract PrescriptionFactory {
   mapping (address => bool) pharmacies; // can only be added by the owner
   mapping (address => Prescription[]) patientsPrescriptions;
   Prescription[] prescriptions;
+  uint migration_number = 5;
 
 
   event addingToDoctors(

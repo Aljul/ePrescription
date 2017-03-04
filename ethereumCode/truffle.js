@@ -15,14 +15,26 @@ var hdwallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
 var wallet_hdpath = "m/44'/60'/0'/0/";
 var wallet = hdwallet.derivePath(wallet_hdpath + "0").getWallet();
 var address = "0x" + wallet.getAddress().toString("hex");
-// console.log(wallet.getPrivateKey().toString("hex"))
-// console.log(address)
+// console.log(wallet.getOwnPropertyNames(o: Object)vateKey().toString("hex"))
+console.log(address)
 
-// var providerUrl = "https://ropsten.infura.io";
+var providerUrl = `https://ropsten.infura.io/${process.env.INFURA_ACCESS_TOKEN}`;
 var engine = new ProviderEngine();
-// engine.addProvider(new WalletSubprovider(wallet, {}));
-// engine.addProvider(new Web3Subprovider(new Web3.providers.HttpProvider(providerUrl)));
-// engine.start(); // Required by the provider engine.
+engine.addProvider(new WalletSubprovider(wallet, {}));
+engine.addProvider(new Web3Subprovider(new Web3.providers.HttpProvider(providerUrl)));
+// console.log(engine)
+engine.on('block', function(block){
+  console.log('================================')
+  console.log('BLOCK CHANGED:', '#'+block.number.toString('hex'), '0x'+block.hash.toString('hex'))
+  console.log('================================')
+})
+
+engine.on('error', function(err){
+  // report connectivity errors
+  console.error(err.stack)
+})
+
+engine.start(); // Required by the provider engine.
 
 
 module.exports = {
@@ -35,13 +47,8 @@ module.exports = {
      "ropsten": {
       network_id: 3,    // Official ropsten network id
       provider: engine, // Use our custom provider
-      from: address     // Use the address we derived
-    },
-
-   "live": {
-     network_id: 3,
-     host: "localhost",
-     port: 8546   // Different than the default below
+      from: address,     // Use the address we derived
+      gas: 5183626
     }
   }
 }
