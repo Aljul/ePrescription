@@ -35,16 +35,18 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
-    getPrescriptionById: function(rx_id){
+    getPrescriptionById: function(rx_id) {
       return knex
       .from("prescriptions")
       .where("prescriptions.id", rx_id)
       .then((rx) => {
-        return rx
+        if (!rx[0]) { throw "This prescription does not exists"} else {
+          return rx
+        }
       })
     },
 
-    getAllRxWrittenByDoctor: function(doctor_id){
+    getAllRxWrittenByDoctor: function(doctor_id) {
       return knex
       .select("prescription_id", "quantity", "measurement","frequency", "note", "drugs.name", "rx_address", "status", "first_name", "last_name")
       .from("prescription_details")
