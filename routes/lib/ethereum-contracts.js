@@ -11,6 +11,7 @@ const web3   = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 
+
 // set the contract abstractions so we can directly call their functions
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
@@ -39,7 +40,7 @@ module.exports = {
     var contractInstance = instance;
     return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS})
    }).then((message) => {
-    console.log(message)
+    // console.log(message)
     if(message.logs.length == 0){
       throw 'Something went wrong when creating the prescription';
     }
@@ -60,23 +61,28 @@ module.exports = {
 
     return PrescriptionFactory.deployed().then((instance) => {
       let contractInstance = instance;
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {gas: GAS})
+      // console.log(contractInstance)
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
       })
       .then((data) => {
-      console.log(data.params[0])
+      // console.log(data.params)
       var rawTx = data.params[0];
       var tx = new EthereumTx(rawTx);
+      // console.log(tx)
       tx.sign(privateKey);
+      // console.log(privateKey)
       var serializedTx = tx.serialize();
+      balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
+      // console.log(balance)
       return web3.eth.sendRawTransaction(serializedTx.toString("hex"))
       })
       .then((result) => {
-      console.log("this is the result",result)
+      // console.log("this is the result",result)
       return result;
       })
       .catch((err) => {
-      console.log(err)
-      return err;
+      console.log("THe error is: >>>>>>>>>", err)
+      throw err;
     })
    //  // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
    // return PrescriptionFactory.deployed().then(function(instance){
@@ -97,7 +103,7 @@ module.exports = {
 
   retrieveAllPrescriptionAddresses: function(patientAddress, doctorAddress){
     return PrescriptionFactory.deployed().then(function(instance){
-      console.log(instance)
+      // console.log(instance)
     var contractInstance = instance;
     return contractInstance.getAllPrescriptionsForPatient(patientAddress, {from: doctorAddress})
    }).then((message) => {
@@ -114,7 +120,7 @@ module.exports = {
     var contractInstance = instance;
     return contractInstance.getLatestPrescriptionForPatient(patientAddress, {from: doctorAddress})
    }).then((message) => {
-    console.log(message)
+    // console.log(message)
     return message
    }).catch((err) => {
     // console.log(err)
@@ -129,7 +135,7 @@ module.exports = {
   getPrescriptionData: function(prescriptionAddress){
     return Prescription.at(prescriptionAddress).then(function(instance){
       prescription = instance;
-      console.log(instance);
+      // console.log(instance);
       return prescription.getPrescriptionData()
     }).then((data) => {
       // console.log(data);

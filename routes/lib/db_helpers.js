@@ -44,6 +44,16 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    getPatientByPublicKey: function(pub_key){
+      return knex
+      .select("id")
+      .from("users")
+      .where("public_key", pub_key)
+      .then((user) => {
+        return user;
+      })
+    },
+
     getAllRxWrittenByDoctor: function(doctor_id){
       return knex
       .select("prescription_id", "quantity", "measurement","frequency", "note", "drugs.name", "rx_address", "status", "first_name", "last_name")

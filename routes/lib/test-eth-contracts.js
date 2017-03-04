@@ -16,7 +16,21 @@ var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
   return rpcCalls.seedPrescriptions();
   }).then( () => {
 
+web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0xeab9085c947bf296aa20d8301061659f0f100628", value: 100000000}, function(err,address){
+  if(err){
+    console.log("The erros is !!!!!!!", err)
+  }
+  console.log("THE ADDRESS IS HERE" ,address)
+  console.log(web3.eth.getTransactionReceipt(address))
+})
 
+web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 100000000}, function(err,address){
+  if(err){
+    console.log("The erros is !!!!!!!", err)
+  }
+  console.log("THE ADDRESS IS HERE" ,address)
+  console.log(web3.eth.getTransactionReceipt(address))
+})
 
 rpcCalls.publishPrescription(web3.eth.accounts[2], web3.eth.accounts[1], "this is the prescripiton", 'name').then(console.log)
 

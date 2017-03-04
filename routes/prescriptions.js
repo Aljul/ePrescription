@@ -70,8 +70,17 @@ module.exports = (knex) => {
       }
     }
 
-// Add the prescription to the blockchain
-    dbHelpers.getDoctorKeys(req.user.id)
+// first check if the patient's public key matches a patient
+
+   dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
+  .then((user) => {
+    console.log(user)
+    if(!user.length){
+      throw "No user with that public key"
+    }
+    return dbHelpers.getDoctorKeys(req.user.id) // Add the prescription to the blockchain
+// so far, to add to the blockchain, i need to use an address from testrpc which is WEIRD
+    })
     .then((keys) => {
       let prescriptionData = {
         drugName: req.body.drugName,
@@ -81,10 +90,12 @@ module.exports = (knex) => {
         note: req.body.note,
         patientPublicKey: req.body.patientPublicKey
       }
-      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "tedewst")
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAME")
     })
     .then((txHash) => {
+      console.log(txHash)
       var txDetails = eth_connect.getTransactionReceipt(txHash)
+      console.log(txDetails)
        rxAddress = txDetails.logs[0].address;
       return eth_connect.printPrescription(rxAddress)
     })
