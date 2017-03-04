@@ -32,7 +32,7 @@ module.exports = {
    return seed.createPrescriptions(web3, PrescriptionFactory, Prescription);
   },
 
-  publishPrescription: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
+  publishPrescription: function(patientAddress, prescriptionData, prescriptionName){
      PrescriptionFactory.deployed().then((instance) => {
     // console.log(instance.createPrescription.request(prescriptionName, prescriptionData, patientAddress))
     })
