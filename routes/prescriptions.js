@@ -43,15 +43,24 @@ module.exports = (knex) => {
         } else { res.redirect("/prescriptions") }
       })
     } else {
-      dbHelpers.getPrescriptionById(rx_id).then( (rx) => {
-        if(user_id === rx[0].user_id || (req.user.isDoctor && user_id === rx[0].doctor_id)){
-          return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
-            return res.render("prescription_details", { user: req.user, rxObject: {result} });
+      dbHelpers.getPrescriptionById(rx_id).then((rx) => {
+        let userDoctorId;
+        // if user is a doctor, get the doctor id assigned to his user id
+        if (req.user.isDoctor) {
+          dbHelpers.getDoctorIdByUserId(user_id).then((doctor_id) => {
+            userDoctorId = doctor_id;
+            return userDoctorId
           });
         }
-        return res.send("You are not the patient nor the doctor that emmited this prescription")
-        })
-
+        // if user is the doctor or the patient on the prescription, render it
+        if (user_id === rx[0].user_id || userDoctorId === rx[0].doctor_id) {
+          return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+            return res.render("prescription_details", { user: req.user, rxObject: result });
+          });
+        } else {
+          return res.send("You are not the patient nor the doctor that emmited this prescription")
+        }
+      });
     }
   });
 

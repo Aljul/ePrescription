@@ -15,12 +15,12 @@ module.exports = (knex) => {
     if(req.user.isDoctor){
       dbHelpers.getAllPatientsForDoctor(req.user.id)
       .then((result) => {
-        return res.render("users", { user: req.user, prescriptions: result});
+        return res.render("users", { user: req.user, usersList: result});
       });
     } else {
       dbHelpers.getAllDoctorsForPatient(req.user.id)
       .then((result) => {
-        return res.render("users", { user: req.user, prescriptions: result});
+        return res.render("users", { user: req.user, usersList: result});
       });
     }
   });
