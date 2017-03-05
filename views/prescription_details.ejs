@@ -25,11 +25,14 @@
           <% } %>
         </li>
       </ul>
-      <div id="rx_address" hidden><%=rxObject.rxDetails[0].rx_address%></div>
       <div id="qrcode"></div>
-      <script type="text/javascript">
-        new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
-      </script>
     </div>
+
+
+    <div id="rx_address" hidden><%=rxObject.rxDetails[0].rx_address%></div>
+    <script type="text/javascript">
+      new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+    </script>
+
   </body>
 </html>

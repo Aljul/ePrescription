@@ -10,3 +10,11 @@
   margin: auto;
   width: 50%;
 }
+
+@media (max-width: 450px) {
+  #qrcode {
+    display: block;
+    margin: 0;
+    width: 50%;
+  }
+}
