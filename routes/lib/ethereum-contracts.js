@@ -58,11 +58,11 @@ module.exports = {
 
     const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
 
-    console.log(decoded)
+    // console.log(decoded)
     const privateKey = Buffer.from(decoded, 'hex')
 
     return PrescriptionFactory.deployed().then((instance) => {
-      console.log(instance)
+      // console.log(instance)
       let contractInstance = instance;
       // console.log(contractInstance)
       return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
@@ -71,16 +71,17 @@ module.exports = {
       // console.log(data.params)
       var rawTx = data.params[0];
       var tx = new EthereumTx(rawTx);
-      // console.log(tx)
+      console.log(tx)
       tx.sign(privateKey);
-      // console.log(privateKey)
+      console.log(privateKey)
       var serializedTx = tx.serialize();
       balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
-      // console.log(balance)
-      return web3.eth.sendRawTransaction(serializedTx.toString("hex"))
+      console.log(balance)
+      console.log(serializedTx.toString("hex"))
+      return web3.eth.sendRawTransaction("0x" + serializedTx.toString("hex"))
       })
       .then((result) => {
-      // console.log("this is the result",result)
+      console.log("this is the result",result)
       return result;
       })
       .catch((err) => {
