@@ -7,8 +7,9 @@ module.exports = {
   buildUserCookie: function(req, userObject) {
     req.session["user"] = JSON.stringify({
       id: userObject.id,
-      username: `${userObject.firstName} ${userObject.lastName}`,
-      isDoctor: userObject.isDoctor
+      username: `${userObject.first_name} ${userObject.last_name}`,
+      isDoctor: userObject.isDoctor,
+      publicKey: userObject.public_key
     });
   },
 

@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" id="index">
-  <head>
-    <title>ePrescription</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+  <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <div>
-        prescriptions
-        <a href="/prescriptions/1"> test link to presc 1 </a>
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <div class="prescriptions-header">
+      <% if (user.isDoctor === true) { %>
+        <h3><%=`Prescriptions written by Dr.${rxHeaders[0].doctorName}`%></h3>
+        <a href="/prescriptions/new"> Create a new prescription </a>
+      <% } else { %>
+        <h3> Prescriptions Received </h3>
+      <% } %>
       </div>
+      <ul class="list-group">
+      <% if (rxHeaders.length != 0) { %>
+        <% for (let i = rxHeaders.length - 1; i >= 0; i--) { %>
+          <a <%=`href=/prescriptions/${rxHeaders[i].prescription_id}`%> class="list-group-item">
+          <li class="list-group-item">
+            <span class="badge pull-right"><%=rxHeaders[i].status%></span>
+            <% if (user.isDoctor) { %>
+              <p><%=rxHeaders[i].patientName%></p>
+            <% } else { %>
+              <p><%=`Dr.${rxHeaders[i].doctorName}`%></p>
+            <% } %>
+            <span class="badge pull-right"><%=`ID: ${rxHeaders[i].prescription_id}`%></span>
+            <p><%=(rxHeaders[i].createdAt).toString().substring(0, 24)%></p>
+          </li>
+          </a>
+        <% } %>
+      <% } else { %>
+        <li class="list-group-item"> You currently have no prescription </li>
+      <% } %>
+      </ul>
     </div>
   </body>
 </html>

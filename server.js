@@ -10,6 +10,9 @@ const knex          = require("knex")(knexConfig[ENV]);
 const cookieSession = require("cookie-session");
 const bodyParser    = require("body-parser");
 const bcrypt        = require("bcrypt");
+// var flash           = require('connect-flash-plus');
+const cookieParser  = require('cookie-parser')
+// var session         = require('express-session')
 
 // seperated Routes for each Resource
 const mainRoutes  = require("./routes/main");
@@ -22,12 +25,33 @@ const middleware = require("./routes/lib/middleware")
 // set ejs as view engine
 app.set("view engine", "ejs");
 // use cookie-session
+
+app.use(cookieParser('oss117'));
+
 app.use(cookieSession({
   name: "session_id",
   secret: "oss117"
 }));
+
+//TO BE CONTINUED IN THE FUTURE
+// app.use(session({
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: false
+// }));
+// app.use(flash());
 // parse application/x-www-form-urlencoded
+  // app.use(function(req, res, next){
+  //     res.locals.success_messages = req.flash('success_messages');
+  //     res.locals.error_messages = req.flash('error_messages');
+  //     next();
+  // });
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(express.static("public"));
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
 // use middleware.js
 app.use(middleware);

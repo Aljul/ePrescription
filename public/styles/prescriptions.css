@@ -1,0 +1,11 @@
+.list-group a:hover {
+  background-color: #71eeb8;
+}
+
+.list-group-item {
+  overflow: auto;
+}
+
+.prescriptions-header {
+  margin-bottom: 1em;
+}

@@ -1,32 +1,185 @@
 "use strict";
 
+
 const express = require('express');
 const router  = express.Router();
-
+const eth_connect = require('./lib/ethereum-contracts.js');
 module.exports = (knex) => {
+  // Require db helpers functions
+  const dbHelpers = require('./lib/db_helpers.js')(knex);
+  // Require app helpers functions
+  const appHelpers = require('./lib/app_helpers.js');
 
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    // if session id correspond a doctor
-    res.render("prescriptions", { user: req.user });
-    // else redirect login
+    let user_id = req.user.id;
+    let isDoctor = req.user.isDoctor;
+    // if user isn't doctor
+    dbHelpers.getUserRxHeadersList(user_id, isDoctor).then((rxHeadersArray) => {
+      res.render("prescriptions", { user: req.user, rxHeaders: rxHeadersArray });
+    });
   });
 
   router.get("/new", (req, res) => {
+    if(req.user.isDoctor){
     res.render("prescription_new", { user: req.user });
+    } else {
+      //give him an error message saying he is not a doctor and cannot create a new prescription
+      res.redirect('/prescriptions');
+    }
+
   });
 
   router.get("/:id", (req, res) => {
-    let prescription_id = req.params.id;
-    res.render("prescription_details", { user: req.user, prescription_id: prescription_id });
+    let rx_id = req.params.id;
+    let user_id = req.user.id;
+    if (rx_id === "mostrecent") {
+      dbHelpers.getMostRecentRxId(user_id).then((result) => {
+        if (result[0].id) {
+          return dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
+            return res.render("prescription_details", { user: req.user, rxObject: {result} });
+          });
+        } else { res.redirect("/prescriptions") }
+      })
+    } else {
+      dbHelpers.getPrescriptionById(rx_id).then((rx) => {
+        // If user is a doctor, checks if he's a doctor or the patient on the prescription
+        if (req.user.isDoctor) {
+          dbHelpers.getDoctorIdByUserId(user_id).then((doctor_id) => {
+            let userDoctorId = doctor_id;
+            if (user_id === rx[0].user_id || userDoctorId === rx[0].doctor_id) {
+              return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+                return res.render("prescription_details", { user: req.user, rxObject: result });
+              });
+            } else {
+              return res.send("You are not the doctor nor the patient on this prescription")
+            }
+          });
+        // else if user is not a doctor and is the patient on the prescription, render it
+        } else {
+          if (user_id === rx[0].user_id) {
+            return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+              return res.render("prescription_details", { user: req.user, rxObject: result });
+            });
+          } else {
+            return res.send("You are not the patient on this prescription")
+          }
+        }
+      }).catch((err) => {
+        console.log(`${err} for id: ${rx_id}`);
+        return res.send(err);
+      });
+    }
   });
 
   //  ***** POST routes *****
 
   router.post("/new", (req, res) => {
-    res.send("post to prescriptions/new worked");
+    let rxAddress;
+
+    if(!req.user.isDoctor){
+      return res.send('Not a doctor, you cannot do this');
+    }
+    // clause to say that if something is missing in req.body -- then send an error
+    for (var key in req.body){
+      if (!req.body[key]){
+        return res.send('need to be filled')
+      }
+    }
+
+// first check if the patient's public key matches a patient
+
+   dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
+  .then((user) => {
+    console.log(user)
+    if(!user.length){
+      throw "No user with that public key"
+    }
+    return dbHelpers.getDoctorKeys(req.user.id) // Add the prescription to the blockchain
+// so far, to add to the blockchain, i need to use an address from testrpc which is WEIRD
+    })
+    .then((keys) => {
+      let prescriptionData = {
+        drugName: req.body.drugName,
+        quantity:  req.body.quantity,
+        measurement: req.body.measurement,
+        frequency: req.body.frequency,
+        note: req.body.note,
+        patientPublicKey: req.body.patientPublicKey
+      }
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAME")
+    })
+    .then((txHash) => {
+      console.log(txHash)
+      var txDetails = eth_connect.getTransactionReceipt(txHash)
+      console.log(txDetails)
+       rxAddress = txDetails.logs[0].address;
+      return eth_connect.printPrescription(rxAddress)
+    })
+    .then((printedRx) => {
+      console.log(printedRx)
+      return printedRx
+    })
+    .then(() => {
+      req.body["rx_address"] = rxAddress;
+
+    // Add the prescription to our database
+    return dbHelpers.createFullRx(req.user, req.body)
+    })
+    .then((prescriptionId) => {
+      return res.redirect(`${prescriptionId}`)
+    })
+    .catch((err) => {
+      return res.send("There was an error while adding the prescription to the blockchain or our DB:" + err)
+    })
   });
 
   return router;
 }
+
+
+
+
+
+// dbHelpers.getDoctorKeys(req.user.id)
+//   .then((keys) => {
+// return eth_connect.publishPrescription(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(req.body), "tedewst")
+// })
+// .then((address) => {
+//   console.log("the address is:",address)
+//   return eth_connect.printPrescription(address)
+// })
+// .then(console.log)
+
+// Add the prescription to the blockchain
+// console.log(JSON.stringify(req.body))
+
+
+//RETRIVE ALL PRESCRIPTIONS LINKED OT A PATIENT
+
+  // console.log(address)
+  // eth_connect.printPrescription("0x3d90d98b5903e07b499312a7817cfa5d7b931f37")
+  // .then(console.log)
+
+    // let drugName = req.body.drugName;
+    // let Rx = {
+    //   quantity: req.body.quantity,
+    //   measurement: req.body.measurement,
+    //   frequency: req.body.frequency,
+    //   note: req.body.note
+    // }
+    // // console.log(req)
+    // dbHelpers
+    // .getUserByPublicKey("0x6f46cf5569aefa1acc1009290c8e043747172d89")
+    // .catch((err) => {console.log("the error is in the public key", err)})
+
+    // dbHelpers
+    // .createRxTemplate(req.user.id, req.body.patientPublicKey, "active")
+    // .then(() => {
+    //   console.log('hti')
+    //   return dbHelpers.createRxDetails(Rx, drugName)
+    // })
+    // .catch((err) => {
+    //   console.log("Error while trying to add a prescription to the database:", err);
+    // })

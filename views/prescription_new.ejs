@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" id="index">
-  <head>
-    <title>ePrescription</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+  <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <div>
-        new Prescription form
-        <form action="/prescriptions/new" method="POST">
-          <input type="submit"> Test submit for post to /prescriptions/new
-        </form>
-      </div>
-
-
-      <!-- THIS IS WHERE THE DOCTOR WILL NEED TO SCAN THE PATIENT's ADDRESS AS A QR CODE -->
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+      <h3 class="form-title"> Create a Prescription </h3>
+      <form action="/prescriptions/new" method="POST">
+        <input class="form-control" type="text" name="drugName" placeholder="Drug Name" autofocus>
+        <div class="input-group">
+          <input  class="form-control" type="number" name="quantity" placeholder="Quantity">
+          <span class="input-group-addon">
+            <select name="measurement" id="measurementSelect">
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="tsp">tsp</option>
+              <option value="tbp">tbp</option>
+              <option value="pill">pill</option>
+              <option value="tablet">tablet</option>
+            </select>
+          </span>
+        </div>
+        <input class="form-control" type="text" name="frequency" placeholder="Frequency">
+        <input  class="form-control" type="textarea" name="note" placeholder="Further Details">
+        <div class="input-group">
+          <input class="form-control" id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">Read QRcode</button>
+          </span>
+        </div>
+        <input class="form-control" type="password" name="password" placeholder="Professional password">
+        <input class="btn btn-default form-submit" type="submit">
+      </form>
     </div>
+    <% include ./partials/_qr-code-reader-modal %>
   </body>
 </html>

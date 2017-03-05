@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
-  return knex("prescriptions_details").del().then(function () {
-    console.log("prescriptions_details deleted");
+  return knex("prescription_details").del().then(function () {
+    console.log("prescription_details deleted");
     return knex("prescriptions").del()
   }).then(function () {
     console.log("prescriptions deleted");
@@ -13,6 +13,6 @@ exports.seed = function(knex, Promise) {
     return knex("users").del()
   }).then(function () {
     console.log("users deleted");
-    console.log("=== END OF DELETION ===");
+    console.log("=== END OF DELETION SEED FILE ===");
   });
 }

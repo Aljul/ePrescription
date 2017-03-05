@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" id="index">
-  <head>
-    <title>ePrescription</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
+  <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      start if statement => if user corresponding to session[id] isDoctor === true {
-        this if statement will be one the server side
-      <div>
-        doctor's patients
-        or user's doctors depending on the data sent by server.
-        Build this query from prescription table (doctor's patients => user_id in prescription table where doctor_id = session[id] and vice-versa)
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <div id="prescriptions-header">
+      <% if (user.isDoctor === true) { %>
+        <h3>Your patients</h3>
+      <% } else { %>
+        <h3>Your doctors</h3>
+      <% } %>
       </div>
-      end if
+      <ul class="list-group">
+      <% if (usersList.length != 0) { %>
+        <% for (let i = usersList.length - 1; i >= 0; i--) { %>
+          <li class="list-group-item">
+            <% if (user.isDoctor === true) { %>
+              <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
+            <% } else { %>
+              <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
+              <p><%=`${usersList[i].speciality}`%></p>
+              <p><%=`Permit #${usersList[i].permit_number}`%></p>
+            <% } %>
+          </li>
+        <% } %>
+      <% } else { %>
+        <% if (user.isDoctor === true) { %>
+          <li class="list-group-item">Your currently have no patients</li>
+        <% } else { %>
+          <li class="list-group-item">Your currently have no doctors</li>
+        <% } %>
+      <% } %>
+      </ul>
     </div>
   </body>
 </html>

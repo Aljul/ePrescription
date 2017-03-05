@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "local": "./node_modules/.bin/nodemon --watch routes --watch server.js -e js server.js"
   },
   "repository": {
     "type": "git",
@@ -19,15 +20,25 @@
   "homepage": "https://github.com/Aljul/ePrescription#readme",
   "dependencies": {
     "bcrypt": "^1.0.2",
+    "bip39": "^2.2.0",
     "body-parser": "^1.16.1",
+    "bootstrap": "^3.3.7",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.1",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
+    "ethereumjs-tx": "^1.2.5",
+    "ethereumjs-wallet": "^0.6.0",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
     "knex": "^0.12.7",
     "pg": "^6.1.2",
     "truffle-contract": "^1.1.10",
-    "web3": "^0.18.2"
+    "web3": "^0.18.2",
+    "web3-provider-engine": "^9.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
