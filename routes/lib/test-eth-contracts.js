@@ -29,7 +29,10 @@ web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0xeab9085c947bf296aa2
   console.log("THE ADDRESS IS HERE" ,address)
   console.log("getting recipt txn")
 
-  console.log(web3.eth.getTransactionReceipt(address))
+  web3.eth.getTransactionReceipt(address, function(data){
+    console.log("the receipt is")
+    console.log(data)
+  })
 })
 
 web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 100000000}, function(err,address){
@@ -41,7 +44,9 @@ web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0x15ff0ba44ddceb2caee
   console.log("THE ADDRESS IS HERE" ,address)
   console.log("getting recipt txn")
 
-  console.log(web3.eth.getTransactionReceipt(address))
+  web3.eth.getTransactionReceipt(address, function(data){
+    console.log(data) // will returnn null beacuse transaction is NOT mined in the network
+  })
 })
   console.log("publish 1")
 
