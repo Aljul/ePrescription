@@ -2,6 +2,7 @@
 @import "login_register.css";
 @import "prescriptions.css";
 @import "users.css";
+@import "prescription_details.css";
 
 body {
   overflow-x: hidden;
