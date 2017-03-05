@@ -13,6 +13,10 @@ THis one runs it and lets you interact with it
 
 geth --identity "MyNodeName" --rpc --rpcport "4000" --rpccorsdomain "*" --datadir "/home/patrick/TestChain1/chain" --port "30303" --nodiscover --rpcapi "db,eth,net,web3" --networkid 1999 console
 
+
+to run to be able to unlock accounts (ONLY FOR TESTING)
+geth --identity "MyNodeName" --rpc --rpcport "4000" --rpccorsdomain "*" --datadir "/home/patrick/TestChain1/chain" --port "30303" --nodiscover --rpcapi "db,eth,net,web3,personal" --networkid 1999 console
+
 */
 
 TO MIGRATE SOMETHING TO THE TESTNETWORK:
