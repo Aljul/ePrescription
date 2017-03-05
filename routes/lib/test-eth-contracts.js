@@ -48,7 +48,7 @@ web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0x15ff0ba44ddceb2caee
 rpcCalls.publishPrescription(web3.eth.accounts[3], "this is the prescripiton", 'name').then(console.log)
 
   console.log("publish 2")
-debugger;
+
 rpcCalls.publishPrescription(web3.eth.accounts[3], "this is the prescripiton", 'name').then(console.log)
 .catch((err) => {console.log(("The error is ", err))})
 
@@ -84,5 +84,7 @@ rpcCalls.retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accoun
 }).then((response) => {
   // console.log(response);
 })
-S
+.catch((err) => {
+  console.log("caught error is", err)
+})
 })
