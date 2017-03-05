@@ -1,6 +1,9 @@
 @import "navbar.css";
 @import "login_register.css";
 @import "prescriptions.css";
+@import "users.css";
+@import "prescription_details.css";
+@import "prescription_new.css";
 
 body {
   overflow-x: hidden;

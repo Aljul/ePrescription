@@ -3,59 +3,38 @@
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <h3> Create a Prescription </h3>
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+      <h3 class="form-title"> Create a Prescription </h3>
       <form action="/prescriptions/new" method="POST">
-        Drug Name:
-        <input type="text" name="drugName" placeholder="Drug Name" value = "Nexium">
-        <br>
-        <br>
-        Quantity:
-        <input type="number" name="quantity" placeholder="Quantity" value="1">
-        <br>
-        <br>
-        Please choose a measurement:
-        <select name="measurement" id="measurementSelect">
-          <option value="mg">mg</option>
-          <option value="g">g</option>
-          <option value="kg">kg</option>
-          <option value="ml">ml</option>
-          <option value="l">l</option>
-          <option value="tsp">tsp</option>
-          <option value="tbp">tbp</option>
-          <option value="pill">pill</option>
-          <option value="tablet">tablet</option>
-        </select>
-        <br>
-        <br>
-        Frequency:
-        <input type="text" name="frequency" placeholder="Frequency">
-        <br>
-        <br>
-        Further Details:
-        <input type="textarea" name="note" placeholder="Further Details">
-        <br>
-        <br>
-        Patient's Address:
-        <input id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
-        <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">QR code Reader</button>
-        <br>
-        <br>
-        Enter you professional Password:
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit">
+        <input class="form-control" type="text" name="drugName" placeholder="Drug Name" autofocus>
+        <div class="input-group">
+          <input  class="form-control" type="number" name="quantity" placeholder="Quantity">
+          <span class="input-group-addon">
+            <select name="measurement" id="measurementSelect">
+              <option value="mg">mg</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="tsp">tsp</option>
+              <option value="tbp">tbp</option>
+              <option value="pill">pill</option>
+              <option value="tablet">tablet</option>
+            </select>
+          </span>
+        </div>
+        <input class="form-control" type="text" name="frequency" placeholder="Frequency">
+        <input  class="form-control" type="textarea" name="note" placeholder="Further Details">
+        <div class="input-group">
+          <input class="form-control" id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">Read QRcode</button>
+          </span>
+        </div>
+        <input class="form-control" type="password" name="password" placeholder="Professional password">
+        <input class="btn btn-default form-submit" type="submit">
       </form>
     </div>
-
-
-      <!-- THIS IS WHERE THE DOCTOR WILL NEED TO SCAN THE PATIENT's ADDRESS AS A QR CODE -->
-
-
-
-      <% include ./partials/_qr-code-reader-modal %>
-
-
-
-
+    <% include ./partials/_qr-code-reader-modal %>
   </body>
 </html>

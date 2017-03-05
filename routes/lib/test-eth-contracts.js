@@ -97,4 +97,5 @@ rpcCalls.retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accoun
 .catch((err) => {
   console.log("caught error is", err)
 })
+
 })

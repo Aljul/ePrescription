@@ -14,9 +14,10 @@
   background-color: #71eeb8;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 767px) {
   #username-logout #logout {
-    margin-left: 0;
+    margin: 0;
+    padding: 0;
   }
   .navbar-header {
     float: none;

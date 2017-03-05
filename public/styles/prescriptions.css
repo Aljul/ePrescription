@@ -6,6 +6,6 @@
   overflow: auto;
 }
 
-#prescriptions-header {
+.prescriptions-header {
   margin-bottom: 1em;
 }
