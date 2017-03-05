@@ -34,21 +34,27 @@ engine.on('error', function(err){
   console.error(err.stack)
 })
 
-engine.start(); // Required by the provider engine.
+// engine.send(data)tart(); // Required by the provider engine.
 
 
 module.exports = {
   networks: {
-      development: {
-       host: "localhost",
-       port: 8545,
-       network_id: "*" // Match any network id
-      },
-     "ropsten": {
-      network_id: 3,    // Official ropsten network id
-      provider: engine, // Use our custom provider
-      from: address,     // Use the address we derived
-      gas: 5183626
+    development: {
+     host: "localhost",
+     port: 8545,
+     network_id: "*" // Match any network id
+    },
+    ropsten: {
+    network_id: 3,    // Official ropsten network id
+    provider: engine, // Use our custom provider
+    from: address,     // Use the address we derived
+    gas: 5183626
+    },
+    private: {
+      host: "localhost",
+      port: 4000,
+      password: "password",
+      network_id: "*"
     }
   }
 }
