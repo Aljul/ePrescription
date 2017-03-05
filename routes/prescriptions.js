@@ -38,7 +38,7 @@ module.exports = (knex) => {
       dbHelpers.getMostRecentRxId(user_id).then((result) => {
         if (result[0].id) {
           return dbHelpers.rxObjectBuilder(result[0].id).then((result) => {
-            return res.render("prescription_details", { user: req.user, rxObject: {result} });
+            return res.render("prescription_details", { user: req.user, rxObject: result });
           });
         } else { res.redirect("/prescriptions") }
       })
