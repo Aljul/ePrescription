@@ -43,15 +43,33 @@ module.exports = (knex) => {
         } else { res.redirect("/prescriptions") }
       })
     } else {
-      dbHelpers.getPrescriptionById(rx_id).then( (rx) => {
-        if(user_id === rx[0].user_id || (req.user.isDoctor && user_id === rx[0].doctor_id)){
-          return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
-            return res.render("prescription_details", { user: req.user, rxObject: {result} });
+      dbHelpers.getPrescriptionById(rx_id).then((rx) => {
+        // If user is a doctor, checks if he's a doctor or the patient on the prescription
+        if (req.user.isDoctor) {
+          dbHelpers.getDoctorIdByUserId(user_id).then((doctor_id) => {
+            let userDoctorId = doctor_id;
+            if (user_id === rx[0].user_id || userDoctorId === rx[0].doctor_id) {
+              return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+                return res.render("prescription_details", { user: req.user, rxObject: result });
+              });
+            } else {
+              return res.send("You are not the doctor nor the patient on this prescription")
+            }
           });
+        // else if user is not a doctor and is the patient on the prescription, render it
+        } else {
+          if (user_id === rx[0].user_id) {
+            return dbHelpers.rxObjectBuilder(rx_id).then((result) => {
+              return res.render("prescription_details", { user: req.user, rxObject: result });
+            });
+          } else {
+            return res.send("You are not the patient on this prescription")
+          }
         }
-        return res.send("You are not the patient nor the doctor that emmited this prescription")
-        })
-
+      }).catch((err) => {
+        console.log(`${err} for id: ${rx_id}`);
+        return res.send(err);
+      });
     }
   });
 

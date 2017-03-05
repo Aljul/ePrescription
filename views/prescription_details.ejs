@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<% var prescription = rxObject%>
 <html lang="en" id="index">
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <div>
-        Prescription details
-        <%= JSON.stringify(rxObject) %>
-        <!-- This is where the QR code generator will be. It will be both for the SECRET and the CONTRACT ADDRESS. think about caching the address of the contract, not the secret-->
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <div class="prescriptions-header">
+        <h3> Prescription details </h3>
       </div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="badge pull-right"><%=rxObject.status%></span>
+          <p><%=`Dr.${rxObject.doctorName}`%></p>
+          <span class="badge pull-right"><%=`ID: ${rxObject.prescription_id}`%></span>
+          <p><%=(rxObject.createdAt).toString().substring(0, 24)%></p>
+        </li>
+        <li class="list-group-item">
+          <% for (let i = 0; i < rxObject.rxDetails.length; i++) { %>
+            <div class="prescription-details">
+              <p><%=`${rxObject.rxDetails[i].drugName}: Take ${rxObject.rxDetails[i].quantity} ${rxObject.rxDetails[i].measurement} ${rxObject.rxDetails[i].frequency}`%></p>
+              <% if (rxObject.rxDetails[i].note) { %>
+                <p><%=`Note: ${rxObject.rxDetails[i].note}`%></p>
+              <% } %>
+            </div>
+          <% } %>
+        </li>
+      </ul>
+      <div id="qrcode"></div>
     </div>
 
-<div id="rx_address"><%= rxObject.result.rxDetails[0].rx_address%></div>
-<section id="create_qr_code2">
-  <div id="qrcode" style="padding-left: 20px"></div>
-
-
-<script type="text/javascript">
-  console.log(document.getElementById("rx_address").innerHTML)
-  new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
-</script>
-
+    <div id="rx_address" hidden><%=rxObject.rxDetails[0].rx_address%></div>
+    <script type="text/javascript">
+      new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+    </script>
 
   </body>
 </html>

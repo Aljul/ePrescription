@@ -1,0 +1,20 @@
+.prescription-details {
+  margin-bottom: 0.6em;
+  border-bottom: 1px solid #aaa;
+  padding: 0.5em 0 0.17em 0;
+  color: #000;
+}
+
+#qrcode {
+  display: block;
+  margin: auto;
+  width: 50%;
+}
+
+@media (max-width: 450px) {
+  #qrcode {
+    display: block;
+    margin: 0;
+    width: 50%;
+  }
+}

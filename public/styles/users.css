@@ -1,0 +1,7 @@
+.list-group-item {
+  margin-bottom: 0.01em;
+}
+
+.list-group-item:hover {
+  border-color: #71eeb8;
+}
