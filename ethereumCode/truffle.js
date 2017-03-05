@@ -53,7 +53,6 @@ module.exports = {
     private: {
       host: "localhost",
       port: 4000,
-      password: "password",
       network_id: "*"
     }
   }

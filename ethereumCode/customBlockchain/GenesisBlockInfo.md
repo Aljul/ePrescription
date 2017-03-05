@@ -21,6 +21,9 @@ TO MIGRATE SOMETHING TO THE TESTNETWORK:
 2) Start mining
 3) Get going and deploy baby!
 
+FIRST ACCOUNT : 0xb4b62f0bd14b3b39cb1304f7b0cc105e71aec7fb
+personal.unlockAccount(personal.listAccounts[0])
+
 Right now the contract lives in 0xcbd99df91c9a8e481629568ad2ce7da68d7429b4
 THe unlock account is timed, look at ways to go around this
 
