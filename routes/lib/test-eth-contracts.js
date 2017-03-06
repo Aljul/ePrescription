@@ -6,10 +6,10 @@ var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 const web3   = new Web3();
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
-// web3.personal.unlockAccount(web3.eth.accounts[0], process.env.ETH_FIRST_ACCOUNT_PASSWORD, 1000)
-// web3.personal.unlockAccount(web3.eth.accounts[1], process.env.ETH_ACCOUNT_PASSWORD)
-// web3.personal.unlockAccount(web3.eth.accounts[2], process.env.ETH_ACCOUNT_PASSWORD)
-// web3.personal.unlockAccount(web3.eth.accounts[3], process.env.ETH_ACCOUNT_PASSWORD)
+web3.personal.unlockAccount(web3.eth.accounts[0], process.env.ETH_FIRST_ACCOUNT_PASSWORD, 1000)
+web3.personal.unlockAccount(web3.eth.accounts[1], process.env.ETH_ACCOUNT_PASSWORD)
+web3.personal.unlockAccount(web3.eth.accounts[2], process.env.ETH_ACCOUNT_PASSWORD)
+web3.personal.unlockAccount(web3.eth.accounts[3], process.env.ETH_ACCOUNT_PASSWORD)
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 const rpcCalls= require('./ethereum-contracts.js');
 

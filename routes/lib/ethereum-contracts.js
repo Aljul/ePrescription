@@ -67,22 +67,30 @@ module.exports = {
       contractInstance = instance;
       // console.log(contractInstance)
       console.log('hi')
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS, gasPrice: 10})
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(10)})
       })
       .then((data) => {
-      console.log(data.params)
       var rawTx = data.params[0];
-      rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address) + 20
+      var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
+      console.log(nonce)
+      rawTx.nonce = web3.toHex(nonce)
+      rawTx.gasLimit = web3.toHex(100)
+      rawTx.value = '0x00',
+      console.log(data.params[0])
+      // console.log(data.params)
+          // rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address)
 
       var tx = new EthereumTx(rawTx);
-      // console.log(tx)
+      console.log(tx)
       tx.sign(privateKey);
       // console.log(privateKey)
       var serializedTx = tx.serialize();
       // balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
       // console.log(balance)
-      // console.log(serializedTx.toString("hex"))
-      return web3.eth.sendRawTransaction("0x" + serializedTx.toString("hex"), {from: doctorKeys.public_key})
+      console.log(serializedTx);
+      console.log("SENDING THE TRANSACTION WITHT THE PUBLIC KEY OF ", doctorKeys.public_key)
+      console.log(tx.validate())
+      return web3.eth.sendRawTransaction('0x' + serializedTx.toString("hex"))
       })
       .then((result) => {
       console.log("this is the result",result)
