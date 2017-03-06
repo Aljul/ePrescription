@@ -3,6 +3,7 @@ pragma solidity ^0.4.4;
 contract Migrations {
   address public owner;
   uint public last_completed_migration;
+  uint migration_number = 3;
 
   modifier restricted() {
     if (msg.sender == owner) _;

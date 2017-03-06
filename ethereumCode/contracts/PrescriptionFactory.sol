@@ -8,6 +8,7 @@ contract PrescriptionFactory {
   mapping (address => bool) pharmacies; // can only be added by the owner
   mapping (address => Prescription[]) patientsPrescriptions;
   Prescription[] prescriptions;
+  uint migration_number = 3;
 
 
   event addingToDoctors(
@@ -57,7 +58,7 @@ contract PrescriptionFactory {
     selfdestruct(owner);
   }
 
-  function createPrescription(bytes32 name, bytes payload, address forWho) returns(Prescription prescriptionAddress){
+  function createPrescription(bytes32 name, string payload, address forWho) returns(Prescription prescriptionAddress){
     // should check if doctor is valid, then he can make prescriptions
     // if(!isDoctorTrusted(msg.sender)) throw;
 

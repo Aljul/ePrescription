@@ -5,17 +5,6 @@
   color: #000;
 }
 
-#qrcode {
-  display: block;
-  margin: auto;
-  height: 50%;
-  width: 50%;
-}
-
-@media (max-width: 450px) {
-  #qrcode {
-    display: block;
-    margin: 0 0 2em 0;
-    width: 50%;
-  }
+#qrcode img {
+  margin: 1em auto 2em;
 }

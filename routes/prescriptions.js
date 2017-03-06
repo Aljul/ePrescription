@@ -92,7 +92,7 @@ module.exports = (knex) => {
 
    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
   .then((user) => {
-    console.log(user)
+    // console.log(user)
     if(!user.length){
       throw "No user with that public key"
     }
@@ -108,13 +108,27 @@ module.exports = (knex) => {
         note: req.body.note,
         patientPublicKey: req.body.patientPublicKey
       }
-      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAME")
+      console.log(keys)
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
     })
     .then((txHash) => {
       console.log(txHash)
+      console.log("the prescription has been published")
+      // console.log(txHash.toString("hex"))
       var txDetails = eth_connect.getTransactionReceipt(txHash)
-      console.log(txDetails)
+      var count = 0
+      while(!txDetails){
+        count++;
+        txDetails = eth_connect.getTransactionReceipt(txHash)
+      }
+      console.log("the tx details are", txDetails)
+      console.log(count)
+      // eth_connect.getTransactionReceipt( txHash, function(err, result){
+      //   console.log("the receipt actually is" ,result)
+      // })
+      // console.log(txDetails)
        rxAddress = txDetails.logs[0].address;
+       console.log(rxAddress)
       return eth_connect.printPrescription(rxAddress)
     })
     .then((printedRx) => {
@@ -131,7 +145,7 @@ module.exports = (knex) => {
       return res.redirect(`${prescriptionId}`)
     })
     .catch((err) => {
-      return res.send("There was an error while adding the prescription to the blockchain or our DB:" + err)
+      return res.send("There was an error while adding the prescription to the blockchain or our DB: " + err)
     })
   });
 

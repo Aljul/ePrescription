@@ -17,14 +17,16 @@
         <% for (let i = rxHeaders.length - 1; i >= 0; i--) { %>
           <a <%=`href=/prescriptions/${rxHeaders[i].prescription_id}`%> class="list-group-item">
           <li class="list-group-item">
-            <span class="badge pull-right"><%=rxHeaders[i].status%></span>
             <% if (user.isDoctor) { %>
               <p><%=rxHeaders[i].patientName%></p>
             <% } else { %>
               <p><%=`Dr.${rxHeaders[i].doctorName}`%></p>
             <% } %>
-            <span class="badge pull-right"><%=`ID: ${rxHeaders[i].prescription_id}`%></span>
             <p><%=(rxHeaders[i].createdAt).toString().substring(0, 24)%></p>
+            <p>
+              <span class="badge"><%=rxHeaders[i].status%></span>
+              <span class="badge"><%=`ID: ${rxHeaders[i].prescription_id}`%></span>
+            </p>
           </li>
           </a>
         <% } %>

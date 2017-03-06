@@ -6,9 +6,11 @@ const PrescriptionJSON                = require('../../ethereumCode/build/contra
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
-var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+// var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3   = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 
 
@@ -56,30 +58,43 @@ module.exports = {
 
     const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
 
-    console.log(decoded)
+    // console.log(decoded)
     const privateKey = Buffer.from(decoded, 'hex')
-
+    console.log("THE PUBLIC KEY IS", doctorKeys.public_key)
+    var contractInstance;
     return PrescriptionFactory.deployed().then((instance) => {
-      console.log(instance)
-      let contractInstance = instance;
+      // console.log(instance)
+      contractInstance = instance;
       // console.log(contractInstance)
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
+      console.log('hi')
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(10)})
       })
       .then((data) => {
-      // console.log(data.params)
       var rawTx = data.params[0];
+      var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
+      console.log(nonce)
+      rawTx.nonce = web3.toHex(nonce)
+      rawTx.gasLimit = web3.toHex(100)
+      rawTx.value = '0x00',
+      console.log(data.params[0])
+      // console.log(data.params)
+          // rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address)
+
       var tx = new EthereumTx(rawTx);
-      // console.log(tx)
+      console.log(tx)
       tx.sign(privateKey);
       // console.log(privateKey)
       var serializedTx = tx.serialize();
-      balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
+      // balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
       // console.log(balance)
-      return web3.eth.sendRawTransaction(serializedTx.toString("hex"))
+      console.log(serializedTx);
+      console.log("SENDING THE TRANSACTION WITHT THE PUBLIC KEY OF ", doctorKeys.public_key)
+      console.log(tx.validate())
+      return web3.eth.sendRawTransaction('0x' + serializedTx.toString("hex"))
       })
       .then((result) => {
-      // console.log("this is the result",result)
-      return result;
+      console.log("this is the result",result)
+      return result.toString("hex");
       })
       .catch((err) => {
       console.log("THe error is: >>>>>>>>>", err)
@@ -149,8 +164,10 @@ module.exports = {
 
   printPrescription: function(prescriptionAddress){
     let prescriptionData, prescriptionName, docAddress, patientAddr;
-
+    console.log("HIII")
+    console.log(prescriptionAddress)
    return Prescription.at(prescriptionAddress).then(function(instance){
+    console.log("HIII")
       prescription = instance;
       // console.log(instance);
       return prescription.getPrescriptionData()
@@ -172,7 +189,7 @@ module.exports = {
       DATA: ${prescriptionData}`;
       return verbosePrescription
     }).catch((err) => {
-      console.log("The error is", err)
+      console.log("The error happened in printing the prescription", err)
       return err;
     })
   },

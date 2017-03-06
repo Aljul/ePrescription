@@ -11,7 +11,7 @@ contract('PrescriptionFactory', function(accounts) {
     var contractInstance;
     return contract.then(function(instance){
     contractInstance = instance;
-    return contractInstance.createPrescription("P1", "Data1", accounts[1]);
+    return contractInstance.createPrescription("P1", "Data1", accounts[1], {gas: 40000});
     }).then(() => {
       return contractInstance.createPrescription("P2", "Data2", accounts[2]);
     }).then(() => {
@@ -41,16 +41,6 @@ contract('PrescriptionFactory', function(accounts) {
       });
   });
 
-   it("should not let me add a trusted doctor to the mapping", function() {
-     return  contract.then(function(instance){
-      meta = instance;
-      return meta.addToDoctors(accounts[2], {from: accounts[1]});
-      }).then(function(receipt){
-        return meta.isDoctorTrusted.call(accounts[2]);
-      }).then(function(thebool){
-        assert.equal( thebool, false , "It did not add the doctor's address to the mapping");
-      });
-  });
 
   it("should add a trusted pharmacy to the mapping", function() {
      return  contract.then(function(instance){
@@ -82,5 +72,15 @@ contract('PrescriptionFactory', function(accounts) {
       assert.deepEqual(arrayOfPrescriptions, p3Prescriptions, 'Not all the prescriptions are the same')
     })
   })
+   it("should not let me add a trusted doctor to the mapping", function() {
+     return  contract.then(function(instance){
+      meta = instance;
+      return meta.addToDoctors(accounts[2], {from: accounts[1]});
+      }).then(function(receipt){
+        return meta.isDoctorTrusted.call(accounts[2]);
+      }).then(function(thebool){
+        assert.equal( thebool, false , "It did not add the doctor's address to the mapping");
+      });
+  });
 });
 
