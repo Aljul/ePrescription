@@ -12,7 +12,9 @@
           <li><%=userDetails.email%></li>
           <li><%=userDetails.address%></li>
           <li><%=userDetails.phone%></li>
-          <li><%=`Born ${(userDetails.birthdate).toString().substring(0, 15)}`%></li>
+          <% if (userDetails.isDoctor === false) { %>
+            <li><%=`Born ${(userDetails.birthdate).toString().substring(0, 15)}`%></li>
+          <% } %>
           <li><%=`Created ${(userDetails.created_at).toString().substring(0, 24)}`%></li>
         </ul>
       </div>

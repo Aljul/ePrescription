@@ -432,6 +432,7 @@ module.exports = function makeDbHelpers(knex) {
         "address",
         "phone",
         "birthdate",
+        "isDoctor",
         "created_at",
         "public_key"
       )
