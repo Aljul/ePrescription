@@ -11,7 +11,7 @@ contract('PrescriptionFactory', function(accounts) {
     var contractInstance;
     return contract.then(function(instance){
     contractInstance = instance;
-    return contractInstance.createPrescription("P1", "Data1", accounts[1]);
+    return contractInstance.createPrescription("P1", "Data1", accounts[1], {gas: 40000});
     }).then(() => {
       return contractInstance.createPrescription("P2", "Data2", accounts[2]);
     }).then(() => {

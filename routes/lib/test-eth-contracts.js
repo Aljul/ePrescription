@@ -40,15 +40,18 @@ web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0xeab9085c947bf296aa2
 })
 
 web3.eth.sendTransaction({from: web3.eth.accounts[0], to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 100000000}, function(err,address){
-  if(err){
   console.log("sending txn")
+  if(err){
 
     console.log("The erros is !!!!!!!", err)
   }
   console.log("THE ADDRESS IS HERE" ,address)
   console.log("getting recipt txn")
-
-  web3.eth.getTransactionReceipt(address, function(data){
+  receipt = web3.eth.getTransactionReceipt(address)
+  console.log(receipt)
+  web3.eth.getTransactionReceipt(address, function(err, data){
+    console.log("im returning thjis")
+    console.log(err)
     console.log(data) // will returnn null beacuse transaction is NOT mined in the network
   })
 })
@@ -60,6 +63,9 @@ rpcCalls.publishPrescription(web3.eth.accounts[3], "this is the prescripiton", '
 
 rpcCalls.publishPrescription(web3.eth.accounts[3], "this is the prescripiton", 'name').then(console.log)
 .catch((err) => {console.log(("The error is ", err))})
+
+// rpcCalls.publishPrescriptionSIGNED(web3.eth.accounts[3], "this is the prescripiton", 'name').then(console.log)
+// .catch((err) => {console.log(("The error is ", err))})
 
 rpcCalls.retrieveAllPrescriptionAddresses(web3.eth.accounts[3], web3.eth.accounts[0])
 

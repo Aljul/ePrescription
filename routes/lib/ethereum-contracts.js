@@ -60,29 +60,31 @@ module.exports = {
 
     // console.log(decoded)
     const privateKey = Buffer.from(decoded, 'hex')
-
+    var contractInstance;
     return PrescriptionFactory.deployed().then((instance) => {
       // console.log(instance)
-      let contractInstance = instance;
+      contractInstance = instance;
       // console.log(contractInstance)
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
+      console.log('hi')
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: 400000, gasPrice: 10})
       })
       .then((data) => {
-      // console.log(data.params)
+      console.log(data.params)
       var rawTx = data.params[0];
+      rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address)
       var tx = new EthereumTx(rawTx);
-      console.log(tx)
+      // console.log(tx)
       tx.sign(privateKey);
-      console.log(privateKey)
+      // console.log(privateKey)
       var serializedTx = tx.serialize();
-      balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
-      console.log(balance)
-      console.log(serializedTx.toString("hex"))
-      return web3.eth.sendRawTransaction("0x" + serializedTx.toString("hex"))
+      // balance = web3.eth.getBalance("0xeab9085c947bf296aa20d8301061659f0f100628")
+      // console.log(balance)
+      // console.log(serializedTx.toString("hex"))
+      return web3.eth.sendRawTransaction("0x" + serializedTx.toString("hex"), {from: doctorKeys.public_key})
       })
       .then((result) => {
       console.log("this is the result",result)
-      return result;
+      return result.toString("hex");
       })
       .catch((err) => {
       console.log("THe error is: >>>>>>>>>", err)
@@ -152,8 +154,10 @@ module.exports = {
 
   printPrescription: function(prescriptionAddress){
     let prescriptionData, prescriptionName, docAddress, patientAddr;
+    console.log("HIII")
 
    return Prescription.at(prescriptionAddress).then(function(instance){
+    console.log("HIII")
       prescription = instance;
       // console.log(instance);
       return prescription.getPrescriptionData()

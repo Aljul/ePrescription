@@ -6,7 +6,7 @@ contract Prescription {
 
   AbstractPrescriptionFactory creator;
   bytes32 public name;
-  bytes private data;
+  string  private data;
   address public issuingDoctor;
   address private patientAddress;
 
@@ -16,7 +16,7 @@ contract Prescription {
     bytes32 _message,
     uint _amount);
 
-  function Prescription(bytes32 prescriptionName,address doctorAddress, bytes thePrescription,  address patient) {
+  function Prescription(bytes32 prescriptionName,address doctorAddress, string  thePrescription,  address patient) {
     name = prescriptionName;
     issuingDoctor = doctorAddress;
     data = thePrescription;
@@ -34,7 +34,7 @@ contract Prescription {
 
   }
 
-  function getPrescriptionData() constant returns(bytes){
+  function getPrescriptionData() constant returns(string){
     return data;
   }
 
