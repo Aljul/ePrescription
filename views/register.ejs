@@ -15,11 +15,15 @@
           <input class="form-control" type="text" name="address" placeholder="Address">
           <input class="form-control" type="tel" name="phone" placeholder="Phone">
           <input id="birthdate" class="form-control" type="text" name="birthdate" placeholder="Birthdate" onfocus="(this.type='date')" onblur="(this.type='text')">
-          <input id="public_key" type="text" name="public_key" placeholder="Patient's Address" >
-        <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">QR code Reader</button>
+          <div class="input-group">
+            <input class="form-control" id="public_key" type="text" name="public_key" placeholder="Patient's Address" >
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">QR code Reader</button>
+            </span>
+          </div>
           <input class="btn btn-default form-submit" type="submit">
         </form>
-        <a href="/login">Already registered ? Click here to log in !</a>
+        <a class="login-register-link" href="/login">Already registered ? Click here to log in !</a>
       </div>
     </div>
 
