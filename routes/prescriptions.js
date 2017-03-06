@@ -118,6 +118,8 @@ module.exports = (knex) => {
       var count = 0
       while(!txDetails){
         count++;
+        console.log(count)
+          console.log(txDetails)
         txDetails = eth_connect.getTransactionReceipt(txHash)
       }
       console.log("the tx details are", txDetails)

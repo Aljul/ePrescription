@@ -48,6 +48,9 @@ module.exports = {
       factoryInstance = instance;
       return factoryInstance.addToDoctors("0xeab9085c947bf296aa20d8301061659f0f100628", {from: web3.eth.accounts[0], gas: GAS});
     }).then(function(message){
+
+        return factoryInstance.addToDoctors("0xb794f5ea0ba39494ce839613fffba74279579268", {from: web3.eth.accounts[0], gas: GAS});
+    }).then(function(message){
       // console.log(message)
       return factoryInstance.addToPharmacies(web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {

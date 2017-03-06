@@ -60,18 +60,20 @@ module.exports = {
 
     // console.log(decoded)
     const privateKey = Buffer.from(decoded, 'hex')
+    console.log("THE PUBLIC KEY IS", doctorKeys.public_key)
     var contractInstance;
     return PrescriptionFactory.deployed().then((instance) => {
       // console.log(instance)
       contractInstance = instance;
       // console.log(contractInstance)
       console.log('hi')
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: 400000, gasPrice: 10})
+      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS, gasPrice: 10})
       })
       .then((data) => {
       console.log(data.params)
       var rawTx = data.params[0];
-      rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address)
+      rawTx.nonce = web3.eth.getTransactionCount(contractInstance.address) + 20
+
       var tx = new EthereumTx(rawTx);
       // console.log(tx)
       tx.sign(privateKey);
@@ -155,7 +157,7 @@ module.exports = {
   printPrescription: function(prescriptionAddress){
     let prescriptionData, prescriptionName, docAddress, patientAddr;
     console.log("HIII")
-
+    console.log(prescriptionAddress)
    return Prescription.at(prescriptionAddress).then(function(instance){
     console.log("HIII")
       prescription = instance;
