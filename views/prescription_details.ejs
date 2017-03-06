@@ -9,10 +9,12 @@
       </div>
       <ul class="list-group">
         <li class="list-group-item">
-          <span class="badge pull-right"><%=rxObject.status%></span>
           <p><%=`Dr.${rxObject.doctorName}`%></p>
-          <span class="badge pull-right"><%=`ID: ${rxObject.prescription_id}`%></span>
           <p><%=(rxObject.createdAt).toString().substring(0, 24)%></p>
+          <p>
+            <span class="badge"><%=rxObject.status%></span>
+            <span class="badge"><%=`ID: ${rxObject.prescription_id}`%></span>
+          </p>
         </li>
         <li class="list-group-item">
           <% for (let i = 0; i < rxObject.rxDetails.length; i++) { %>

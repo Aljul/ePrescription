@@ -8,3 +8,12 @@
 body {
   overflow-x: hidden;
 }
+
+.badge {
+  color: black;
+  background-color: #71eeb8;
+}
+
+.input-group .form-control {
+  margin: 0;
+}
