@@ -33,9 +33,8 @@ module.exports = (knex) => {
       dbHelpers.getUsersDetailsById(user_id).then((result) => {
         res.render("user_details", { user: user, userDetails: result });
       });
+    // else he can only see users who are doctors.
     } else {
-      // if the user is not a doctor or not trying to view himself,
-      // he can only see users who are doctors.
       dbHelpers.isDoctorById(user_id).then((result) => {
         if (result === true) {
           dbHelpers.getUsersDetailsById(user_id).then((result) => {

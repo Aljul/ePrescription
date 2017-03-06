@@ -3,10 +3,26 @@
   <% include ./partials/_header %>
   <body class="index">
     <% include ./partials/_nav %>
-    <div class="container">
-      <div>
-        <%= JSON.stringify(userDetails) %>
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <div class="prescriptions-header">
+        <h3><%=`${userDetails.first_name} ${userDetails.last_name}`%></h3>
       </div>
+      <div>
+        <ul class="user-details">
+          <li><%=userDetails.email%></li>
+          <li><%=userDetails.address%></li>
+          <li><%=userDetails.phone%></li>
+          <li><%=`Born ${(userDetails.birthdate).toString().substring(0, 15)}`%></li>
+          <li><%=`Created ${(userDetails.created_at).toString().substring(0, 24)}`%></li>
+        </ul>
+      </div>
+      <div id="qrcode"></div>
     </div>
+
+    <div id="rx_address" hidden><%=userDetails.public_key%></div>
+    <script type="text/javascript">
+      new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+    </script>
+
   </body>
 </html>
