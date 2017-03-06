@@ -69,5 +69,4 @@ rpcCalls.retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accoun
 }).then((response) => {
   // console.log(response);
 })
-S
 })

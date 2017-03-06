@@ -60,6 +60,7 @@ module.exports = {
     const privateKey = Buffer.from(decoded, 'hex')
 
     return PrescriptionFactory.deployed().then((instance) => {
+      console.log(instance)
       let contractInstance = instance;
       // console.log(contractInstance)
       return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})

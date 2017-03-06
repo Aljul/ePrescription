@@ -60,6 +60,16 @@ exports.seed = function(knex, Promise) {
       birthdate: "1999-12-31",
       public_key: "0x6f46cf5569aefa1acc1009290c8e043747172d89",
       isDoctor: false
+    },
+    {
+      first_name: "test",
+      last_name: "doc",
+      email: "doc",
+      password_digest: seedHash,
+      address: "quelque part",
+      phone: "666-666-6666",
+      birthdate: "2000-12-31",
+      isDoctor: true
     }
   ]).then(function () {
     console.log("users seeded");
