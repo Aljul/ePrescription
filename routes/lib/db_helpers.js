@@ -452,6 +452,15 @@ module.exports = function makeDbHelpers(knex) {
       .then((result) => {
         return result[0].isDoctor;
       });
+    },
+
+    getAllUsersIdAndName: function() {
+      return knex
+      .select("id", "first_name", "last_name")
+      .from("users")
+      .then((result) => {
+        return result
+      });
     }
 
   }
