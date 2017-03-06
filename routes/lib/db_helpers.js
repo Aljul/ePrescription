@@ -422,6 +422,7 @@ module.exports = function makeDbHelpers(knex) {
       })
     },
 
+    // Get users details of user corresponding to id
     getUsersDetailsById: function(user_id) {
       return knex
       .select(
@@ -438,6 +439,17 @@ module.exports = function makeDbHelpers(knex) {
       .where("id", user_id)
       .then((result) => {
         return result[0];
+      });
+    },
+
+    // Checks if user corresponding to id is a doctor
+    isDoctorById: function(user_id) {
+      return knex
+      .select("isDoctor")
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        return result[0].isDoctor;
       });
     }
 

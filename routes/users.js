@@ -27,10 +27,25 @@ module.exports = (knex) => {
 
   router.get("/:id", (req, res) => {
     let user_id = req.params.id;
-    dbHelpers.getUsersDetailsById(user_id).then((result) => {
-      console.log(result);
-    });
-    res.render("user_details", { user: req.user });
+    let user = req.user
+    // if the user is a doctor or is trying to view himself, render the page
+    if (user.isDoctor || user.id === Number(user_id)) {
+      dbHelpers.getUsersDetailsById(user_id).then((result) => {
+        res.render("user_details", { user: user, userDetails: result });
+      });
+    } else {
+      // if the user is not a doctor or not trying to view himself,
+      // he can only see users who are doctors.
+      dbHelpers.isDoctorById(user_id).then((result) => {
+        if (result === true) {
+          dbHelpers.getUsersDetailsById(user_id).then((result) => {
+            res.render("user_details", { user: user, userDetails: result });
+          });
+        } else {
+          res.send("You are not authorised to view this user");
+        }
+      })
+    }
   });
 
   // ***** POST routes *****
