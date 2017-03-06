@@ -5,7 +5,7 @@ let saltRounds = 10;
 module.exports = function makeDbHelpers(knex) {
   return {
 
-    // Checks if email is in database
+    // Checks if "email" is in database
     emailAvailable: function(email) {
       return knex
       .select("email")
@@ -420,6 +420,26 @@ module.exports = function makeDbHelpers(knex) {
       }).then(() => {
         return prescriptionId;
       })
+    },
+
+    getUsersDetailsById: function(user_id) {
+      return knex
+      .select(
+        "email",
+        "first_name",
+        "last_name",
+        "address",
+        "phone",
+        "birthdate",
+        "created_at",
+        "public_key"
+      )
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        return result[0];
+      });
     }
+
   }
 }

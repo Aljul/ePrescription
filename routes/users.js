@@ -26,6 +26,10 @@ module.exports = (knex) => {
   });
 
   router.get("/:id", (req, res) => {
+    let user_id = req.params.id;
+    dbHelpers.getUsersDetailsById(user_id).then((result) => {
+      console.log(result);
+    });
     res.render("user_details", { user: req.user });
   });
 
