@@ -57,9 +57,14 @@ module.exports = {
   publishPrescriptionSIGNED: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
 
     const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
-
-    // console.log(decoded)
     const privateKey = Buffer.from(decoded, 'hex')
+
+    let secret = encryption.generateSecret();
+    console.log("the secret is", secret)
+    let encryptedPrescription = encryption.createCipher(secret, prescriptionData);
+    console.log("here is the encrypted prescription", encryptedPrescription);
+    console.log("and here is the decrypted prescription", encryption.decipher(secret, encryptedPrescription));
+
     console.log("THE PUBLIC KEY IS", doctorKeys.public_key)
     var contractInstance;
     return PrescriptionFactory.deployed().then((instance) => {
@@ -67,7 +72,7 @@ module.exports = {
       contractInstance = instance;
       // console.log(contractInstance)
       console.log('hi')
-      return contractInstance.createPrescription.request(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(10)})
+      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(10)})
       })
       .then((data) => {
       var rawTx = data.params[0];

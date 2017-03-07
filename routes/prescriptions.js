@@ -88,7 +88,7 @@ module.exports = (knex) => {
         return res.send('need to be filled')
       }
     }
-
+    console.log(req.body);
 // first check if the patient's public key matches a patient
 
    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
@@ -102,7 +102,7 @@ module.exports = (knex) => {
     })
     .then((keys) => {
       let prescriptionData = {
-        drugName: req.body.drugName,
+        drugName: req.body.drugName.toLowerCase(),
         quantity:  req.body.quantity,
         measurement: req.body.measurement,
         frequency: req.body.frequency,
