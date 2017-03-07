@@ -16,9 +16,9 @@
         <% for (let i = usersList.length - 1; i >= 0; i--) { %>
           <li class="list-group-item">
             <% if (user.isDoctor === true) { %>
-              <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
+              <p><a href=<%=`users/${usersList[i].id}`%>><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></a></p>
             <% } else { %>
-              <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
+              <p><a href=<%=`users/${usersList[i].id}`%>><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></a></p>
               <p><%=`${usersList[i].speciality}`%></p>
               <p><%=`Permit #${usersList[i].permit_number}`%></p>
             <% } %>
