@@ -1,6 +1,5 @@
 "use strict";
 
-
 const express = require('express');
 const router  = express.Router();
 const eth_connect = require('./lib/ethereum-contracts.js');

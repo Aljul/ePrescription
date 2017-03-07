@@ -18,6 +18,7 @@ const cookieParser  = require('cookie-parser')
 const mainRoutes  = require("./routes/main");
 const prescriptionsRoutes  = require("./routes/prescriptions");
 const usersRoutes  = require("./routes/users");
+const pharmaciesRoutes = require("./routes/pharmacies");
 
 // require our middleware.js
 const middleware = require("./routes/lib/middleware")
@@ -60,6 +61,7 @@ app.use(middleware);
 app.use("/", mainRoutes(knex));
 app.use("/prescriptions", prescriptionsRoutes(knex));
 app.use("/users", usersRoutes(knex));
+app.use("/pharmacies", pharmaciesRoutes(knex));
 
 // listening on port
 app.listen(PORT, () => {

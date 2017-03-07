@@ -23,6 +23,10 @@ module.exports = (knex) => {
     } else { res.redirect("/"); }
   });
 
+  router.get("/loginPharmacies", (req, res) => {
+    res.render("login_pharmacies", { user : null });
+  });
+
   router.get("/logout", (req, res) => {
     req.session["user"] = null;
     res.redirect('/login');
