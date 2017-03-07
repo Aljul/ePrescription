@@ -35,7 +35,6 @@ $(document).ready(function(){
       $(".overlay-holder").attr('id', 'overlay')
   })
 
-
   // Set first user in list as default value of public_key
   let defaultVal = $('#usersList option:selected').val();
   $("#public_key").val(defaultVal);
