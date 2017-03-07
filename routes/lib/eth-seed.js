@@ -34,11 +34,13 @@ module.exports = {
     }).then((message) => {
       // console.log(message)
 
-      return factoryInstance.createPrescription("Test", "Test Prescription", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS})
+      return factoryInstance.createPrescription("First Prescription", "One apple a day keeps the doctor away", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
-      console.log(message.logs[0])
+
+      console.log("the prescription message is ", message.logs[0])
       // createdPrescription = message.logs[0].args._theAddress;
-      return "Done";
+      console.log(message.logs[0].args._theAddress)
+      return message.logs[0].args._theAddress;
     }).catch((err) => {
       console.log("the error is ", err);
       return err;
@@ -52,23 +54,23 @@ module.exports = {
     return contract.then(function(instance){
     contractInstance = instance;
     // console.log(instance)
-    return contractInstance.createPrescription("P1", "Data1", web3.eth.accounts[1], {from: web3.eth.accounts[0], gas: GAS});
+    return contractInstance.createPrescription("Prescription 1", "Prescription Data 1", web3.eth.accounts[1], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
       // console.log(message)
 
-      return contractInstance.createPrescription("P2", "Data2", web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS});
+      return contractInstance.createPrescription("Prescription 2", "Prescription Data 2", web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
       // console.log(message)
 
-      return contractInstance.createPrescription("P3", "Data3", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
+      return contractInstance.createPrescription("Prescription 3", "Prescription Data 3", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
       // console.log(message)
       // p3Prescriptions.push(message.logs[0].args._theAddress);
-      return contractInstance.createPrescription("P4", "Data4", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
+      return contractInstance.createPrescription("Prescription 4", "Prescription Data 4", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
       // console.log(message)
       // p3Prescriptions.push(message.logs[0].args._theAddress);
-      return contractInstance.createPrescription("P5", "Data5", web3.eth.accounts[3],  {from: web3.eth.accounts[0], gas: GAS});
+      return contractInstance.createPrescription("Prescription 5", "Prescription Data 5", web3.eth.accounts[3],  {from: web3.eth.accounts[0], gas: GAS});
     }).then((message) => {
       // console.log(message)
       // console.log(web3.eth.accounts[0])

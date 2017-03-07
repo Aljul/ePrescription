@@ -14,10 +14,13 @@ web3.personal.unlockAccount(web3.eth.accounts[3], process.env.ETH_ACCOUNT_PASSWO
 const rpcCalls= require('./ethereum-contracts.js');
 
 // seed if testrpc is clean
-var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
 
+
+var accountTotal = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
+console.log(accountTotal)
   console.log("start")
-  rpcCalls.seedPrescriptionFactory().then(() => {
+  rpcCalls.seedPrescriptionFactory().then((address) => {
+  rpcCalls.printPrescription(address)
   console.log("after seeding pfactory")
 
   return rpcCalls.seedPrescriptions();
@@ -85,7 +88,7 @@ rpcCalls.retrieveLatestPrescriptionAddress(web3.eth.accounts[2], web3.eth.accoun
   // console.log(address)
   return rpcCalls.printPrescription(address)
 }).then((data) => {
-  // console.log(data);
+  console.log(data);
 })
 
 

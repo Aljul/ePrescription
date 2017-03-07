@@ -407,7 +407,7 @@
       },
       "links": {},
       "address": "0x527e64411d362ea14193cc982f713886f8e554ec",
-      "updated_at": 1488838516678
+      "updated_at": 1488921484442
     },
     "2017": {
       "events": {
@@ -726,5 +726,5 @@
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1488918959539
+  "updated_at": 1488921484442
 }

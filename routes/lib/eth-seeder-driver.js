@@ -25,11 +25,11 @@ Prescription.setProvider(provider);
 AbstractPrescriptionFactory.setProvider(provider);
 
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
-web3.personal.unlockAccount(web3.eth.accounts[0], process.env.ETH_ACCOUNT_PASSWORD, 1000)
-web3.personal.unlockAccount(web3.eth.accounts[1], process.env.ETH_ACCOUNT_PASSWORD)
-web3.personal.unlockAccount(web3.eth.accounts[2], process.env.ETH_ACCOUNT_PASSWORD)
-web3.personal.unlockAccount(web3.eth.accounts[3], process.env.ETH_ACCOUNT_PASSWORD)
-// connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
+// web3.personal.unlockAccount(web3.eth.accounts[0], process.env.ETH_ACCOUNT_PASSWORD, 1000)
+// web3.personal.unlockAccount(web3.eth.accounts[1], process.env.ETH_ACCOUNT_PASSWORD)
+// web3.personal.unlockAccount(web3.eth.accounts[2], process.env.ETH_ACCOUNT_PASSWORD)
+// web3.personal.unlockAccount(web3.eth.accounts[3], process.env.ETH_ACCOUNT_PASSWORD)
+// // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 seed.deployContracts(web3, PrescriptionFactory, Prescription)
 .then(() => {
   seed.initializeAddresses(web3)

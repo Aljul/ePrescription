@@ -6,14 +6,14 @@ const PrescriptionJSON                = require('../../ethereumCode/build/contra
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
-// var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3   = new Web3();
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
-web3.setProvider(new web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545'));
-var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545');
+// web3.setProvider(new web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545'));
+// var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545');
 
 // set the contract abstractions so we can directly call their functions
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
@@ -106,21 +106,7 @@ module.exports = {
       console.log("THe error is: >>>>>>>>>", err)
       throw err;
     })
-   //  // const privateKey = Buffer.from(encryption.decipher(doctorKeys.priv_key, docPassword), 'hex')
-   // return PrescriptionFactory.deployed().then(function(instance){
-   //  var contractInstance = instance;
-   //  return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: doctorKeys.public_key, gas: GAS})
-   // }).then((message) => {
-   //  // console.log(message)
-   //  if(message.logs.length == 0){
-   //    throw 'Something went wrong when creating the prescription';
-   //  }
-   //  // console.log(message.logs[0].args._theAddress);
-   //  return message.logs[0].args._theAddress
-   // }).catch((err) => {
-   //  // console.log(err)
-   //  return err;
-   //  })
+
    },
 
   retrieveAllPrescriptionAddresses: function(patientAddress, doctorAddress){
@@ -178,9 +164,11 @@ module.exports = {
       // console.log(instance);
       return prescription.getPrescriptionData()
     }).then((data) => {
-      prescriptionData = web3.toAscii(data);
+      console.log("the data is",data)
+      prescriptionData = data
       return prescription.name()
     }).then((name) => {
+      console.log(name)
       prescriptionName = web3.toAscii(name);
       return prescription.issuingDoctor()
     }).then((doctor) => {
