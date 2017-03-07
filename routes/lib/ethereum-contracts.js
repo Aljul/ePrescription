@@ -12,7 +12,7 @@ const encryption                      = require('./encryption.js');
 
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 const web3   = new Web3();
-web3.setProvider(new web3.providers.HttpProvider(process.env.TUNNEL));
+// web3.setProvider(new web3.providers.HttpProvider(process.env.TUNNEL));
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 
@@ -25,7 +25,7 @@ var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 4000000
+const GAS = 30000000000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
@@ -79,14 +79,14 @@ module.exports = {
       contractInstance = instance;
       // console.log(contractInstance)
       console.log('hi')
-      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(10)})
+      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(20000000000)})
       })
       .then((data) => {
       var rawTx = data.params[0];
       var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
       console.log(nonce)
       rawTx.nonce = web3.toHex(nonce)
-      rawTx.gasLimit = web3.toHex(100)
+      rawTx.gasLimit = web3.toHex(50000000000)
       rawTx.value = '0x00',
       console.log(data.params[0])
       // console.log(data.params)
