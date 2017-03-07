@@ -22,13 +22,14 @@ module.exports = (knex) => {
   });
 
   router.get("/new", (req, res) => {
-    if(req.user.isDoctor){
-    res.render("prescription_new", { user: req.user });
+    if (req.user.isDoctor) {
+      dbHelpers.getAllUsersIdAndName().then((usersNamesAndId) => {
+        res.render("prescription_new", { user: req.user, usersList: usersNamesAndId });
+      });
     } else {
       //give him an error message saying he is not a doctor and cannot create a new prescription
       res.redirect('/prescriptions');
     }
-
   });
 
   router.get("/:id", (req, res) => {
