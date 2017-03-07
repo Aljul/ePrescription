@@ -1,6 +1,7 @@
 const bcrypt  = require('bcrypt');
 let saltRounds = 10;
 
+
 // Here goes db functions that require database interaction
 module.exports = function makeDbHelpers(knex) {
   return {
@@ -10,7 +11,7 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("email")
       .from("users")
-      .where("email", email)
+      .where("email", email.toLowerCase())
     },
 
     // Get most recent prescription for user_id
@@ -294,7 +295,7 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id", "password_digest", "first_name", "last_name", "isDoctor")
       .from("users")
-      .where("email", email)
+      .where("email", email.toLowerCase().trim())
       .then((result) => {
         if (!result[0]) {
           callback(null, "Email is invalid");
@@ -308,13 +309,14 @@ module.exports = function makeDbHelpers(knex) {
 
     // Insert new user into database
     register: function(userObject, callback) {
+      console.log(userObject)
       knex
       .returning(["id","isDoctor"])
       .insert({
-        email: userObject.email,
+        email: userObject.email.toLowerCase(),
         password_digest: bcrypt.hashSync(userObject.password, saltRounds),
-        first_name: userObject.firstName,
-        last_name: userObject.lastName,
+        first_name: userObject.first_name,
+        last_name: userObject.last_name,
         address: userObject.address,
         phone: userObject.phone,
         birthdate: userObject.birthdate,
@@ -334,7 +336,7 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id")
       .from("drugs")
-      .where("name", drugName)
+      .where("name", drugName.toLowerCase())
       .then((result) => {
         // console.log(result)
         if(result.length === 0){

@@ -42,7 +42,7 @@ exports.seed = function(knex, Promise) {
     {
       first_name: "Marc",
       last_name: "Bergevin",
-      email: "Marc.Bergevin@email.com",
+      email: "marc.bergevin@email.com",
       password_digest: seedHash,
       address: "1909 av. des canadiens",
       phone: "444-444-4444",
