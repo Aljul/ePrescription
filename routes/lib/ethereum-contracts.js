@@ -7,11 +7,11 @@ const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contra
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
 var provider = new Web3.providers.HttpProvider("http://localhost:4000");
-var provider = new Web3.providers.HttpProvider("https://akplisctxj.localtunnel.me");
+var provider = new Web3.providers.HttpProvider("https://llnoxrmnxn.localtunnel.me");
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3   = new Web3();
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
-web3.setProvider(new web3.providers.HttpProvider('https://akplisctxj.localtunnel.me'));
+web3.setProvider(new web3.providers.HttpProvider('https://llnoxrmnxn.localtunnel.me'));
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 
