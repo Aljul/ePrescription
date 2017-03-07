@@ -49,4 +49,11 @@ $(document).ready(function(){
     $("#public_key_hidden").val(selectVal);
   });
 
+
+
+// var dk = keythereum.create();
+// console.log(dk)
+// var keyObject = keythereum.dump("hello", dk.privateKey, dk.salt, dk.iv);
+// console.log(keyObject)
+
 });
