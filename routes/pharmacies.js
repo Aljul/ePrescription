@@ -43,7 +43,7 @@ module.exports = (knex) => {
     let email = req.body.email;
     let password = req.body.password;
     dbHelpers.logInPharmacy(email, password, function(pharmacyObject, err) {
-      if (err) { return res.send(err) }
+      if (err) { return res.render("error_page", { err : err }) }
       appHelpers.buildPharmacyCookie(req, pharmacyObject);
       res.redirect("/pharmacies");
     });

@@ -6,6 +6,7 @@
 @import "prescription_details.css";
 @import "prescription_new.css";
 @import "user_details.css";
+@import "error_page.css";
 
 body {
   overflow-x: hidden;

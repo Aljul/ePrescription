@@ -41,7 +41,7 @@ module.exports = (knex) => {
     let email = req.body.email;
     let password = req.body.password;
     dbHelpers.logIn(email, password, function(userObject, err) {
-      if (err) { return res.send(err) }
+      if (err) { return res.render("error_page", { err : err }) }
       appHelpers.buildUserCookie(req, userObject);
       res.redirect("/");
     });

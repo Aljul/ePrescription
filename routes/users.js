@@ -41,7 +41,8 @@ module.exports = (knex) => {
             res.render("user_details", { user: user, userDetails: result });
           });
         } else {
-          res.send("You are not authorised to view this user");
+          let err = "You are not authorised to view this user";
+          return res.render("error_page", { err : err })
         }
       })
     }
@@ -68,8 +69,6 @@ module.exports = (knex) => {
     }
     // return array of empty keys in userObject
     let emptyKeys = appHelpers.validatesObject(userObject);
-    console.log(userObject)
-    console.log(emptyKeys)
     if (!emptyKeys.length) {
       dbHelpers.emailAvailable(userObject.email).then((result) => {
         if (!result[0]) {
@@ -78,13 +77,22 @@ module.exports = (knex) => {
               appHelpers.buildUserCookie(req, expandedUserObject);
               res.redirect("/");
             });
-          } else { res.send("passwords do not match") }
-        } else { res.send("email already exists") }
+          } else {
+            let err = "Passwords do not match";
+            return res.render("error_page", { err : err })
+          }
+        } else {
+          let err = "Email already exists";
+          return res.render("error_page", { err : err })
+        }
       });
     } else {
-      // console.log(req.flash("true", "true"))
-      // req.flash('info', 'Flash is back!')
-      res.redirect('/register')
+      let missingFields = "";
+      for (let i = 0; i < emptyKeys.length; i++) {
+        emptyKeys[i] === "public_key" ? missingFields += "Patient's Address<br>" : missingFields += `${emptyKeys[i]}<br>`;
+      }
+      let err = `<b>Make sure to fill all of the following fields</b><br>${missingFields}`;
+      return res.render("error_page", { err : err })
     }
   });
 

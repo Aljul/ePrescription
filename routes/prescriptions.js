@@ -14,7 +14,6 @@ module.exports = (knex) => {
   router.get("/", (req, res) => {
     let user_id = req.user.id;
     let isDoctor = req.user.isDoctor;
-    // if user isn't doctor
     dbHelpers.getUserRxHeadersList(user_id, isDoctor).then((rxHeadersArray) => {
       res.render("prescriptions", { user: req.user, rxHeaders: rxHeadersArray });
     });
@@ -26,8 +25,8 @@ module.exports = (knex) => {
         res.render("prescription_new", { user: req.user, usersList: usersNamesAndId });
       });
     } else {
-      //give him an error message saying he is not a doctor and cannot create a new prescription
-      res.redirect('/prescriptions');
+      let err = "Only doctors can issue a prescription"
+      return res.render("error_page", { err : err })
     }
   });
 
@@ -53,7 +52,8 @@ module.exports = (knex) => {
                 return res.render("prescription_details", { user: req.user, rxObject: result });
               });
             } else {
-              return res.send("You are not the doctor nor the patient on this prescription")
+              let err = "You are not the doctor nor the patient on this prescription";
+              return res.render("error_page", { err : err })
             }
           });
         // else if user is not a doctor and is the patient on the prescription, render it
@@ -63,12 +63,13 @@ module.exports = (knex) => {
               return res.render("prescription_details", { user: req.user, rxObject: result });
             });
           } else {
-            return res.send("You are not the patient on this prescription")
+            let err = "You are not the patient on this prescription";
+            return res.render("error_page", { err : err })
           }
         }
       }).catch((err) => {
         console.log(`${err} for id: ${rx_id}`);
-        return res.send(err);
+        return res.render("error_page", { err : err })
       });
     }
   });
@@ -77,7 +78,6 @@ module.exports = (knex) => {
 
   router.post("/new", (req, res) => {
     let rxAddress;
-
     if(!req.user.isDoctor){
       return res.send('Not a doctor, you cannot do this');
     }
@@ -88,20 +88,17 @@ module.exports = (knex) => {
       }
     }
     console.log(req.body);
-// first check if the patient's public key matches a patient
-  let secret;
-   dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
-  .then((user) => {
+    // first check if the patient's public key matches a patient
+    let secret;
+    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey).then((user) => {
     // console.log(user)
-
-    if(!user.length){
-      throw "No user with that public key"
-    }
-    return dbHelpers.getDrugId(req.body.drugName)
+      if (!user.length) {
+        throw "No user with that public key"
+      }
+      return dbHelpers.getDrugId(req.body.drugName)
     }).then(() => {
-    return dbHelpers.getDoctorKeys(req.user.id)
-    })
-    .then((keys) => {
+      return dbHelpers.getDoctorKeys(req.user.id)
+    }).then((keys) => {
       let prescriptionData = {
         drugName: req.body.drugName.toLowerCase(),
         quantity:  req.body.quantity,
@@ -112,8 +109,7 @@ module.exports = (knex) => {
       }
       console.log(keys)
       return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
-    })
-    .then((txObject) => {
+    }).then((txObject) => {
       secret = txObject.secret;
       console.log(txObject.txHash)
       console.log("the prescription has been published")
@@ -148,7 +144,8 @@ module.exports = (knex) => {
       return res.redirect(`${prescriptionId}`)
     })
     .catch((err) => {
-      return res.send("There was an error while adding the prescription to the blockchain or our DB: " + err)
+      let errMsg = `There was an error while adding the prescription to the blockchain or our DB: ${err}`;
+      return res.render("error_page", { err : errMsg })
     })
   });
 
