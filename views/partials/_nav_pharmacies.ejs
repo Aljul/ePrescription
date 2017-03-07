@@ -1,18 +1,17 @@
-<nav id="nav" class="navbar navbar-default navbar-static-top">
-  <div class="navbar-header">
+<nav id="nav-pharma" class="navbar navbar-default navbar-static-top">
+  <div class="navbar navbar-pharma">
     <a class="navbar-brand" href="/">ePrescription</a>
-    <a class="navbar-brand pull-right" href="/pharmacies/login">Pharmacies</a>
-  </div>
   <% if (pharmacy) { %>
-    <ul class="nav navbar-nav navbar-right">
-      <li>
+    <ul id="pharmacyEmail-logout" class="nav navbar-nav navbar-right">
+      <li id="pharmacyEmail">
         <p class="navbar-text navbar-right">
           <%=pharmacy.pharmacyEmail%>
         </p>
       </li>
-      <liclass="nav-item">
+      <li id="logout-pharma" class="nav-item">
         <a href="/pharmacies/logout">Logout</a>
       </li>
     </ul>
   <% } %>
+  </div>
 </nav>
