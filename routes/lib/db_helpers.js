@@ -339,7 +339,7 @@ module.exports = function makeDbHelpers(knex) {
       .from("drugs")
       .where("name", drugName.toLowerCase())
       .then((result) => {
-        // console.log(result)
+        console.log(result)
         if(result.length === 0){
           throw "Error, drug not found"
         }

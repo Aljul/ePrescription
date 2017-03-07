@@ -98,8 +98,9 @@ module.exports = (knex) => {
     if(!user.length){
       throw "No user with that public key"
     }
-    return dbHelpers.getDoctorKeys(req.user.id) // Add the prescription to the blockchain
-// so far, to add to the blockchain, i need to use an address from testrpc which is WEIRD
+    return dbHelpers.getDrugId(req.body.drugName)
+    }).then(() => {
+    return dbHelpers.getDoctorKeys(req.user.id)
     })
     .then((keys) => {
       let prescriptionData = {
