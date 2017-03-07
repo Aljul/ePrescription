@@ -25,7 +25,7 @@ var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 30000000000
+const GAS = 500000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
@@ -86,7 +86,7 @@ module.exports = {
       var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
       console.log(nonce)
       rawTx.nonce = web3.toHex(nonce)
-      rawTx.gasLimit = web3.toHex(50000000000)
+      rawTx.gasLimit = web3.toHex(4000000)
       rawTx.value = '0x00',
       console.log(data.params[0])
       // console.log(data.params)
