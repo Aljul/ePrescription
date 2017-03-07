@@ -30,7 +30,7 @@ module.exports = {
     }).then(function(message){
       // console.log(message)
       // will need to add actual pharmacy address
-      return factoryInstance.addToPharmacies(web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS})
+      return factoryInstance.addToPharmacies("0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7", {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
       // console.log(message)
 

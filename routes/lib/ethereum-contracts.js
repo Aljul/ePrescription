@@ -6,13 +6,14 @@ const PrescriptionJSON                = require('../../ethereumCode/build/contra
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
-var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+// var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 const web3   = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
-
+web3.setProvider(new web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545'));
+var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545');
 
 // set the contract abstractions so we can directly call their functions
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
