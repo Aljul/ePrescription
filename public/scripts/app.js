@@ -29,6 +29,12 @@ $(document).ready(function(){
     console.log('Fired at start of hide event!');
   });
 
+  $(".prescription-submit").on('click', function(e){
+      $(".loader-holder").addClass("loader")
+      $(".holder").addClass("blur")
+      $(".overlay-holder").attr('id', 'overlay')
+  })
+
   // Set first user in list as default value of public_key
   let defaultVal = $('#usersList option:selected').val();
   $("#public_key").val(defaultVal);
