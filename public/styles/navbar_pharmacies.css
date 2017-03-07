@@ -1,0 +1,25 @@
+#nav-pharma {
+  display: inline-block;
+  width: 100%;
+}
+
+#pharmacyEmail-logout {
+  padding-right: 1em;
+}
+
+#pharmacyEmail-logout #pharmacyEmail {
+  padding: 0 15px;
+}
+
+#pharmacyEmail-logout #logout-pharma {
+  margin-left: 15px;
+}
+
+.navbar-pharma {
+  margin: 0;
+  border: 0;
+}
+
+.navbar-pharma .navbar-brand:hover {
+  background-color: #71eeb8;
+}
