@@ -32,6 +32,7 @@
     "ethereumjs-wallet": "^0.6.0",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
+    "keythereum": "^0.4.3",
     "knex": "^0.12.7",
     "pg": "^6.1.2",
     "truffle-contract": "^1.1.10",

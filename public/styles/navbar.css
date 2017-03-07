@@ -14,13 +14,18 @@
   background-color: #71eeb8;
 }
 
+.navbar-header {
+  float: none;
+}
+
+.navbar-header .navbar-brand:hover {
+  background-color: #71eeb8;
+}
+
 @media (max-width: 767px) {
   #username-logout #logout {
     margin: 0;
     padding: 0;
-  }
-  .navbar-header {
-    float: none;
   }
   .navbar-left,.navbar-right {
     float: none !important;

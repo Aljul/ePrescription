@@ -26,11 +26,10 @@
 }
 
 .form-submit:focus {
-  border-color: #71eeb8;
   background-color: #71eeb8;
 }
 
-.login-register-link {
+.bottom-link {
   padding-bottom: 5em;
 }
 

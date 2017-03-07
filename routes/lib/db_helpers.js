@@ -1,16 +1,17 @@
 const bcrypt  = require('bcrypt');
 let saltRounds = 10;
 
+
 // Here goes db functions that require database interaction
 module.exports = function makeDbHelpers(knex) {
   return {
 
-    // Checks if email is in database
+    // Checks if "email" is in database
     emailAvailable: function(email) {
       return knex
       .select("email")
       .from("users")
-      .where("email", email)
+      .where("email", email.toLowerCase())
     },
 
     // Get most recent prescription for user_id
@@ -224,6 +225,7 @@ module.exports = function makeDbHelpers(knex) {
         rxDetailsObject.frequency = rxDetails.frequency
         rxDetailsObject.note = rxDetails.note,
         rxDetailsObject.rx_address = rxDetails.rx_address
+        rxDetailsObject.secret = rxDetails.secret
         return rxDetailsObject
       });
     },
@@ -294,6 +296,23 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id", "password_digest", "first_name", "last_name", "isDoctor")
       .from("users")
+      .where("email", email.toLowerCase().trim())
+      .then((result) => {
+        if (!result[0]) {
+          callback(null, "Email is invalid");
+        } else if (result[0] && bcrypt.compareSync(password, result[0].password_digest)) {
+          callback(result[0], null);
+        } else {
+          callback(null, "Password is invalid");
+        }
+      });
+    },
+
+    // Build pharmacy cookie with info upon login
+    logInPharmacy: function(email, password, callback) {
+      return knex
+      .select("*")
+      .from("pharmacies")
       .where("email", email)
       .then((result) => {
         if (!result[0]) {
@@ -308,13 +327,14 @@ module.exports = function makeDbHelpers(knex) {
 
     // Insert new user into database
     register: function(userObject, callback) {
+      console.log(userObject)
       knex
       .returning(["id","isDoctor"])
       .insert({
-        email: userObject.email,
+        email: userObject.email.toLowerCase(),
         password_digest: bcrypt.hashSync(userObject.password, saltRounds),
-        first_name: userObject.firstName,
-        last_name: userObject.lastName,
+        first_name: userObject.first_name,
+        last_name: userObject.last_name,
         address: userObject.address,
         phone: userObject.phone,
         birthdate: userObject.birthdate,
@@ -334,9 +354,9 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id")
       .from("drugs")
-      .where("name", drugName)
+      .where("name", drugName.toLowerCase())
       .then((result) => {
-        // console.log(result)
+        console.log(result)
         if(result.length === 0){
           throw "Error, drug not found"
         }
@@ -400,7 +420,8 @@ module.exports = function makeDbHelpers(knex) {
         measurement: body.measurement,
         frequency: body.frequency,
         note: body.note,
-        rx_address: body.rx_address
+        rx_address: body.rx_address,
+        secret: body.secret
       }
       let patient_id;
       let prescriptionId;
@@ -420,6 +441,48 @@ module.exports = function makeDbHelpers(knex) {
       }).then(() => {
         return prescriptionId;
       })
+    },
+
+    // Get users details of user corresponding to id
+    getUsersDetailsById: function(user_id) {
+      return knex
+      .select(
+        "email",
+        "first_name",
+        "last_name",
+        "address",
+        "phone",
+        "birthdate",
+        "isDoctor",
+        "created_at",
+        "public_key"
+      )
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        return result[0];
+      });
+    },
+
+    // Checks if user corresponding to id is a doctor
+    isDoctorById: function(user_id) {
+      return knex
+      .select("isDoctor")
+      .from("users")
+      .where("id", user_id)
+      .then((result) => {
+        return result[0].isDoctor;
+      });
+    },
+
+    getAllUsersIdAndName: function() {
+      return knex
+      .select("id", "first_name", "last_name", "public_key")
+      .from("users")
+      .then((result) => {
+        return result
+      });
     }
+
   }
 }

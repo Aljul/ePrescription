@@ -10,6 +10,7 @@ $(document).ready(function(){
       // console.log(($('#public_key')))
       var pub_key = data.replace(/bitcoin:/gi, "")
       $('#public_key').val(pub_key);
+      $('#public_key_hidden').val(pub_key);
       $('#myModal').modal('toggle');
       $(".modalButton").attr("disabled", true);
       // will need to do error checking on the address
@@ -23,7 +24,7 @@ $(document).ready(function(){
     );
   });
 
-  $('#myModal').on('hide.bs.modal', function () {
+  $('#myModal').on('hide.bs.modal', function() {
     $('#reader').html5_qrcode_stop();
     $('#reader').empty()
     console.log('Fired at start of hide event!');
@@ -35,5 +36,24 @@ $(document).ready(function(){
       $(".overlay-holder").attr('id', 'overlay')
   })
 
+  // Set first user in list as default value of public_key
+  let defaultVal = $('#usersList option:selected').val();
+  $("#public_key").val(defaultVal);
+  $("#public_key_hidden").val(defaultVal);
+
+
+  // Change the value of public_key when selecting something
+  $("#usersList").on("changed.bs.select", function(){
+    let selectVal = $('#usersList option:selected').val();
+    $("#public_key").val(selectVal);
+    $("#public_key_hidden").val(selectVal);
+  });
+
+
+
+// var dk = keythereum.create();
+// console.log(dk)
+// var keyObject = keythereum.dump("hello", dk.privateKey, dk.salt, dk.iv);
+// console.log(keyObject)
 
 });

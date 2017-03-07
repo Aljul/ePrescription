@@ -1,6 +1,5 @@
 "use strict";
 
-
 const express = require('express');
 const router  = express.Router();
 const eth_connect = require('./lib/ethereum-contracts.js');
@@ -22,13 +21,14 @@ module.exports = (knex) => {
   });
 
   router.get("/new", (req, res) => {
-    if(req.user.isDoctor){
-    res.render("prescription_new", { user: req.user });
+    if (req.user.isDoctor) {
+      dbHelpers.getAllUsersIdAndName().then((usersNamesAndId) => {
+        res.render("prescription_new", { user: req.user, usersList: usersNamesAndId });
+      });
     } else {
       //give him an error message saying he is not a doctor and cannot create a new prescription
       res.redirect('/prescriptions');
     }
-
   });
 
   router.get("/:id", (req, res) => {
@@ -87,21 +87,23 @@ module.exports = (knex) => {
         return res.send('need to be filled')
       }
     }
-
+    console.log(req.body);
 // first check if the patient's public key matches a patient
-
+  let secret;
    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
   .then((user) => {
     // console.log(user)
+
     if(!user.length){
       throw "No user with that public key"
     }
-    return dbHelpers.getDoctorKeys(req.user.id) // Add the prescription to the blockchain
-// so far, to add to the blockchain, i need to use an address from testrpc which is WEIRD
+    return dbHelpers.getDrugId(req.body.drugName)
+    }).then(() => {
+    return dbHelpers.getDoctorKeys(req.user.id)
     })
     .then((keys) => {
       let prescriptionData = {
-        drugName: req.body.drugName,
+        drugName: req.body.drugName.toLowerCase(),
         quantity:  req.body.quantity,
         measurement: req.body.measurement,
         frequency: req.body.frequency,
@@ -111,15 +113,16 @@ module.exports = (knex) => {
       console.log(keys)
       return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
     })
-    .then((txHash) => {
-      console.log(txHash)
+    .then((txObject) => {
+      secret = txObject.secret;
+      console.log(txObject.txHash)
       console.log("the prescription has been published")
       // console.log(txHash.toString("hex"))
-      var txDetails = eth_connect.getTransactionReceipt(txHash)
+      var txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       var count = 0
       while(!txDetails){
         count++;
-        txDetails = eth_connect.getTransactionReceipt(txHash)
+        txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       }
       console.log("the tx details are", txDetails)
       console.log(count)
@@ -137,7 +140,7 @@ module.exports = (knex) => {
     })
     .then(() => {
       req.body["rx_address"] = rxAddress;
-
+      req.body["secret"] = secret
     // Add the prescription to our database
     return dbHelpers.createFullRx(req.user, req.body)
     })

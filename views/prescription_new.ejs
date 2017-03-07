@@ -13,28 +13,31 @@
         <input class="form-control" type="text" name="drugName" placeholder="Drug Name" autofocus>
         <div class="input-group">
           <input  class="form-control" type="number" name="quantity" placeholder="Quantity">
-          <span class="input-group-addon">
-            <select name="measurement" id="measurementSelect">
-              <option value="mg">mg</option>
-              <option value="g">g</option>
-              <option value="kg">kg</option>
-              <option value="ml">ml</option>
-              <option value="l">l</option>
-              <option value="tsp">tsp</option>
-              <option value="tbp">tbp</option>
-              <option value="pill">pill</option>
-              <option value="tablet">tablet</option>
-            </select>
-          </span>
+          <select name="measurement" id="measurementSelect" class="selectpicker" data-live-search="true">
+            <option value="mg">mg</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+            <option value="ml">ml</option>
+            <option value="l">l</option>
+            <option value="tsp">tsp</option>
+            <option value="tbp">tbp</option>
+            <option value="pill">pill</option>
+            <option value="tablet">tablet</option>
+          </select>
         </div>
         <input class="form-control" type="text" name="frequency" placeholder="Frequency">
         <input  class="form-control" type="textarea" name="note" placeholder="Further Details">
-        <div class="input-group">
-          <input class="form-control" id="public_key" type="text" name="patientPublicKey" placeholder="Patient's Address" >
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">Read QRcode</button>
-          </span>
+        <label for="publickey-form-group">Select patient key or read QRcode</label>
+        <div id="publickey-form-group" class="form-group">
+        <select id="usersList" name="userList" class="selectpicker" data-live-search="true">
+          <% for (let i = 0; i < usersList.length; i++) { %>
+            <option value=<%=`${usersList[i].public_key}`%>><%=`ID:${usersList[i].id} ${usersList[i].first_name} ${usersList[i].last_name}`%></option>
+          <% } %>
+        </select>
+        <button id="Dropdown-QRcodeReader" type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">Read QRcode</button>
         </div>
+        <input id="public_key" class="form-control" type="text"  disabled>
+        <input id="public_key_hidden"  name="patientPublicKey" hidden>
         <input class="form-control" type="password" name="password" placeholder="Professional password">
         <input class="btn btn-default form-submit prescription-submit" type="submit">
       </form>

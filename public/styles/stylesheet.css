@@ -1,9 +1,11 @@
 @import "navbar.css";
+@import "navbar_pharmacies.css";
 @import "login_register.css";
 @import "prescriptions.css";
 @import "users.css";
 @import "prescription_details.css";
 @import "prescription_new.css";
+@import "user_details.css";
 
 body {
   overflow-x: hidden;
