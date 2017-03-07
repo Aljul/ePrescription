@@ -12,13 +12,19 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    let pharmacy = "test";
-    res.render("pharmacy_checkout", { user : req.user, phamarcy : pharmacy });
+    let pharmacy = req.pharmacy;
+    res.render("pharmacy_checkout", { pharmacy : pharmacy });
   });
 
   router.get("/login", (req, res) => {
-    // if !phamarcy cookie, else redirect to "/"
-    res.render("pharmacies_login", { user: req.user });
+    // if !pharmacy cookie, else redirect to "/"
+    let pharmacy = req.pharmacy;
+    res.render("pharmacies_login", { pharmacy : pharmacy });
+  });
+
+  router.get("/logout", (req, res) => {
+    req.session["pharmacy"] = null;
+    res.redirect('login');
   });
 
   //  ***** POST routes *****
@@ -27,13 +33,12 @@ module.exports = (knex) => {
     // add escape function later in app_helpers.js and call it on req.bodys
     let email = req.body.email;
     let password = req.body.password;
-    dbHelpers.logInPharmacy(email, password, function(userObject, err) {
+    dbHelpers.logInPharmacy(email, password, function(pharmacyObject, err) {
       if (err) { return res.send(err) }
-      //appHelpers.buildUserCookie(req, userObject);
+      appHelpers.buildPharmacyCookie(req, pharmacyObject);
       res.redirect("/pharmacies");
     });
   });
-
 
   return router;
 }

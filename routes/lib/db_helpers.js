@@ -309,7 +309,7 @@ module.exports = function makeDbHelpers(knex) {
     // Build pharmacy cookie with info upon login
     logInPharmacy: function(email, password, callback) {
       return knex
-      .select("id", "password_digest")
+      .select("*")
       .from("pharmacies")
       .where("email", email)
       .then((result) => {

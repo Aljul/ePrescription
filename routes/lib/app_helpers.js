@@ -13,6 +13,15 @@ module.exports = {
     });
   },
 
+  buildPharmacyCookie: function(req, pharmacyObject) {
+    req.session["pharmacy"] = JSON.stringify({
+      id: pharmacyObject.id,
+      pharmacyEmail: pharmacyObject.email,
+      publicKey: pharmacyObject.public_key,
+      privateKey: pharmacyObject.private_key
+    });
+  },
+
   // Returns empty keys of an object in emptyKeys array
   validatesObject: function(userObject) {
     let emptyKeys = []
