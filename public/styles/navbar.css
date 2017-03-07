@@ -14,21 +14,14 @@
   background-color: #71eeb8;
 }
 
-.navbar-header {
-  float: none;
-}
-
 .navbar-header .navbar-brand:hover {
   background-color: #71eeb8;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 770px) {
   #username-logout #logout {
     margin: 0;
     padding: 0;
-  }
-  .navbar-left,.navbar-right {
-    float: none !important;
   }
   .navbar-toggle {
     display: block;
@@ -43,13 +36,6 @@
   }
   .navbar-collapse.collapse {
     display: none!important;
-  }
-  .navbar-nav {
-    float: none!important;
-    margin-top: 7.5px;
-  }
-  .navbar-nav>li {
-    float: none;
   }
   .navbar-nav>li>a {
     padding-top: 10px;

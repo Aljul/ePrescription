@@ -1,8 +1,3 @@
-#nav-pharma {
-  display: inline-block;
-  width: 100%;
-}
-
 #pharmacyEmail-logout {
   padding-right: 1em;
 }
@@ -11,15 +6,34 @@
   padding: 0 15px;
 }
 
-#pharmacyEmail-logout #logout-pharma {
+#pharmacyEmail-logout #logout {
   margin-left: 15px;
 }
 
-.navbar-pharma {
-  margin: 0;
-  border: 0;
-}
-
-.navbar-pharma .navbar-brand:hover {
-  background-color: #71eeb8;
+@media (max-width: 770px) {
+  #pharmacyEmail-logout #logout {
+    margin: 0;
+    padding: 0;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .navbar-collapse {
+    border-top: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .navbar-fixed-top {
+  	top: 0;
+  	border-width: 0 0 1px;
+  }
+  .navbar-collapse.collapse {
+    display: none!important;
+  }
+  .navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .collapse.in {
+  	display:block !important;
+  }
 }
