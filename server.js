@@ -59,9 +59,9 @@ app.use(middleware);
 
 // connect routes
 app.use("/", mainRoutes(knex));
+app.use("/pharmacies", pharmaciesRoutes(knex));
 app.use("/prescriptions", prescriptionsRoutes(knex));
 app.use("/users", usersRoutes(knex));
-app.use("/pharmacies", pharmaciesRoutes(knex));
 
 // listening on port
 app.listen(PORT, () => {

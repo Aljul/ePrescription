@@ -306,6 +306,23 @@ module.exports = function makeDbHelpers(knex) {
       });
     },
 
+    // Build pharmacy cookie with info upon login
+    logInPharmacy: function(email, password, callback) {
+      return knex
+      .select("id", "password_digest")
+      .from("pharmacies")
+      .where("email", email)
+      .then((result) => {
+        if (!result[0]) {
+          callback(null, "Email is invalid");
+        } else if (result[0] && bcrypt.compareSync(password, result[0].password_digest)) {
+          callback(result[0], null);
+        } else {
+          callback(null, "Password is invalid");
+        }
+      });
+    },
+
     // Insert new user into database
     register: function(userObject, callback) {
       knex

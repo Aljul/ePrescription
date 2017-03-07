@@ -85,7 +85,7 @@ module.exports = (knex) => {
       // console.log(req.flash("true", "true"))
       // req.flash('info', 'Flash is back!')
       res.redirect('/register')
-       }
+    }
   });
 
   return router;

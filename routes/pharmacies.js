@@ -12,8 +12,8 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    res.redirect("login");
-    //res.render("pharmacy_checkout", { user : req.user, phamarcy : req.pharmacy });
+    let pharmacy = "test";
+    res.render("pharmacy_checkout", { user : req.user, phamarcy : pharmacy });
   });
 
   router.get("/login", (req, res) => {
@@ -27,11 +27,11 @@ module.exports = (knex) => {
     // add escape function later in app_helpers.js and call it on req.bodys
     let email = req.body.email;
     let password = req.body.password;
-    // dbHelpers.logIn(email, password, function(userObject, err) {
-    //   if (err) { return res.send(err) }
-    //   appHelpers.buildUserCookie(req, userObject);
-    //   res.redirect("/");
-    // });
+    dbHelpers.logInPharmacy(email, password, function(userObject, err) {
+      if (err) { return res.send(err) }
+      //appHelpers.buildUserCookie(req, userObject);
+      res.redirect("/pharmacies");
+    });
   });
 
 
