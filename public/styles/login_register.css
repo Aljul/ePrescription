@@ -22,10 +22,12 @@
 }
 
 .form-submit:hover {
+  border-color: #71eeb8;
   background-color: #71eeb8;
 }
 
 .form-submit:focus {
+  border-color: #71eeb8;
   background-color: #71eeb8;
 }
 
