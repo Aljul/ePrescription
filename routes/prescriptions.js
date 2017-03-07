@@ -90,10 +90,11 @@ module.exports = (knex) => {
     }
     console.log(req.body);
 // first check if the patient's public key matches a patient
-
+  let secret;
    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
   .then((user) => {
     // console.log(user)
+
     if(!user.length){
       throw "No user with that public key"
     }
@@ -112,15 +113,16 @@ module.exports = (knex) => {
       console.log(keys)
       return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
     })
-    .then((txHash) => {
-      console.log(txHash)
+    .then((txObject) => {
+      secret = txObject.secret;
+      console.log(txObject.txHash)
       console.log("the prescription has been published")
       // console.log(txHash.toString("hex"))
-      var txDetails = eth_connect.getTransactionReceipt(txHash)
+      var txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       var count = 0
       while(!txDetails){
         count++;
-        txDetails = eth_connect.getTransactionReceipt(txHash)
+        txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       }
       console.log("the tx details are", txDetails)
       console.log(count)
@@ -138,7 +140,7 @@ module.exports = (knex) => {
     })
     .then(() => {
       req.body["rx_address"] = rxAddress;
-
+      req.body["secret"] = secret
     // Add the prescription to our database
     return dbHelpers.createFullRx(req.user, req.body)
     })

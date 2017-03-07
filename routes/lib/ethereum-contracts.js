@@ -99,7 +99,7 @@ module.exports = {
       })
       .then((result) => {
       console.log("this is the result",result)
-      return result.toString("hex");
+      return {txHash: result.toString("hex"), secret: secret};
       })
       .catch((err) => {
       console.log("THe error is: >>>>>>>>>", err)

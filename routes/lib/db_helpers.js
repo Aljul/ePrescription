@@ -225,6 +225,7 @@ module.exports = function makeDbHelpers(knex) {
         rxDetailsObject.frequency = rxDetails.frequency
         rxDetailsObject.note = rxDetails.note,
         rxDetailsObject.rx_address = rxDetails.rx_address
+        rxDetailsObject.secret = rxDetails.secret
         return rxDetailsObject
       });
     },
@@ -402,7 +403,8 @@ module.exports = function makeDbHelpers(knex) {
         measurement: body.measurement,
         frequency: body.frequency,
         note: body.note,
-        rx_address: body.rx_address
+        rx_address: body.rx_address,
+        secret: body.secret
       }
       let patient_id;
       let prescriptionId;
