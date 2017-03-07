@@ -13,10 +13,11 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
     res.redirect("login");
-    //res.render("pharmacy_checkout", { user : null });
+    //res.render("pharmacy_checkout", { user : req.user, phamarcy : req.pharmacy });
   });
 
   router.get("/login", (req, res) => {
+    // if !phamarcy cookie, else redirect to "/"
     res.render("pharmacies_login", { user: req.user });
   });
 
