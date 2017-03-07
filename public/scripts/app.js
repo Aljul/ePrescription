@@ -28,5 +28,12 @@ $(document).ready(function(){
     $('#reader').empty()
     console.log('Fired at start of hide event!');
   });
-  
+
+  $(".prescription-submit").on('click', function(e){
+      $(".loader-holder").addClass("loader")
+      $(".holder").addClass("blur")
+      $(".overlay-holder").attr('id', 'overlay')
+  })
+
+
 });
