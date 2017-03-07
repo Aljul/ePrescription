@@ -12,14 +12,23 @@ module.exports = (knex) => {
   // ***** GET routes *****
 
   router.get("/", (req, res) => {
-    let pharmacy = req.pharmacy;
-    res.render("pharmacy_checkout", { pharmacy : pharmacy });
+    // if logged in, render. Else render to login page
+    if (req.session["pharmacy"]) {
+      let pharmacy = req.pharmacy;
+      res.render("pharmacy_checkout", { pharmacy : pharmacy });
+    } else {
+      res.redirect("login");
+    }
   });
 
   router.get("/login", (req, res) => {
-    // if !pharmacy cookie, else redirect to "/"
-    let pharmacy = req.pharmacy;
-    res.render("pharmacies_login", { pharmacy : pharmacy });
+    // if logged in, redirect. Else render login page
+    if (req.session["pharmacy"]) {
+      res.redirect("/pharmacies");
+    } else {
+      let pharmacy = req.pharmacy;
+      res.render("pharmacies_login", { pharmacy : pharmacy });
+    }
   });
 
   router.get("/logout", (req, res) => {
