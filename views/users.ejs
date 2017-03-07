@@ -17,7 +17,9 @@
           <a href=<%=`users/${usersList[i].id}`%> class="list-group-item">
             <li class="list-group-item">
               <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
-            <% if (user.isDoctor === false) { %>
+            <% if (user.isDoctor === true) { %>
+              <p><span class="badge"><%=`ID: ${usersList[i].id}`%></span></p>
+            <% } else { %>
               <p><%=`${usersList[i].speciality}`%></p>
               <p><%=`Permit #${usersList[i].permit_number}`%></p>
             <% } %>
