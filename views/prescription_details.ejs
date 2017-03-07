@@ -27,26 +27,16 @@
           <% } %>
         </li>
       </ul>
-      Here your prescription:
-
+      <h3> Prescription QRcode </h3>
       <div id="qrcode"></div>
+      <h3> Decrypt QRcode </h3>
+      <div id="secret"></div>
     </div>
-
     <div id="rx_address" hidden><%=rxObject.rxDetails[0].rx_address%></div>
-    <script type="text/javascript">
-      new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
-    </script>
-
-    <br>
-    <br>
-    Here is the secret used to decrypt your prescription:
-    <div class="info"></div>
-    <div id="secret"></div>
-    </div>
     <div id="secret-hidden" hidden><%= rxObject.rxDetails[0].secret%></div>
     <script type="text/javascript">
+      new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
       new QRCode(document.getElementById("secret"), document.getElementById("secret-hidden").innerHTML);
     </script>
-
   </body>
 </html>
