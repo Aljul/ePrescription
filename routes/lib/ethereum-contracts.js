@@ -25,7 +25,7 @@ var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 500000
+const GAS = 50000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
