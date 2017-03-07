@@ -456,7 +456,7 @@ module.exports = function makeDbHelpers(knex) {
 
     getAllUsersIdAndName: function() {
       return knex
-      .select("id", "first_name", "last_name")
+      .select("id", "first_name", "last_name", "public_key")
       .from("users")
       .then((result) => {
         return result

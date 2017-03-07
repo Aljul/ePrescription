@@ -23,10 +23,20 @@ $(document).ready(function(){
     );
   });
 
-  $('#myModal').on('hide.bs.modal', function () {
+  $('#myModal').on('hide.bs.modal', function() {
     $('#reader').html5_qrcode_stop();
     $('#reader').empty()
     console.log('Fired at start of hide event!');
   });
-  
+
+  // Set first user in list as default value of public_key
+  let defaultVal = $('#usersList option:selected').val();
+  $("#public_key").val(defaultVal);
+
+  // Change the value of public_key when selecting something
+  $("#usersList").on("changed.bs.select", function(){
+    let selectVal = $('#usersList option:selected').val();
+    $("#public_key").val(selectVal);
+  });
+
 });
