@@ -7,19 +7,19 @@ const PrescriptionJSON                = require('../../ethereumCode/build/contra
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
-// var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+var abi                               = require('ethereumjs-abi')
 
 
 const web3   = new Web3();
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 // web3.setProvider(new web3.providers.HttpProvider(process.env.TUNNEL));
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
-web3.setProvider(new web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545'));
-var provider = new Web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545');
+// web3.setProvider(new web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545'));
+// var provider = new Web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545');
 
 // set the contract abstractions so we can directly call their functions
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
@@ -47,13 +47,13 @@ module.exports = {
     })
    return PrescriptionFactory.deployed().then(function(instance){
     var contractInstance = instance;
-    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS, gasPrice: web3.toHex(10)})
+    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS, gasPrice: web3.toHex(100000)})
    }).then((message) => {
-    // console.log(message)
+    console.log(message)
     if(message.logs.length == 0){
       throw 'Something went wrong when creating the prescription';
     }
-    // console.log(message.logs[0].args._theAddress);
+    console.log(message.logs[0].args._theAddress);
     return message.logs[0].args._theAddress
    }).catch((err) => {
     // console.log(err)
@@ -62,8 +62,10 @@ module.exports = {
    },
 
   publishPrescriptionSIGNED: function(patientAddress, doctorKeys, docPassword, prescriptionData, prescriptionName){
+    // 0 wei + 4500000 × 20000000000 gas
 
     const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
+    console.log("the PRIVATE KEY IS",decoded)
     const privateKey = Buffer.from(decoded, 'hex')
 
     let secret = encryption.generateSecret();
@@ -78,24 +80,31 @@ module.exports = {
       // console.log(instance)
       contractInstance = instance;
       // console.log(contractInstance)
-      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {gas: GAS, gasPrice: web3.toHex(10)})
+      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress)
       })
       .then((data) => {
+        c
       var rawTx = data.params[0];
+      console.log(data.params[0])
       console.log(web3.eth.getTransactionCount(doctorKeys.public_key))
+      console.log(web3.eth.getBalance(doctorKeys.public_key))
       var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
       console.log(nonce)
-      rawTx.from = doctorKeys.public_key,
+      // gasLimitHex = web3.toHex(3000000000);
+      rawTx.gasPrice = "0x4A817C800";
+      rawTx.from = "0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7";
       rawTx.to = contractInstance.address;
       rawTx.nonce = web3.toHex(nonce)
-      // rawTxgasPrice: '0x0918 4e72a000'
-      rawTx.gasLimit = web3.toHex(100)
-      rawTx.value = '0x00'
-      rawTx.gas = web3.toHex(GAS);
+      rawTx.gasLimit = web3.toHex(500000);
+      rawTx.gas = web3.toHex(50000)
+      rawTx.value = web3.toHex(web3.toWei (0, "ether"));
+      // rawTx.chainId = web3.toHex(5)
       console.log(web3.eth.estimateGas(rawTx))
+      console.log(rawTx)
       var tx = new EthereumTx(rawTx);
       console.log(tx)
       tx.sign(privateKey);
+      // console.log("the TO JSON IS" ,tx.toJSON())
       // console.log(privateKey)
       var serializedTx = tx.serialize();
       console.log(tx.validate())
