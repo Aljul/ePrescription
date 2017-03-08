@@ -42,6 +42,12 @@ $(document).ready(function(){
       $(".overlay-holder").attr('id', 'overlay')
   })
 
+    $(".prescription-destroy").on('click', function(e){
+      $(".loader-holder-1").addClass("loader")
+      $(".holder-1").addClass("blur")
+      $(".overlay-holder-1").attr('id', 'overlay')
+  })
+
   // Set first user in list as default value of public_key
   let defaultVal = $('#usersList option:selected').val();
   $("#public_key").val(defaultVal);
