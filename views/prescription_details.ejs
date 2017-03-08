@@ -12,7 +12,11 @@
           <p><%=`Dr.${rxObject.doctorName}`%></p>
           <p><%=(rxObject.createdAt).toString().substring(0, 24)%></p>
           <p>
-            <span class="badge"><%=rxObject.status%></span>
+            <% if (rxObject.status != "inactive") { %>
+              <span class="badge"><%=rxObject.status%></span>
+              <% } else { %>
+              <span id="inactive-badge" class="badge"><%=rxObject.status%></span>
+            <% } %>
             <span class="badge"><%=`ID: ${rxObject.prescription_id}`%></span>
           </p>
         </li>
@@ -27,6 +31,7 @@
           <% } %>
         </li>
       </ul>
+    <% if (rxObject.status != "inactive") { %>
       <h3> Prescription QRcode </h3>
       <div id="qrcode"></div>
       <h3> Decrypt QRcode </h3>
@@ -38,5 +43,8 @@
       new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
       new QRCode(document.getElementById("secret"), document.getElementById("secret-hidden").innerHTML);
     </script>
+    <% } else { %>
+    </div>
+    <% } %>
   </body>
 </html>

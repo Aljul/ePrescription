@@ -12,3 +12,8 @@
 #secret img {
   margin: 1em auto 2em;
 }
+
+#inactive-badge {
+  color: white;
+  background-color: red;
+}
