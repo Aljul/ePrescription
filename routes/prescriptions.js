@@ -78,12 +78,12 @@ module.exports = (knex) => {
 
   router.post("/new", (req, res) => {
     let rxAddress;
-    if(!req.user.isDoctor){
-      return res.send('Not a doctor, you cannot do this');
+    if (!req.user.isDoctor) {
+      return res.send('Not a doctor, you cannot do this')
     }
     // clause to say that if something is missing in req.body -- then send an error
-    for (var key in req.body){
-      if (!req.body[key]){
+    for (var key in req.body) {
+      if (!req.body[key]) {
         return res.send('need to be filled')
       }
     }

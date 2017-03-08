@@ -57,17 +57,13 @@ module.exports = (knex) => {
     console.log(req.body)
     eth_connect.printPrescription(req.body.contractAddress)
     .then((rxObject) => {
-
       console.log(rxObject)
       let decryptedRx = encryption.decipher(req.body.prescriptionSecret, rxObject.info.data)
       console.log(decryptedRx)
       let prescriptionObj = JSON.parse(decryptedRx)
       res.render('rx_details', prescriptionObj)
-
     })
-
-
-  })
+  });
 
 
   return router;
