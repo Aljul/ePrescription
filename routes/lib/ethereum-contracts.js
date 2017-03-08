@@ -65,7 +65,7 @@ module.exports = {
     // 0 wei + 4500000 × 20000000000 gas
 
     const decoded = encryption.decipher(docPassword, doctorKeys.priv_key)
-    console.log("the PRIVATE KEY IS",decoded)
+    // console.log("the PRIVATE KEY IS",decoded)
     const privateKey = Buffer.from(decoded, 'hex')
 
     let secret = encryption.generateSecret();
@@ -174,6 +174,7 @@ module.exports = {
     console.log("HIII")
       prescription = instance;
       // console.log(instance);
+      console.log("getting prescription data")
       return prescription.getPrescriptionData()
     }).then((data) => {
       console.log("the data is",data)
