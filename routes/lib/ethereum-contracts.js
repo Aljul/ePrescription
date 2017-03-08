@@ -25,7 +25,7 @@ var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 50000
+const GAS = 4500000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
@@ -47,7 +47,7 @@ module.exports = {
     })
    return PrescriptionFactory.deployed().then(function(instance){
     var contractInstance = instance;
-    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS})
+    return contractInstance.createPrescription(prescriptionName, prescriptionData, patientAddress, {from: web3.eth.accounts[0], gas: GAS, gasPrice: web3.toHex(1)})
    }).then((message) => {
     // console.log(message)
     if(message.logs.length == 0){
@@ -79,14 +79,14 @@ module.exports = {
       contractInstance = instance;
       // console.log(contractInstance)
       console.log('hi')
-      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS, gasPrice: web3.toHex(20000000000)})
+      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address, gas: GAS})
       })
       .then((data) => {
       var rawTx = data.params[0];
       var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
       console.log(nonce)
       rawTx.nonce = web3.toHex(nonce)
-      rawTx.gasLimit = web3.toHex(4000000)
+      rawTx.gasLimit = web3.toHex(400000000)
       rawTx.value = '0x00',
       console.log(data.params[0])
       // console.log(data.params)

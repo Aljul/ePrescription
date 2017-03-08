@@ -1,6 +1,6 @@
   var lastContractAddress;
   var p3Prescriptions = [];
-  const GAS = 4000000;
+  const GAS = 4500000;
 
 module.exports = {
 
@@ -11,8 +11,8 @@ module.exports = {
 
   initializeAddresses: function(web3){
     console.log(web3.eth.accounts)
-    web3.eth.sendTransaction({to: "0xeab9085c947bf296aa20d8301061659f0f100628", value: 100000000, from: web3.eth.accounts[0] })
-    web3.eth.sendTransaction({to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 100000000, from: web3.eth.accounts[0]})
+    web3.eth.sendTransaction({to: "0xeab9085c947bf296aa20d8301061659f0f100628", value: 10000000000000, from: web3.eth.accounts[0] })
+    web3.eth.sendTransaction({to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 10000000000000, from: web3.eth.accounts[0]})
     return Promise.resolve()
   },
 
@@ -32,9 +32,9 @@ module.exports = {
       // will need to add actual pharmacy address
       return factoryInstance.addToPharmacies("0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7", {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
-      // console.log(message)
+      console.log(message)
 
-      return factoryInstance.createPrescription("First Prescription", "One apple a day keeps the doctor away", web3.eth.accounts[3], {from: web3.eth.accounts[0], gas: GAS})
+      return factoryInstance.createPrescription("First Prescription", "One apple a day keeps the doctor away", web3.eth.accounts[2], {from: web3.eth.accounts[0], gas: GAS})
     }).then((message) => {
 
       console.log("the prescription message is ", message.logs[0])
