@@ -88,7 +88,7 @@ module.exports = {
       console.log(data.params[0])
       console.log(web3.eth.getTransactionCount(doctorKeys.public_key))
       console.log(web3.eth.getBalance(doctorKeys.public_key))
-      var nonce = web3.eth.getTransactionCount(doctorKeys.public_key)
+      var nonce = web3.eth.getTransactionCount("0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7")
       console.log(nonce)
       // gasLimitHex = web3.toHex(3000000000);
       rawTx.gasPrice = "0x4A817C800";

@@ -13,7 +13,7 @@ module.exports = {
     console.log(web3.eth.accounts)
     web3.eth.sendTransaction({to: "0xeab9085c947bf296aa20d8301061659f0f100628", value: 10000000000000, from: web3.eth.accounts[0] })
     web3.eth.sendTransaction({to: "0xb794f5ea0ba39494ce839613fffba74279579268", value: 10000000000000, from: web3.eth.accounts[0] })
-    web3.eth.sendTransaction({to: "0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7", value: 10000000000000000000, from: web3.eth.accounts[0] })
+    web3.eth.sendTransaction({to: "0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7", value: 10000000000000000000, from: web3.eth.accounts[0] }) // ACTUAL KEY
     web3.eth.sendTransaction({to: "0x15ff0ba44ddceb2caee5877b942518bdcc3e08b8", value: 10000000000000, from: web3.eth.accounts[0]})
     return Promise.resolve()
   },
