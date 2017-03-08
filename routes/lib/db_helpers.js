@@ -51,7 +51,7 @@ module.exports = function makeDbHelpers(knex) {
         .update("status", status)
         .where("id", prescription_id)
         .then((result) => {
-          return `Prescription ID:${prescription_id}'s successfully fulfilled`
+          return `Prescription with ID:${prescription_id} successfully fulfilled`
         });
       })
       .catch((err) => {
