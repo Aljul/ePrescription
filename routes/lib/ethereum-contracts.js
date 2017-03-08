@@ -7,16 +7,16 @@ const PrescriptionJSON                = require('../../ethereumCode/build/contra
 const AbstractPrescriptionFactoryJSON = require('../../ethereumCode/build/contracts/AbstractPrescriptionFactory.json')
 const seed                            = require('./eth-seed.js');
 const encryption                      = require('./encryption.js');
-var abi                               = require('ethereumjs-abi')
+// var abi                               = require('ethereumjs-abi')
 
 
 const web3   = new Web3();
 // web3.setProvider(new web3.providers.HttpProvider(process.env.TUNNEL));
-// var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
-var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+// var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 // web3.setProvider(new web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545'));
 // var provider = new Web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545');
@@ -25,7 +25,7 @@ var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 const PrescriptionFactory         = contract(PrescriptionFactoryJSON);
 const Prescription                = contract(PrescriptionJSON);
 const AbstractPrescriptionFactory = contract(AbstractPrescriptionFactoryJSON);
-const GAS = 4000000
+const GAS = 4500000
 // set their providers (right now testrpc)
 PrescriptionFactory.setProvider(provider);
 Prescription.setProvider(provider);
@@ -80,10 +80,10 @@ module.exports = {
       // console.log(instance)
       contractInstance = instance;
       // console.log(contractInstance)
-      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress)
+      return contractInstance.createPrescription.request(prescriptionName, encryptedPrescription, patientAddress, {from: doctorKeys.public_key, to: contractInstance.address})
       })
       .then((data) => {
-        c
+
       var rawTx = data.params[0];
       console.log(data.params[0])
       console.log(web3.eth.getTransactionCount(doctorKeys.public_key))
@@ -92,14 +92,14 @@ module.exports = {
       console.log(nonce)
       // gasLimitHex = web3.toHex(3000000000);
       rawTx.gasPrice = "0x4A817C800";
-      rawTx.from = "0xc4f993c3b9a388a5dc719c238ac7e00b81c62fb7";
-      rawTx.to = contractInstance.address;
+      // rawTx.from = doctorKeys.public_key;
+      // rawTx.to = contractInstance.address;
       rawTx.nonce = web3.toHex(nonce)
       rawTx.gasLimit = web3.toHex(500000);
-      rawTx.gas = web3.toHex(50000)
+      rawTx.gas = web3.toHex(GAS)
       rawTx.value = web3.toHex(web3.toWei (0, "ether"));
       // rawTx.chainId = web3.toHex(5)
-      console.log(web3.eth.estimateGas(rawTx))
+      // console.log(web3.eth.estimateGas(rawTx))
       console.log(rawTx)
       var tx = new EthereumTx(rawTx);
       console.log(tx)
@@ -108,7 +108,7 @@ module.exports = {
       // console.log(privateKey)
       var serializedTx = tx.serialize();
       console.log(tx.validate())
-      return web3.eth.sendRawTransaction('0x' + serializedTx.toString("hex"))
+      return web3.eth.sendRawTransaction('0x' + serializedTx.toString("hex"), {from: doctorKeys.public_key})
       })
       .then((result) => {
       console.log("this is the result",result)

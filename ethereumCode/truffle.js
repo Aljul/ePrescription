@@ -18,24 +18,24 @@ var address = "0x" + wallet.getAddress().toString("hex");
 // console.log(wallet.getOwnPropertyNames(o: Object)vateKey().toString("hex"))
 console.log(address)
 
-var providerUrl = `http://lhl3a6m5u.eastus.cloudapp.azure.com:8545`;
+// var providerUrl = `http://lhl3a6m5u.eastus.cloudapp.azure.com:8545`;
 // var providerUrl = `https://ropsten.infura.io/${process.env.INFURA_ACCESS_TOKEN}`;
 var engine = new ProviderEngine();
 engine.addProvider(new WalletSubprovider(wallet, {}));
-engine.addProvider(new Web3Subprovider(new Web3.providers.HttpProvider(providerUrl)));
+// engine.addProvider(new Web3Subprovider(new Web3.providers.HttpProvider(providerUrl)));
 // console.log(engine)
-engine.on('block', function(block){
-  console.log('================================')
-  console.log('BLOCK CHANGED:', '#'+block.number.toString('hex'), '0x'+block.hash.toString('hex'))
-  console.log('================================')
-})
+// engine.on('block', function(block){
+//   console.log('================================')
+//   console.log('BLOCK CHANGED:', '#'+block.number.toString('hex'), '0x'+block.hash.toString('hex'))
+//   console.log('================================')
+// })
 
-engine.on('error', function(err){
-  // report connectivity errors
-  console.error(err.stack)
-})
+// engine.on('error', function(err){
+//   // report connectivity errors
+//   console.error(err.stack)
+// })
 
-engine.start(); // Required by the provider engine.
+// engine.start(); // Required by the provider engine.
 
 
 module.exports = {
