@@ -70,7 +70,11 @@ module.exports = (knex) => {
   router.post("/prescriptions/:rx_address/clear", (req, res) => {
     // change status in database
     let rx_address = req.params.rx_address
-    dbHelpers.setRxStatus(rx_address, "inactive").then((result) => {
+    eth_connect.fulfillPrescription(rx_address)
+    .then(() => {
+      return dbHelpers.setRxStatus(rx_address, "inactive")
+    })
+    .then((result) => {
       console.log(result);
       return res.render("rx_details", { pharmacy : null, prescriptionObj : null, rx_address: null, msg: result });
     });

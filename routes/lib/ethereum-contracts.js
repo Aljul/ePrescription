@@ -211,7 +211,7 @@ module.exports = {
       // console.log(instance);
       return prescription.destroy({from: web3.eth.accounts[0]})
     }).then((response) => {
-      // console.log(response)
+      console.log("This the call to destroy" ,response)
       return response
     }).catch((err) => {
       console.log("The error is", err)
