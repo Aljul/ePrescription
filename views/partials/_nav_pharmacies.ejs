@@ -1,0 +1,26 @@
+<nav id="nav-pharma" class="navbar navbar-default navbar-static-top">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/">ePrescription</a>
+    <% if (pharmacy) { %>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <% } %>
+  </div>
+  <% if (pharmacy) { %>
+    <div class="navbar-collapse collapse">
+      <ul id="pharmacyEmail-logout" class="nav navbar-nav navbar-right">
+        <li id="pharmacyEmail">
+          <p class="navbar-text navbar-right">
+            <%=pharmacy.pharmacyEmail%>
+          </p>
+        </li>
+        <li id="logout" class="nav-item">
+          <a href="/pharmacies/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  <% } %>
+</nav>

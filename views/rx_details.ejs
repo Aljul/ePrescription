@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" id="index">
+  <% include ./partials/_header %>
+   <div class="loader-holder-1"></div>
+  <div class="overlay-holder-1" ></div>
+  <div class="holder-1">
+  <body class="index">
+    <% include ./partials/_nav_pharmacies %>
+    <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <% if (msg) { %>
+        <h4><%=msg%></h4>
+        <a href="/pharmacies/"> Click here to go back ! </a>
+      <% } else { %>
+        <div class="prescriptions-header">
+          <h3> Prescription details </h3>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="prescription-details">
+              <p><%=`${prescriptionObj.drugName}: Take ${prescriptionObj.quantity} ${prescriptionObj.measurement} ${prescriptionObj.frequency}`%></p>
+              <% if (prescriptionObj.note) { %>
+                <p><%=`Note: ${prescriptionObj.note}`%></p>
+              <% } %>
+            </div>
+          </li>
+        </ul>
+        <form action=<%=`/pharmacies/prescriptions/${rx_address}/clear`%> method="POST">
+          <input class="btn btn-default prescription-destroy" type="submit" value="Fulfill Prescription">
+        </form>
+        <h3> Prescription QRcode </h3>
+        <div id="qrcode"></div>
+      </div>
+      <div id="rx_address" hidden><%=prescriptionObj.patientPublicKey%></div>
+      <script type="text/javascript">
+        new QRCode(document.getElementById("qrcode"), document.getElementById("rx_address").innerHTML);
+      </script>
+    <% } %>
+  </body>
+</html>

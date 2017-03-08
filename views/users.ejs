@@ -14,15 +14,17 @@
       <ul class="list-group">
       <% if (usersList.length != 0) { %>
         <% for (let i = usersList.length - 1; i >= 0; i--) { %>
-          <li class="list-group-item">
+          <a href=<%=`users/${usersList[i].id}`%> class="list-group-item">
+            <li class="list-group-item">
+              <p><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></p>
             <% if (user.isDoctor === true) { %>
-              <p><a href=<%=`users/${usersList[i].id}`%>><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></a></p>
+              <p><span class="badge"><%=`ID: ${usersList[i].id}`%></span></p>
             <% } else { %>
-              <p><a href=<%=`users/${usersList[i].id}`%>><%=`${usersList[i].first_name} ${usersList[i].last_name}`%></a></p>
               <p><%=`${usersList[i].speciality}`%></p>
               <p><%=`Permit #${usersList[i].permit_number}`%></p>
             <% } %>
-          </li>
+            </li>
+          </a>
         <% } %>
       <% } else { %>
         <% if (user.isDoctor === true) { %>

@@ -1,25 +1,17 @@
-#username-logout {
+#pharmacyEmail-logout {
   padding-right: 1em;
 }
 
-#username-logout #username {
+#pharmacyEmail-logout #pharmacyEmail {
   padding: 0 15px;
 }
 
-#username-logout #logout {
+#pharmacyEmail-logout #logout {
   margin-left: 15px;
 }
 
-.nav-item:hover {
-  background-color: #71eeb8;
-}
-
-.navbar-header .navbar-brand:hover {
-  background-color: #71eeb8;
-}
-
 @media (max-width: 770px) {
-  #username-logout #logout {
+  #pharmacyEmail-logout #logout {
     margin: 0;
     padding: 0;
   }

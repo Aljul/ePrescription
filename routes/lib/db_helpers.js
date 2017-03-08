@@ -1,6 +1,7 @@
 const bcrypt  = require('bcrypt');
 let saltRounds = 10;
 
+
 // Here goes db functions that require database interaction
 module.exports = function makeDbHelpers(knex) {
   return {
@@ -10,7 +11,7 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("email")
       .from("users")
-      .where("email", email)
+      .where("email", email.toLowerCase())
     },
 
     // Get most recent prescription for user_id
@@ -29,6 +30,29 @@ module.exports = function makeDbHelpers(knex) {
           throw "There's no prescription with this id"
         }
         return result[0];
+      })
+      .catch((err) => {
+        throw err;
+      })
+    },
+
+    // Set prescription status to inactive
+    setRxStatus: function(rx_address, status) {
+      return knex
+      .select("prescription_id")
+      .from("prescription_details")
+      .where("rx_address", rx_address)
+      .then((result) => {
+        if(result.length === 0){
+          throw "There's no prescription with this address"
+        }
+        let prescription_id = result[0].prescription_id;
+        return knex("prescriptions")
+        .update("status", status)
+        .where("id", prescription_id)
+        .then((result) => {
+          return `Prescription with ID:${prescription_id} successfully fulfilled`
+        });
       })
       .catch((err) => {
         throw err;
@@ -224,6 +248,7 @@ module.exports = function makeDbHelpers(knex) {
         rxDetailsObject.frequency = rxDetails.frequency
         rxDetailsObject.note = rxDetails.note,
         rxDetailsObject.rx_address = rxDetails.rx_address
+        rxDetailsObject.secret = rxDetails.secret
         return rxDetailsObject
       });
     },
@@ -294,6 +319,23 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id", "password_digest", "first_name", "last_name", "isDoctor")
       .from("users")
+      .where("email", email.toLowerCase().trim())
+      .then((result) => {
+        if (!result[0]) {
+          callback(null, "Email is invalid");
+        } else if (result[0] && bcrypt.compareSync(password, result[0].password_digest)) {
+          callback(result[0], null);
+        } else {
+          callback(null, "Password is invalid");
+        }
+      });
+    },
+
+    // Build pharmacy cookie with info upon login
+    logInPharmacy: function(email, password, callback) {
+      return knex
+      .select("*")
+      .from("pharmacies")
       .where("email", email)
       .then((result) => {
         if (!result[0]) {
@@ -308,13 +350,14 @@ module.exports = function makeDbHelpers(knex) {
 
     // Insert new user into database
     register: function(userObject, callback) {
+      console.log(userObject)
       knex
       .returning(["id","isDoctor"])
       .insert({
-        email: userObject.email,
+        email: userObject.email.toLowerCase(),
         password_digest: bcrypt.hashSync(userObject.password, saltRounds),
-        first_name: userObject.firstName,
-        last_name: userObject.lastName,
+        first_name: userObject.first_name,
+        last_name: userObject.last_name,
         address: userObject.address,
         phone: userObject.phone,
         birthdate: userObject.birthdate,
@@ -334,9 +377,9 @@ module.exports = function makeDbHelpers(knex) {
       return knex
       .select("id")
       .from("drugs")
-      .where("name", drugName)
+      .where("name", drugName.toLowerCase())
       .then((result) => {
-        // console.log(result)
+        console.log(result)
         if(result.length === 0){
           throw "Error, drug not found"
         }
@@ -400,7 +443,8 @@ module.exports = function makeDbHelpers(knex) {
         measurement: body.measurement,
         frequency: body.frequency,
         note: body.note,
-        rx_address: body.rx_address
+        rx_address: body.rx_address,
+        secret: body.secret
       }
       let patient_id;
       let prescriptionId;

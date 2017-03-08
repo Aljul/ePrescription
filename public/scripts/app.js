@@ -9,9 +9,16 @@ $(document).ready(function(){
       $('#reader').html5_qrcode_stop();
       // console.log(($('#public_key')))
       var pub_key = data.replace(/bitcoin:/gi, "")
+      console.log(e)
+      if(e.target.innerHTML == "Address Reader"){
+      $('#contract_address').val(pub_key);
+      } else {
+      $('#prescription_secret').val(pub_key);
+      }
       $('#public_key').val(pub_key);
+      $('#public_key_hidden').val(pub_key);
       $('#myModal').modal('toggle');
-      $(".modalButton").attr("disabled", true);
+      // $(".modalButton").attr("disabled", true);
       // will need to do error checking on the address
       // and reactivate modal afterward too
       },
@@ -35,14 +42,30 @@ $(document).ready(function(){
       $(".overlay-holder").attr('id', 'overlay')
   })
 
+    $(".prescription-destroy").on('click', function(e){
+      $(".loader-holder-1").addClass("loader")
+      $(".holder-1").addClass("blur")
+      $(".overlay-holder-1").attr('id', 'overlay')
+  })
+
   // Set first user in list as default value of public_key
   let defaultVal = $('#usersList option:selected').val();
   $("#public_key").val(defaultVal);
+  $("#public_key_hidden").val(defaultVal);
+
 
   // Change the value of public_key when selecting something
   $("#usersList").on("changed.bs.select", function(){
     let selectVal = $('#usersList option:selected').val();
     $("#public_key").val(selectVal);
+    $("#public_key_hidden").val(selectVal);
   });
+
+
+
+// var dk = keythereum.create();
+// console.log(dk)
+// var keyObject = keythereum.dump("hello", dk.privateKey, dk.salt, dk.iv);
+// console.log(keyObject)
 
 });

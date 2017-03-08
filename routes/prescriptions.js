@@ -1,6 +1,5 @@
 "use strict";
 
-
 const express = require('express');
 const router  = express.Router();
 const eth_connect = require('./lib/ethereum-contracts.js');
@@ -15,7 +14,6 @@ module.exports = (knex) => {
   router.get("/", (req, res) => {
     let user_id = req.user.id;
     let isDoctor = req.user.isDoctor;
-    // if user isn't doctor
     dbHelpers.getUserRxHeadersList(user_id, isDoctor).then((rxHeadersArray) => {
       res.render("prescriptions", { user: req.user, rxHeaders: rxHeadersArray });
     });
@@ -27,8 +25,8 @@ module.exports = (knex) => {
         res.render("prescription_new", { user: req.user, usersList: usersNamesAndId });
       });
     } else {
-      //give him an error message saying he is not a doctor and cannot create a new prescription
-      res.redirect('/prescriptions');
+      let err = "Only doctors can issue a prescription"
+      return res.render("error_page", { err : err })
     }
   });
 
@@ -54,7 +52,8 @@ module.exports = (knex) => {
                 return res.render("prescription_details", { user: req.user, rxObject: result });
               });
             } else {
-              return res.send("You are not the doctor nor the patient on this prescription")
+              let err = "You are not the doctor nor the patient on this prescription";
+              return res.render("error_page", { err : err })
             }
           });
         // else if user is not a doctor and is the patient on the prescription, render it
@@ -64,12 +63,13 @@ module.exports = (knex) => {
               return res.render("prescription_details", { user: req.user, rxObject: result });
             });
           } else {
-            return res.send("You are not the patient on this prescription")
+            let err = "You are not the patient on this prescription";
+            return res.render("error_page", { err : err })
           }
         }
       }).catch((err) => {
         console.log(`${err} for id: ${rx_id}`);
-        return res.send(err);
+        return res.render("error_page", { err : err })
       });
     }
   });
@@ -78,31 +78,29 @@ module.exports = (knex) => {
 
   router.post("/new", (req, res) => {
     let rxAddress;
-
-    if(!req.user.isDoctor){
-      return res.send('Not a doctor, you cannot do this');
+    if (!req.user.isDoctor) {
+      return res.send('Not a doctor, you cannot do this')
     }
     // clause to say that if something is missing in req.body -- then send an error
-    for (var key in req.body){
-      if (!req.body[key]){
+    for (var key in req.body) {
+      if (!req.body[key]) {
         return res.send('need to be filled')
       }
     }
-
-// first check if the patient's public key matches a patient
-
-   dbHelpers.getPatientByPublicKey(req.body.patientPublicKey)
-  .then((user) => {
+    console.log(req.body);
+    // first check if the patient's public key matches a patient
+    let secret;
+    dbHelpers.getPatientByPublicKey(req.body.patientPublicKey).then((user) => {
     // console.log(user)
-    if(!user.length){
-      throw "No user with that public key"
-    }
-    return dbHelpers.getDoctorKeys(req.user.id) // Add the prescription to the blockchain
-// so far, to add to the blockchain, i need to use an address from testrpc which is WEIRD
-    })
-    .then((keys) => {
+      if (!user.length) {
+        throw "No user with that public key"
+      }
+      return dbHelpers.getDrugId(req.body.drugName)
+    }).then(() => {
+      return dbHelpers.getDoctorKeys(req.user.id)
+    }).then((keys) => {
       let prescriptionData = {
-        drugName: req.body.drugName,
+        drugName: req.body.drugName.toLowerCase(),
         quantity:  req.body.quantity,
         measurement: req.body.measurement,
         frequency: req.body.frequency,
@@ -110,17 +108,20 @@ module.exports = (knex) => {
         patientPublicKey: req.body.patientPublicKey
       }
       console.log(keys)
-      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
+
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "ePrescription")
+      // return eth_connect.publishPrescription(req.body.patientPublicKey, JSON.stringify(prescriptionData), "ePrescription")
     })
-    .then((txHash) => {
-      console.log(txHash)
+    .then((txObject) => {
+      secret = txObject.secret;
+      console.log(txObject.txHash)
       console.log("the prescription has been published")
       // console.log(txHash.toString("hex"))
-      var txDetails = eth_connect.getTransactionReceipt(txHash)
+      var txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       var count = 0
       while(!txDetails){
         count++;
-        txDetails = eth_connect.getTransactionReceipt(txHash)
+        txDetails = eth_connect.getTransactionReceipt(txObject.txHash)
       }
       console.log("the tx details are", txDetails)
       console.log(count)
@@ -138,7 +139,7 @@ module.exports = (knex) => {
     })
     .then(() => {
       req.body["rx_address"] = rxAddress;
-
+      req.body["secret"] = secret
     // Add the prescription to our database
     return dbHelpers.createFullRx(req.user, req.body)
     })
@@ -146,7 +147,8 @@ module.exports = (knex) => {
       return res.redirect(`${prescriptionId}`)
     })
     .catch((err) => {
-      return res.send("There was an error while adding the prescription to the blockchain or our DB: " + err)
+      let errMsg = `There was an error while adding the prescription to the blockchain or our DB: ${err}`;
+      return res.render("error_page", { err : errMsg })
     })
   });
 

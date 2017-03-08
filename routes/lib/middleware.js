@@ -4,6 +4,10 @@ module.exports = function(req, res, next) {
   if (req.session["user"]) {
     req.user = JSON.parse(req.session["user"]);
   } else { req.user = null }
+
+  if (req.session["pharmacy"]) {
+    req.pharmacy = JSON.parse(req.session["pharmacy"]);
+  } else { req.pharmacy = null }
   next();
-  
+
 }

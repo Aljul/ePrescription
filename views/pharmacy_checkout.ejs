@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" id="index">
+  <% include ./partials/_header %>
+  <body class="index">
+    <% include ./partials/_nav_pharmacies %>
+    <div class="row">
+      <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+        <h3 class="form-title"> Pharmacy Checkout </h3>
+        <form id="pharmacies-review-form" action="/pharmacies/review" method="POST">
+          <div class="input-group">
+            <input id="contract_address" class="form-control" name="contractAddress" type="text" placeholder="Prescription address">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary modalButton rxAddress" data-toggle="modal" data-target="#myModal">Address Reader</button>
+            </span>
+          </div>
+          <div class="input-group">
+            <input id="prescription_secret" class="form-control" name="prescriptionSecret" type="text" placeholder="Enter the secret">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary modalButton secret" data-toggle="modal" data-target="#myModal">Secret Reader</button>
+            </span>
+          </div>
+          <input class="btn btn-default form-submit prescription-submit" type="submit">
+        </form>
+      </div>
+    </div>
+    <% include ./partials/_qr-code-reader-modal %>
+  </body>
+</html>

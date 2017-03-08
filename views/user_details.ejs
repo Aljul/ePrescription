@@ -5,7 +5,11 @@
     <% include ./partials/_nav %>
     <div class="form col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
       <div class="prescriptions-header">
-        <h3><%=`${userDetails.first_name} ${userDetails.last_name}`%></h3>
+        <% if (userDetails.isDoctor === true) { %>
+          <h3><%=`Dr.${userDetails.first_name} ${userDetails.last_name}`%></h3>
+        <% } else { %>
+          <h3><%=`${userDetails.first_name} ${userDetails.last_name}`%></h3>
+        <% } %>
       </div>
       <div>
         <ul class="user-details">

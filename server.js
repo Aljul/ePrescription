@@ -18,6 +18,7 @@ const cookieParser  = require('cookie-parser')
 const mainRoutes  = require("./routes/main");
 const prescriptionsRoutes  = require("./routes/prescriptions");
 const usersRoutes  = require("./routes/users");
+const pharmaciesRoutes = require("./routes/pharmacies");
 
 // require our middleware.js
 const middleware = require("./routes/lib/middleware")
@@ -58,6 +59,7 @@ app.use(middleware);
 
 // connect routes
 app.use("/", mainRoutes(knex));
+app.use("/pharmacies", pharmaciesRoutes(knex));
 app.use("/prescriptions", prescriptionsRoutes(knex));
 app.use("/users", usersRoutes(knex));
 
