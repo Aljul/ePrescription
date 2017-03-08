@@ -131,11 +131,7 @@ module.exports = (knex) => {
       // console.log(txDetails)
        rxAddress = txDetails.logs[0].address;
        console.log(rxAddress)
-      return eth_connect.printPrescription(rxAddress)
-    })
-    .then((printedRx) => {
-      console.log(printedRx)
-      return printedRx
+      return //eth_connect.printPrescription(rxAddress)
     })
     .then(() => {
       req.body["rx_address"] = rxAddress;
