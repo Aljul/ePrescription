@@ -24,7 +24,11 @@
             <% } %>
             <p><%=(rxHeaders[i].createdAt).toString().substring(0, 24)%></p>
             <p>
+            <% if (rxHeaders[i].status != "inactive") { %>
               <span class="badge"><%=rxHeaders[i].status%></span>
+              <% } else { %>
+              <span id="inactive-badge" class="badge"><%=rxHeaders[i].status%></span>
+            <% } %>
               <span class="badge"><%=`ID: ${rxHeaders[i].prescription_id}`%></span>
             </p>
           </li>
