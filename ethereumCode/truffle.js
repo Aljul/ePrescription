@@ -18,7 +18,7 @@ var address = "0x" + wallet.getAddress().toString("hex");
 // console.log(wallet.getOwnPropertyNames(o: Object)vateKey().toString("hex"))
 console.log(address)
 
-var providerUrl = `http://rxlhlvoxq.eastus.cloudapp.azure.com:8545`;
+var providerUrl = `http://lhl3a6m5u.eastus.cloudapp.azure.com:8545`;
 // var providerUrl = `https://ropsten.infura.io/${process.env.INFURA_ACCESS_TOKEN}`;
 var engine = new ProviderEngine();
 engine.addProvider(new WalletSubprovider(wallet, {}));

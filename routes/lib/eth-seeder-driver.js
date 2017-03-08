@@ -9,8 +9,8 @@ const rpcCalls                        = require('./ethereum-contracts.js');
 const web3   = new Web3();
 // var provider = new Web3.providers.HttpProvider("http://localhost:8545");
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
-web3.setProvider(new web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545'));
-var provider = new Web3.providers.HttpProvider('http://rxlhlvoxq.eastus.cloudapp.azure.com:8545');
+web3.setProvider(new web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545'));
+var provider = new Web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545');
 // var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
 
