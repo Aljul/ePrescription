@@ -62,10 +62,20 @@ module.exports = (knex) => {
       console.log(decryptedRx)
       let prescriptionObj = JSON.parse(decryptedRx)
       let pharmacy = req.pharmacy;
-      res.render('rx_details', {  pharmacy : pharmacy, prescriptionObj : prescriptionObj } );
+      res.render('rx_details', {  pharmacy : pharmacy, prescriptionObj : prescriptionObj, rx_address: rxObject.info.rx_address, msg: null } );
     })
   });
 
+  // when clearing transaction
+  router.post("/prescriptions/:rx_address/clear", (req, res) => {
+    // change status in database
+    let rx_address = req.params.rx_address
+    dbHelpers.setRxStatus(rx_address, "inactive").then((result) => {
+      console.log(result);
+      return res.render("rx_details", { pharmacy : null, prescriptionObj : null, rx_address: null, msg: result });
+    });
+    // clear prescription in the blockchain
+  });
 
   return router;
 }

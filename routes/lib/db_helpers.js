@@ -37,17 +37,22 @@ module.exports = function makeDbHelpers(knex) {
     },
 
     // Set prescription status to inactive
-    setRxStatus: function(rx_id, status) {
-      return knex("prescriptions")
-      .update({
-        status: "inactive",
-      })
-      .where("id", rx_id)
+    setRxStatus: function(rx_address, status) {
+      return knex
+      .select("prescription_id")
+      .from("prescription_details")
+      .where("rx_address", rx_address)
       .then((result) => {
         if(result.length === 0){
-          throw "There's no prescription with this id"
+          throw "There's no prescription with this address"
         }
-        return result[0];
+        let prescription_id = result[0].prescription_id;
+        return knex("prescriptions")
+        .update("status", status)
+        .where("id", prescription_id)
+        .then((result) => {
+          return `Prescription ID:${prescription_id}'s successfully fulfilled`
+        });
       })
       .catch((err) => {
         throw err;

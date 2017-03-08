@@ -194,7 +194,8 @@ module.exports = {
         name: prescriptionName,
         patientAddress: patientAddr,
         doctorAddress: docAddress,
-        data: prescriptionData
+        data: prescriptionData,
+        rx_address: prescriptionAddress
         }
       }
       return verbosePrescription
