@@ -188,11 +188,15 @@ module.exports = {
       return prescription.getPatientAddress()
     }).then((address) => {
       patientAddr = address
-      var verbosePrescription = `Prescription
-      NAME: ${prescriptionName}
-      PATIENT ADDRESS: ${patientAddr}
-      ISSUED BY: ${docAddress}
-      DATA: ${prescriptionData}`;
+      var verbosePrescription = {
+      description: `Prescription  NAME: ${prescriptionName}    PATIENT ADDRESS: ${patientAddr}     ISSUED BY: ${docAddress}      DATA: ${prescriptionData}`,
+      info: {
+        name: prescriptionName,
+        patientAddress: patientAddr,
+        doctorAddress: docAddress,
+        data: prescriptionData
+        }
+      }
       return verbosePrescription
     }).catch((err) => {
       console.log("The error happened in printing the prescription", err)

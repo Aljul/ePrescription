@@ -8,14 +8,14 @@
         <h3 class="form-title"> Pharmacy Checkout </h3>
         <%= JSON.stringify(pharmacy) %>
 
-         <form action="/prescriptions/new" method="POST">
+         <form action="/pharmacies/review" method="POST">
          ENTER THE RX address
          <input id="contract_address"  name="contractAddress" type="text">
-        <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">QR code Reader</button>
+        <button type="button" class="btn btn-primary modalButton rxAddress" data-toggle="modal" data-target="#myModal">Address Reader</button>
 
          ENTER THE SECRET
-         <input id="prescription_secret+"  name="prescriptionSecret" type="text">
-          <button type="button" class="btn btn-primary modalButton" data-toggle="modal" data-target="#myModal">QR code Reader</button>
+         <input id="prescription_secret"  name="prescriptionSecret" type="text">
+          <button type="button" class="btn btn-primary modalButton secret" data-toggle="modal" data-target="#myModal">Secret Reader</button>
           <input class="btn btn-default form-submit prescription-submit" type="submit">
          </form>
       </div>

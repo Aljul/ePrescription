@@ -9,10 +9,16 @@ $(document).ready(function(){
       $('#reader').html5_qrcode_stop();
       // console.log(($('#public_key')))
       var pub_key = data.replace(/bitcoin:/gi, "")
+      console.log(e)
+      if(e.target.innerHTML == "Address Reader"){
+      $('#contract_address').val(pub_key);
+      } else {
+      $('#prescription_secret').val(pub_key);
+      }
       $('#public_key').val(pub_key);
       $('#public_key_hidden').val(pub_key);
       $('#myModal').modal('toggle');
-      $(".modalButton").attr("disabled", true);
+      // $(".modalButton").attr("disabled", true);
       // will need to do error checking on the address
       // and reactivate modal afterward too
       },

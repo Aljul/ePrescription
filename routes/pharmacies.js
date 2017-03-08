@@ -1,7 +1,10 @@
 "use strict";
 
-const express = require("express");
-const router  = express.Router();
+const express     = require("express");
+const router      = express.Router();
+const eth_connect = require('./lib/ethereum-contracts.js');
+const encryption  = require('./lib/encryption.js');
+
 
 module.exports = (knex) => {
   // Require db helpers functions
@@ -20,6 +23,7 @@ module.exports = (knex) => {
       res.redirect("login");
     }
   });
+
 
   router.get("/login", (req, res) => {
     // if logged in, redirect. Else render login page
@@ -48,6 +52,23 @@ module.exports = (knex) => {
       res.redirect("/pharmacies");
     });
   });
+
+  router.post("/review", (req, res) => {
+    console.log(req.body)
+    eth_connect.printPrescription(req.body.contractAddress)
+    .then((rxObject) => {
+
+      console.log(rxObject)
+      let decryptedRx = encryption.decipher(req.body.prescriptionSecret, rxObject.info.data)
+      console.log(decryptedRx)
+      let prescriptionObj = JSON.parse(decryptedRx)
+      res.render('rx_details', prescriptionObj)
+
+    })
+
+
+  })
+
 
   return router;
 }
