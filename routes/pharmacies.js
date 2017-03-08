@@ -61,7 +61,8 @@ module.exports = (knex) => {
       let decryptedRx = encryption.decipher(req.body.prescriptionSecret, rxObject.info.data)
       console.log(decryptedRx)
       let prescriptionObj = JSON.parse(decryptedRx)
-      res.render('rx_details', prescriptionObj)
+      let pharmacy = req.pharmacy;
+      res.render('rx_details', {  pharmacy : pharmacy, prescriptionObj : prescriptionObj } );
     })
   });
 
