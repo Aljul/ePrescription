@@ -12,11 +12,11 @@ const encryption                      = require('./encryption.js');
 
 const web3   = new Web3();
 // web3.setProvider(new web3.providers.HttpProvider(process.env.TUNNEL));
-var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
-// var provider = new Web3.providers.HttpProvider("http://localhost:4000");
+// var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:4000'));
+var provider = new Web3.providers.HttpProvider("http://localhost:4000");
 
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 // connect web3 to the testrpc, so you get all the test accounts with valid public/private keys
 // web3.setProvider(new web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545'));
 // var provider = new Web3.providers.HttpProvider('http://lhl3a6m5u.eastus.cloudapp.azure.com:8545');
