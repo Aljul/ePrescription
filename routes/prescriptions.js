@@ -108,8 +108,11 @@ module.exports = (knex) => {
         patientPublicKey: req.body.patientPublicKey
       }
       console.log(keys)
-      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "NAhMrereE")
-    }).then((txObject) => {
+
+      return eth_connect.publishPrescriptionSIGNED(req.body.patientPublicKey, keys, req.body.password, JSON.stringify(prescriptionData), "ePrescription")
+      // return eth_connect.publishPrescription(req.body.patientPublicKey, JSON.stringify(prescriptionData), "ePrescription")
+    })
+    .then((txObject) => {
       secret = txObject.secret;
       console.log(txObject.txHash)
       console.log("the prescription has been published")
