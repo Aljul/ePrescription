@@ -8,6 +8,7 @@
 @import "user_details.css";
 @import "error_page.css";
 @import "pharmacy_checkout.css";
+@import "_qr-code-reader-modal.css";
 
 body {
   overflow-x: hidden;
